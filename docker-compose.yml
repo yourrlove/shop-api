@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  mysqldb:
+    image: mysql:8.0
+    container_name: mysqlcontainer
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysqldb
+    ports:
+      - 3307:${MYSQL_DB_PORT}
+    expose:
+      - 3307
+    volumes:
+      - /mysql-database:/var/lib/mysql
+    networks:
+      - shop-api-networks
+  
+  mongodb:
+    image: mongo:5.0.2
+    container_name: mongodbcontainer
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - ${MONGO_DB_PORT}:${MONGO_DB_PORT}
+    volumes:
+      - /mongo-database:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mongodb
+    expose:
+      - 27017
+    command: --quiet
+    networks:
+      - shop-api-networks
+
+  shop-api:
+    container_name: shopapicontainer
+    depends_on:
+      - mysqldb
+      - mongodb
+    build: .
+    restart: unless-stopped
+    image: shopapi:v1
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    env_file:
+      - .env
+    environment:
+      MYSQL_DB_HOST: mysqldb
+      MONGO_DB_HOST: mongodb
+      SERVICE_TAGS: dev
+      SERVICE_NAME: shopapiservice
+    networks:
+      - shop-api-networks
+    develop:
+      watch:
+        - path: ./package.json
+          action: rebuild
+        - path: ./package-lock.json
+          action: rebuild
+        - path: ./src
+          target: /target
+          action: sync
+volumes:
+  shop:
+networks:
+  shop-api-networks:
+    driver: bridge
+
+    
