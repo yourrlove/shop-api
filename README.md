@@ -109,7 +109,10 @@ This is an example of how to list things you need to use the software and how to
    ```sh
     Create and Copy enviroment variables from .env.sample to .env file
    ```
-
+4. Run the following command
+   ```sh
+   npm run start:dev
+   ```
 ####  IF you have Docker installed
 1. Build & Run docker container
     ```sh
