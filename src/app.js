@@ -42,10 +42,17 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //init mysql db
-const sequelize = require('./dbs/init.mysql')
+const { initialize, sequelize } = require('./databases/init.mysql')
+// initialize()
+// .then(() => {
+//   console.log('Connected Mysqldb Success');
+// })
+// .catch(err => {
+//   console.log(err);
+// });
 
 // init mongodb
-require('./dbs/init.mongodb')
+require('./databases/init.mongodb')
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
