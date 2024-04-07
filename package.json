@@ -17,6 +17,7 @@
     "mongoose": "^8.2.3",
     "morgan": "~1.9.1",
     "mysql2": "^3.9.3",
+    "refs": "^0.9.7",
     "sequelize": "^6.37.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0"
@@ -24,5 +25,8 @@
   "devDependencies": {
     "nodemon": "^3.1.0",
     "sequelize-cli": "^6.6.2"
+  },
+  "nodemonConfig": {
+    "ext": "js,json,yaml,yml"
   }
 }

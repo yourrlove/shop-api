@@ -9,6 +9,8 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
+const refs = require('refs');
+
 const app = express();
 
 const options = {
@@ -29,7 +31,7 @@ const options = {
           }
         ]
     },
-    apis: [path.join(__dirname,'configs','swagger','*.yaml')], // files containing annotations as above
+    apis: [path.join(__dirname,'configs','swagger','**','*.yaml')], // files containing annotations as above
   };
 
 const openapiSpecification = swaggerJsdoc(options);
