@@ -1,0 +1,202 @@
+  /product/{productId}:
+    put:
+      tags:
+      - Product
+      summary: Update an existing product
+      operationId: updateProduct
+      parameters:
+      - name: productId
+        in: path
+        description: ID of product to update
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductRequestBody'
+      responses:
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Product not found
+        "405":
+          description: Validation exception
+    get:
+      tags:
+      - Product
+      summary: Find product by ID
+      description: Returns a single product
+      operationId: getProductById
+      parameters:
+      - name: productId
+        in: path
+        description: ID of product to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Pet not found
+    delete:
+      tags:
+      - Product
+      summary: Deletes a product
+      operationId: deleteProduct
+      parameters:
+      - name: productId
+        in: path
+        description: Product id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Product not found
+
+  /product:
+    post:
+      tags:
+      - Product
+      summary: Add a new product to the store
+      operationId: updateProductWithForm
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductRequestBody'
+      responses:
+        "405":
+          description: Invalid input
+
+  /product/brand/{brandId}:
+    get:
+      tags:
+      - Product
+      summary: Finds Product by brand ID
+      description: Multiple product objects can be provided with comma separated
+      operationId: findProductsByBrandId
+      parameters:
+      - name: brandId
+        in: path
+        description: Brand Id that need to be considered for filter
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid 
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+        "400":
+          description: Invalid status value
+
+  /products/findByBrandName:
+    get:
+      tags:
+      - Product
+      summary: Finds Product by brand name
+      description: Multiple product objects can be provided with comma separated
+      operationId: findProductsByBrandName
+      parameters:
+        - name: brandName
+          in: query
+          description: Brand name that need to be considered for filter
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: "GUCCI"
+      responses:
+        "200":
+          description: successful operation
+          content:
+           application/json:
+             schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/ProductResponse'
+        "400":
+          description: Invalid status value
+        
+  /product/findByCategoryName:
+    get:
+      tags:
+      - Product
+      summary: Finds Product by category name
+      description: "Muliple product objects can be provided with comma separated."
+      operationId: findProductsByCategoryName
+      parameters:
+      - name: categoryName
+        in: query
+        description: Category name to filter by
+        required: true
+        style: simple
+        explode: true
+        schema:
+          type: string
+          example: "T-shirt"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+        "400":
+          description: Invalid tag value
+
+  /product/uploadImage/{productId}:
+    get:
+      tags:
+      - Product
+      summary: uploads an image
+      operationId: uploadFile
+      parameters:
+      - name: productId
+        in: path
+        description: ID of product to update
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: successful

@@ -36,13 +36,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     quantity: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       defaultValue: 0
     },
     status: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: DataTypes.STRING
+      defaultValue: 'available'
     },
     thumbnail: {
       type: DataTypes.STRING,
