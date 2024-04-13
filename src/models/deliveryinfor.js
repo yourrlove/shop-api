@@ -18,43 +18,35 @@ module.exports = (sequelize, DataTypes) => {
   DeliveryInfor.init({
     id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: DataTypes.STRING
+      allowNull: false
     },
     phone_number: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: DataTypes.STRING
+      allowNull: false
     },
     province: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: DataTypes.STRING
+      allowNull: false
     },
     district: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: DataTypes.STRING
+      allowNull: false
     },
     street: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: DataTypes.STRING
+      allowNull: false
     },
     is_default: {
       type: DataTypes.BOOLEAN,
-      allowNull: true,
-      defaultValue: false
+      allowNull: true
     },
     user_id: {
       type: DataTypes.UUID,
-      allowNull: false,
-      defaultValue: DataTypes.UUIDV4
+      allowNull: false
     }
   }, {
     sequelize,

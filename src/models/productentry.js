@@ -19,13 +19,11 @@ module.exports = (sequelize, DataTypes) => {
   ProductEntry.init({
     id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
     title: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: DataTypes.STRING
+      allowNull: false
     },
     total_cost: {
       type: DataTypes.FLOAT,
@@ -40,7 +38,6 @@ module.exports = (sequelize, DataTypes) => {
     user_id: {
       type: DataTypes.UUID,
       allowNull: false,
-      defaultValue: DataTypes.UUID,
       references: {
         model: 'User',
         key: 'id'

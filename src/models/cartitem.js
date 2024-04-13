@@ -22,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
   CartItem.init({
     cart_id: {
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
       type: DataTypes.UUID,
       references: {
         model: 'Cart',
@@ -32,7 +31,6 @@ module.exports = (sequelize, DataTypes) => {
     product_id: {
         primaryKey: true,
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUID,
         references: {
           model: 'ProductDetail',
           key: 'id',
@@ -47,5 +45,5 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'CartItem',
   });
-  return Cart;
+  return CartItem;
 };

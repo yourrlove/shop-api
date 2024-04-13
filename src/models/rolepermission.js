@@ -11,13 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-        RolePermission.belongsTo(models.Role);
-        RolePermission.belongsTo(models.Permission);
+      RolePermission.belongsTo(models.Role);
+      RolePermission.belongsTo(models.Permission);
     }
   }
   RolePermission.init({
     role_id: {
-      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       type: DataTypes.UUID,
       references: {
@@ -26,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     permission_id: {
-        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
         type: DataTypes.UUID,
         references: {

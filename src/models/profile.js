@@ -17,28 +17,23 @@ module.exports = (sequelize, DataTypes) => {
   Profile.init({
     id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
     first_name: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: DataTypes.STRING
+      allowNull: false
     },
     last_name: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: DataTypes.STRING
+      allowNull: false
     },
     phone_number: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: DataTypes.STRING
+      allowNull: false
     },
     user_id: {
       type: DataTypes.UUID,
-      allowNull: false,
-      defaultValue: DataTypes.UUID
+      allowNull: false
     }
   }, {
     sequelize,

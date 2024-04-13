@@ -20,8 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   Order.init({
     id: {
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
-      type: DataTypes.UUID,
+      type: DataTypes.UUID
     },
     total_price: {
       type: DataTypes.FLOAT,

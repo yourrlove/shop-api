@@ -6,10 +6,11 @@ const logger = require('morgan');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 
+// Router
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-
-const refs = require('refs');
+const productRouter = require('./routes/product');
+const roleRouter = require('./routes/role');
 
 const app = express();
 
@@ -39,7 +40,7 @@ const openapiSpecification = swaggerJsdoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -53,10 +54,16 @@ const { initialize, sequelize } = require('./databases/init.mysql')
 //   console.log(err);
 // });
 
+
+
+
 // init mongodb
-require('./databases/init.mongodb')
+// require('./databases/init.mongodb')
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/products', productRouter);
+app.use('/roles', roleRouter);
+
 
 module.exports = app;

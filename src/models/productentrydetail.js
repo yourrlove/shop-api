@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
   ProductEntryDetail.init({
     product_entry_id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       references: {
         model: 'ProductEntry',
@@ -28,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
     product_id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      defaultValue: DataTypes.UUID,
       references: {
         model: 'Product',
         key: 'id'
@@ -36,23 +34,21 @@ module.exports = (sequelize, DataTypes) => {
     },
     size: {
         type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: DataTypes.STRING  
+        allowNull: false
     },
     color: {
         type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: DataTypes.STRING
+        allowNull: false
     },
     quantity: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: DataTypes.INTEGER
+        defaultValue: 0
     },
     import_unit_price: {
         type: DataTypes.FLOAT,
         allowNull: false,
-        defaultValue: DataTypes.FLOAT
+        defaultValue: 0
     }
   }, {
     sequelize,

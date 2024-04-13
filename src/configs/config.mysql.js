@@ -7,7 +7,10 @@ module.exports = {
         "database": process.env.DB_NAME,
         "host": process.env.MYSQL_DB_HOST,
         "port": process.env.MYSQL_DB_PORT,
-        "dialect": "mysql"
+        "dialect": "mysql",
+        "define": {
+            freezeTableName: true,
+        }
     },
     "test": {
         "username": "root",

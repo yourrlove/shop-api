@@ -9,8 +9,13 @@ module.exports = {
         type: Sequelize.UUID
       },
       name: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.ENUM,
+        values: [
+          'admin',
+          'user'
+        ],
+        allowNull: false,
+        unique: true
       }
     });
   },

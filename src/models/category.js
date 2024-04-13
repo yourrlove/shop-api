@@ -17,19 +17,17 @@ module.exports = (sequelize, DataTypes) => {
   Category.init({
     id: {
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
+      type: DataTypes.UUID
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: DataTypes.STRING,
-      unique: true,
+      unique: true
     },
     description: {
       type: DataTypes.STRING,
-      allowNull: true,
-      defaultValue: DataTypes.STRING,
+      allowNull: true
     }
   }, {
     sequelize,

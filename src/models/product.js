@@ -21,18 +21,15 @@ module.exports = (sequelize, DataTypes) => {
   Product.init({
     id: {
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
-      type: DataTypes.UUID,
+      type: DataTypes.UUID
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: DataTypes.STRING
+      allowNull: false
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: true,
-      defaultValue: DataTypes.TEXT
+      allowNull: true
     },
     quantity: {
       type: DataTypes.INTEGER,
@@ -44,20 +41,22 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 'available'
     },
+    current_unit_price: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+      defaultValue: 0
+    },
     thumbnail: {
       type: DataTypes.STRING,
-      allowNull: true,
-      defaultValue: DataTypes.STRING
+      allowNull: true
     },
     deletedAt: {
       type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: DataTypes.DATE
+      allowNull: true
     },
     brand_id: {
       type: DataTypes.UUID,
       allowNull: true,
-      defaultValue: DataTypes.UUID,
       references: {
         model: 'Brand',
         key: 'id'
@@ -66,7 +65,6 @@ module.exports = (sequelize, DataTypes) => {
     category_id: {
       type: DataTypes.UUID,
       allowNull: true,
-      defaultValue: DataTypes.UUID,
       references: {
         model: 'Category',
         key: 'id'

@@ -17,13 +17,11 @@ module.exports = (sequelize, DataTypes) => {
   Promotion.init({
     id: {
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
       type: DataTypes.UUID,
     },
     deposit: {
       type: DataTypes.FLOAT,
-      allowNull: false,
-      defaultValue: DataTypes.FLOAT,
+      allowNull: false
     }
   }, {
     sequelize,
