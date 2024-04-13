@@ -19,43 +19,36 @@ module.exports = (sequelize, DataTypes) => {
   ProductDetail.init({
     id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: true,
-      defaultValue: DataTypes.TEXT
+      allowNull: true
     },
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: DataTypes.INTEGER
+      defaultValue: 0
     },
     status: {
       type: DataTypes.STRING,
-      allowNull: true,
-      defaultValue: DataTypes.STRING
+      allowNull: true
     },
     size: {
       type: DataTypes.STRING,
-      allowNull: true,
-      defaultValue: DataTypes.STRING
+      allowNull: true
     },
     color: {
       type: DataTypes.STRING,
-      allowNull: true,
-      defaultValue: DataTypes.STRING
+      allowNull: true
     },
     image: {
       type: DataTypes.STRING,
-      allowNull: true,
-      defaultValue: DataTypes.STRING
+      allowNull: true
     },
     product_id: {
       type: DataTypes.UUID,
-      allowNull: true,
-      defaultValue: DataTypes.UUID
+      allowNull: true
     }
   }, {
     sequelize,

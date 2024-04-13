@@ -4,14 +4,9 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // define association here
-      User.belongsTo(Role, {
+      User.belongsTo(models.Role, {
         foreignKey: 'role_id',
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE'
@@ -28,39 +23,37 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
     username: {
-      types: DataTypes.STRING,
-      defaultValue: DataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false
     },
     email: {
-      types: DataTypes.STRING,
-      defaultValue: DataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false
     },
     hash_password: {
-      types: DataTypes.STRING,
-      defaultValue: DataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false
     },
     is_active: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true,
-      allowNull: true
+      defaultValue: true
     },
     role_id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      allowNull: true
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
       allowNull: true
     }
-
   }, {
     sequelize,
     modelName: 'User',
-    timestamps: true
+    timestamps: true,
+    paranoid: true
   });
   return User;
 };

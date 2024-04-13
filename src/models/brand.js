@@ -17,23 +17,19 @@ module.exports = (sequelize, DataTypes) => {
   Brand.init({
     id: {
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
-      type: DataTypes.UUID,
+      type: DataTypes.UUID
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: DataTypes.STRING
+      allowNull: false
     },
     logo: {
       type: DataTypes.STRING,
-      allowNull: true,
-      defaultValue: DataTypes.STRING
+      allowNull: true
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: true,
-      defaultValue: DataTypes.TEXT
+      allowNull: true
     }
   }, {
     sequelize,

@@ -11,14 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association 
-        UserNotification.belongsTo(models.Notification);
-        UserNotification.belongsTo(models.User);
+      UserNotification.belongsTo(models.Notification);
+      UserNotification.belongsTo(models.User);
     }
   }
   UserNotification.init({
     notification_id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       references: {
         model: 'Notification',
@@ -27,7 +26,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     user_id: {
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
         references: {
             model: 'User',
@@ -35,12 +33,12 @@ module.exports = (sequelize, DataTypes) => {
         }
     },
     is_read: {
-        type: DataTypes.Boolean,
+        type: DataTypes.BOOLEAN,
         defaultValue: false,
     }
   }, {
     sequelize,
-    modelName: 'Notification',
+    modelName: 'UserNotification',
   });
   return UserNotification;
 };

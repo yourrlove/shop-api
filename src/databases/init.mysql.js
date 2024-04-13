@@ -1,7 +1,6 @@
 const { development: { host, username, password, database, port, dialect }} = require("../configs/config.mysql");
 const Sequelize = require("sequelize");
 const mysql = require('mysql2/promise')
-//const db = require('../models')
 
 const initialize = async () => {
   //create database if it doesn't exist
@@ -30,6 +29,10 @@ const sequelize = new Sequelize(database, username, password, {
   port: port,
 });
 
+sequelize.authenticate()
+ .then(() => {
+    console.log('Connection has been established successfully.');
+  })
 
 module.exports = { 
   initialize,

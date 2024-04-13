@@ -11,7 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Role.hasMany(User);
+      Role.hasMany(models.User, {
+        foreignKey: 'role_id'
+      });
       Role.belongsToMany(models.Permission, { through: 'RolePermission' });
       Role.hasMany(models.RolePermission);
     }
@@ -19,17 +21,24 @@ module.exports = (sequelize, DataTypes) => {
   Role.init({
     id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM,
       allowNull: false,
-      defaultValue: DataTypes.STRING
+      unique: true,
+      values: ['admin', 'user'],
+      validate: {
+        isIn: {
+          args: [['admin', 'user']],
+          msg: "Must be admin or user"
+        }
+      }
     }
   }, {
     sequelize,
     modelName: 'Role',
+    timestamps: false
   });
   return Role;
 };
