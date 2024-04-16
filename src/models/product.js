@@ -11,9 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Product.hasMany(models.ProductDetail);
-      Product.belongsTo(models.Brand);
-      Product.belongsTo(models.Category);
+      Product.hasMany(models.ProductDetail, {
+        foreignKey: 'product_id',
+      });
+      Product.belongsTo(models.Brand, {
+        foreignKey: 'brand_id',
+      });
+      Product.belongsTo(models.Category, {
+        foreignKey: 'category_id',
+      });
       Product.belongsToMany(models.ProductEntry, { through: 'ProductEntryDetail' });
       Product.hasMany(models.ProductEntryDetail);
     }
@@ -74,6 +80,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Product',
     timestamps: true,
+    paranoid: true
   });
   return Product;
 };
