@@ -5,7 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "SET NODE_ENV=development&nodemon server.js",
-    "start:prod": "SET NODE_ENV=prod&node .server.js"
+    "start:prod": "SET NODE_ENV=prod&node .server.js",
+    "migrate:up": "npx sequelize-cli db:migrate",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo"
   },
   "dependencies": {
     "compression": "^1.7.4",
