@@ -1,6 +1,9 @@
 'use strict';
+
 const db = require('../models');
 const { generateUUID } = require('../helpers/index');
+const { BadRequestError, NotFoundError } = require('../core/error.response');
+
 
 class RoleService {
     static create = async ({ name }) => {
@@ -10,8 +13,10 @@ class RoleService {
     }
     
     static delete = async ( id ) => {
-        await db.Role.destroy({ where: { id: id } });
-        return "success to delete role";
+        const result = await db.Role.destroy({ where: { id: id } });
+        if (result == 0) {
+            throw new NotFoundError('Failed to delete role! Id Not Found!');
+        }
     }
 
     static get_all = async () => {
