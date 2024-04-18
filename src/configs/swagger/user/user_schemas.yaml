@@ -1,29 +1,44 @@
 components:
   schemas:
-    User:
+    UserResponse:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         username:
           type: string
-        firstName:
+        email:
           type: string
-        lastName:
+        role_id:
+          type: string
+          format: uuid
+
+    CreateUserBody:
+      type: object
+      properties:
+        username:
           type: string
         email:
           type: string
         password:
           type: string
-        phone:
+        role_id:
           type: string
-        userStatus:
-          type: integer
-          description: User Status
-          format: int32
-      xml:
-        name: User
+          format: uuid
+    
+    UpdateUserBody:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role_id:
+          type: string
+          format: uuid
       
     UserArray:
       description: List of user object

@@ -7,16 +7,15 @@ components:
           type: string
         description:
           type: string
-        quantity:
-          type: integer
-          format: int32
         status:
           type: string
           enum:
           - available
           - sold
           - unavailable
-        brand:
+        current_unit_price:
+          type: float
+        thumbnail:
           type: string
 
     UpdateProductRequestBody:
@@ -26,9 +25,6 @@ components:
           type: string
         description:
           type: string
-        quantity:
-          type: integer
-          format: int32
         status:
           type: string
           enum:
@@ -37,10 +33,12 @@ components:
           - sold
         thumbnail:
           type: string
-        brand:
+        brandId:
           type: string
-        category:
+          format: uuid
+        categoryId:
           type: string
+          format: uuid
 
     ProductResponse:
       type: object
@@ -69,4 +67,76 @@ components:
         categoryId:
           type: string
           format: uuid
+          
+    ProductDetailResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        description:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        status:
+          type: string
+          enum:
+          - unavailable
+          - available
+          - sold
+        size:
+          type: string
+        color:
+          type: string
+        image:
+          type: string
+        productId:
+          type: string
+          format: uuid
+        
+    CreateProductDetailBody:
+      type: object
+      properties:
+        description:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        status:
+          type: string
+          enum:
+          - unavailable
+          - available
+          - sold
+        size:
+          type: string
+        color:
+          type: string
+        image:
+          type: string
+        productId:
+          type: string
+          format: uuid
+
+    UpdateProductDetailBody:
+      type: object
+      properties:
+        description:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        status:
+          type: string
+          enum:
+          - unavailable
+          - available
+          - sold
+        size:
+          type: string
+        color:
+          type: string
+        image:
+          type: string
           

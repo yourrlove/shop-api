@@ -80,7 +80,12 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Product',
     timestamps: true,
-    paranoid: true
+    paranoid: true,
+    defaultScope: {
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      }
+    }
   });
   return Product;
 };
