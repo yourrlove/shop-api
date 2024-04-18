@@ -1,4 +1,6 @@
 'use strict';
+const { BadRequestError } = require('../core/error.response');
+
 const {
   Model
 } = require('sequelize');
