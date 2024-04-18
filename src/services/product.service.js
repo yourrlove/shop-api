@@ -28,7 +28,7 @@ class ProductService {
         }, {
             where: {id : id}
         });
-        if(!product) throw new NotFoundError(`Product not found`);
+        if(!product[0]) throw new NotFoundError(`Product not found`);
         return product;
     }
     
