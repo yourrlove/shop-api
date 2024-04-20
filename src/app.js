@@ -11,6 +11,10 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const productRouter = require('./routes/product');
 const roleRouter = require('./routes/role');
+const accessRouter = require('./routes/access/index');
+const cors = require('cors');
+const corsOptions = require('./configs/CORS/corsOptions');
+const credentials = require('./middleware/credentials');
 
 const app = express();
 
@@ -37,12 +41,22 @@ const options = {
 
 const openapiSpecification = swaggerJsdoc(options);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+
+// Handle options credentials check - before CORS!
+// and fetch cookies credentials requirement
+app.use(credentials);
+
+// Cross Origin Resource Sharing
+app.use(cors(corsOptions));
+
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
 //init mysql db
 const { initialize, sequelize } = require('./databases/init.mysql')
@@ -64,7 +78,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productRouter);
 app.use('/roles', roleRouter);
-
+app.use('/access', accessRouter);
 
 // handling errors
 app.use((req, res, next) => {
