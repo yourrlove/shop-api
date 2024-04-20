@@ -11,10 +11,9 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const productRouter = require('./routes/product');
 const roleRouter = require('./routes/role');
-const accessRouter = require('./routes/access/index');
 const cors = require('cors');
 const corsOptions = require('./configs/CORS/corsOptions');
-const credentials = require('./middleware/credentials');
+const credentials = require('./middlewares/credentials');
 
 const app = express();
 
@@ -78,7 +77,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productRouter);
 app.use('/roles', roleRouter);
-app.use('/access', accessRouter);
 
 // handling errors
 app.use((req, res, next) => {
