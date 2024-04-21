@@ -59,6 +59,21 @@ class ProductController {
             metadata: await ProductDetailService.update(req.params.id, req.body)
         }).send(res);
     }
+
+    get_products_by_brand_id = async (req, res, next) => {
+        new OK({
+            message: 'List of products by brand',
+            metadata: await ProductService.get_by_brand_id(req.params.brandId)
+        }).send(res);
+    }
+
+    get_products_by_brand_name = async (req, res, next) => {
+        console.log(req.query.brandName);
+        new OK({
+            message: 'List of products by brand',
+            metadata: await ProductService.get_by_brand_name(req.query.brandName)
+        }).send(res);
+    }
     
 }
 

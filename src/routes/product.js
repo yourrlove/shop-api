@@ -14,4 +14,8 @@ router.get('/:id/productdetails', asyncHandler( productController.get_all_produc
 router.delete('/productdetails/:id', asyncHandler( productController.delete_product_detail ));
 router.put('/productdetails/:id', asyncHandler( productController.update_product_detail ));
 
+// find product by brand
+router.get('/brands/:brandId', asyncHandler( productController.get_products_by_brand_id ));
+router.get('/brands', asyncHandler( productController.get_products_by_brand_name ));
+
 module.exports = router;

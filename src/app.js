@@ -11,6 +11,8 @@ const indexRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
 const productRouter = require('./routes/product');
 const roleRouter = require('./routes/role');
+const brandRouter = require('./routes/brand');
+
 const cors = require('cors');
 const corsOptions = require('./configs/CORS/corsOptions');
 const credentials = require('./middlewares/credentials');
@@ -77,6 +79,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productRouter);
 app.use('/roles', roleRouter);
+app.use('/brands', brandRouter);
 
 // handling errors
 app.use((req, res, next) => {
