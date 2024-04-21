@@ -24,6 +24,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.BOOLEAN
       },
+      refresh_token: {
+        allowNull: true,
+        type: Sequelize.TEXT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
