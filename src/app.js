@@ -12,6 +12,7 @@ const usersRouter = require('./routes/users');
 const productRouter = require('./routes/product');
 const roleRouter = require('./routes/role');
 const brandRouter = require('./routes/brand');
+const categoryRouter = require('./routes/category');
 
 const cors = require('cors');
 const corsOptions = require('./configs/CORS/corsOptions');
@@ -80,6 +81,7 @@ app.use('/users', usersRouter);
 app.use('/products', productRouter);
 app.use('/roles', roleRouter);
 app.use('/brands', brandRouter);
+app.use('/categories', categoryRouter);
 
 // handling errors
 app.use((req, res, next) => {
