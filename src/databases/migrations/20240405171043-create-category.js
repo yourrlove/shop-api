@@ -13,10 +13,6 @@ module.exports = {
         allowNull: false,
         unique: true
       },
-      description: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
     });
   },
   async down(queryInterface, Sequelize) {

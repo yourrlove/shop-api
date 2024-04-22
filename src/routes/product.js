@@ -21,4 +21,8 @@ router.get('/brands', asyncHandler( productController.get_products_by_brand_name
 router.get('/categories/:categoryId', asyncHandler( productController.get_products_by_category_id ));
 router.get('/categories', asyncHandler( productController.get_products_by_category_name ));
 
+// filter products
+router.post('/filter', asyncHandler( productController.filter_products));
+
+
 module.exports = router;
