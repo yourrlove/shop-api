@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Product.hasMany(models.ProductDetail, {
+        as: 'ProductDetail',
         foreignKey: 'product_id',
       });
       Product.belongsTo(models.Brand, {
@@ -52,6 +53,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       defaultValue: 0
     },
+    rating: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+      defaultValue: 0
+    },
     thumbnail: {
       type: DataTypes.STRING,
       allowNull: true
@@ -84,7 +90,7 @@ module.exports = (sequelize, DataTypes) => {
     defaultScope: {
       attributes: {
         exclude: ['createdAt', 'updatedAt', 'deletedAt']
-      }
+      },
     }
   });
   return Product;

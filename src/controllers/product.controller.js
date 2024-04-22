@@ -1,4 +1,5 @@
 'use strict';
+const e = require('express');
 const { OK, CREATED } = require('../core/success.response');
 const ProductService = require('../services/product.service');
 const ProductDetailService = require('../services/product_detail.service');
@@ -85,6 +86,13 @@ class ProductController {
         new OK({
             message: 'List of products by category',
             metadata: await ProductService.get_by_category_name(req.query.categoryName)
+        }).send(res);
+    }
+
+    filter_products = async (req, res, next) => {
+        new OK({
+            message: 'List of products',
+            metadata: await ProductService.filter_by_query_options(req.body)
         }).send(res);
     }
 }

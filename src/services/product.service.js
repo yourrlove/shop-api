@@ -4,6 +4,9 @@ const { generateUUID } = require('../helpers/index');
 const { BadRequestError, NotFoundError } = require('../core/error.response');
 const BrandService = require('./brand.service');
 const CategoryService = require('./category.service');
+const { formatKeys, getInfoData, removeNull } = require('../utils/index');
+const { Op } = require('sequelize');
+
 
 class ProductService {
     static create = async ({ name, description, quantity, status, current_unit_price, thumbnail, brand_id, category_id }) => {
@@ -64,22 +67,35 @@ class ProductService {
     static get_by_brand_id = async ( brand_id ) => {
         const isBrandIdExist = BrandService.is_exists(brand_id);
         if(!isBrandIdExist) throw new BadRequestError(`Brand id not found!`);
-
-        const products = await db.Product.findAll({
-            where: {
-                brand_id: brand_id
-            },
-            attributes: { exclude: ['brand_id', 'category_id'] },
-            include: [
-                {
-                    model: db.Category,
-                    required: true,
+        const products = (
+            await db.Product.findAll({
+                where: {
+                    brand_id: brand_id
                 },
-            ],
-            nest: true,
-            required: true,
-            raw: true
-        });
+                attributes: { exclude: ['brand_id', 'category_id'] },
+                include: [
+                    {
+                        model: db.ProductDetail,
+                        attributes: ['id', 'size', 'color', 'status'],
+                        required: true,
+                        as: 'ProductDetail',
+                    },
+                    {
+                        model: db.Brand,
+                        attributes: ['name'],
+                        required: true,
+                    },
+                    {
+                        model: db.Category,
+                        attributes: [],
+                        required: true,
+                    },
+                ],
+                nest: true,
+                required: true,
+        }))
+        .map(product => product.toJSON());
+
         return products;
     }
 
@@ -93,21 +109,34 @@ class ProductService {
         const isCategoryExist = await CategoryService.is_exists(category_id);
         if(!isCategoryExist) throw new BadRequestError(`Category id not found!`);
 
-        const products = await db.Product.findAll({
-            where: {
-                category_id: category_id
-            },
-            attributes: { exclude: ['brand_id', 'category_id'] },
-            include: [
-                {
-                    model: db.Brand,
-                    required: true,
+        const products = ( 
+                await db.Product.findAll({
+                where: {
+                    category_id: category_id
                 },
-            ],
-            nest: true,
-            required: true,
-            raw: true
-        });
+                attributes: { exclude: ['brand_id', 'category_id'] },
+                include: [
+                    {
+                        model: db.ProductDetail,
+                        attributes: ['id', 'size', 'color', 'status'],
+                        required: true,
+                        as: 'ProductDetail',
+                    },
+                    {
+                        model: db.Brand,
+                        attributes: ['name'],
+                        required: true,
+                    },
+                    {
+                        model: db.Category,
+                        attributes: [],
+                        required: true,
+                    },
+                ],
+                nest: true,
+                required: true,
+            }))
+            .map(product => product.toJSON());
         return products;
     }
 
@@ -116,6 +145,52 @@ class ProductService {
         if(!category_id) throw new BadRequestError(`Category name not found!`);
         return await this.get_by_category_id(category_id);
     }
+
+    static filter_by_query_options = async ({ filters, sort=[['name', 'ASC']] }) => {
+        const new_filters = this.__formatFiltersOptions(filters);
+        const products = (
+            await db.Product.findAll({
+                where: { 
+                    ...new_filters,    
+                },
+                attributes: { exclude: ['brand_id', 'category_id'] },
+                include: [
+                    {
+                        model: db.ProductDetail,
+                        attributes: ['id', 'size', 'color', 'status'],
+                        required: true,
+                        as: 'ProductDetail',
+                    },
+                    {
+                        model: db.Brand,
+                        attributes: ['name'],
+                        required: true,
+                    },
+                    {
+                        model: db.Category,
+                        attributes: [],
+                        required: true,
+                    },
+                ],
+                order: sort,
+                nest: true,
+                required: true
+            }))
+            .map(product => product.toJSON());
+        return products;
+    }
+
+    static __formatFiltersOptions = (filters) => {
+        const fomart_filters = formatKeys(
+            getInfoData(['brand', 'category', 'size', 'color', 'rating'], filters)
+        );
+        return removeNull(
+            {
+                ...fomart_filters,
+                "current_unit_price": filters.price? { [Op.between]: filters.price} : null
+            }
+        );
+    } 
 }
 
 module.exports = ProductService;
