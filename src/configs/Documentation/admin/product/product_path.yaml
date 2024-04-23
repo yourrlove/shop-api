@@ -145,7 +145,6 @@
 
   /products/findByBrandName:
     get:
-      deprecated: true
       tags:
       - Product
       summary: Finds Product by brand name
@@ -174,7 +173,6 @@
         
   /products/findByCategoryName:
     get:
-      deprecated: true
       tags:
       - Product
       summary: Finds Product by category name

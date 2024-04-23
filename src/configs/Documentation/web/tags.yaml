@@ -1,0 +1,4 @@
+---
+tags:
+- name: Product
+  description: This endpoint is used to manage requests related to product.

@@ -14,6 +14,7 @@
                 items:
                   $ref: "#/components/schemas/UserResponse"
     post:
+      deprecated: true
       tags:
       - User
       summary: Create user
@@ -42,6 +43,7 @@
 
   /users/{userId}:
     put:
+      deprecated: true
       tags:
       - User
       summary: Updated user by Id
@@ -73,6 +75,7 @@
         "500":
           description: Invalid input
     delete:
+      deprecated: true
       tags:
       - User
       summary: Delete user by Id

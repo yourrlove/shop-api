@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { asyncHandler } = require('../helpers/index');
-const productController = require('../controllers/product.controller')
+const { asyncHandler } = require('../../helpers/index');
+const productController = require('../../controllers/product.controller')
 
 
 
