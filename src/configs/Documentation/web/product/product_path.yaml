@@ -1,0 +1,32 @@
+  /products/filter:
+    post:
+      tags:
+      - Product
+      summary: Filter products.
+      description: Filter products by brand, category, size, color, rating and price. Leave "null" for unused fields to filter products.
+      operationId: filterProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFilterRequestBody'
+            example:
+              filters:
+                brand: ["Apple"]
+                category: ["Watch"]
+                size: ["S", "M", "L"]
+                color: ["Black", "White"]
+                price: [0, 100.0]
+                rating: 4.0
+              sort: [["name", "ASC"]]
+      responses:
+        "200":
+          description: successful operation
+          content:
+           application/json:
+             schema:
+               type: array
+               items:
+                  $ref: '#/components/schemas/Product'
+        "400":
+          description: Invalid status value

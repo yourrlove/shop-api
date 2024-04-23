@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { asyncHandler } = require('../helpers/index');
-const BrandController = require('../controllers/brand.controller');
+const { asyncHandler } = require('../../helpers/index');
+const BrandController = require('../../controllers/brand.controller');
 
 router.post('/', asyncHandler( BrandController.createBrand ));
 router.get('/', asyncHandler( BrandController.getAllBrands ));

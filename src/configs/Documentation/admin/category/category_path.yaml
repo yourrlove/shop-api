@@ -1,0 +1,77 @@
+# Path definition
+/categories:
+  get:
+    tags:
+    - Category
+    summary: Get all Categories
+    description: Returns a list of all categories.
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Category'
+  post:
+    tags:
+    - Category
+    summary: Create a Category
+    description: Creates a new Category.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateCategoryRequestBody'
+    responses:
+      '201':
+        description: Created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      '400':
+        description: Bad Request
+  put:
+    tags:
+    - Category
+    summary: Update a Category
+    description: Updates an existing category.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateCategoryRequestBody'
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      '400':
+        description: Bad Request
+      '404':
+        description: Not Found
+  delete:
+    tags:
+    - Category
+    summary: Delete a Category
+    description: Deletes a category by ID.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        format: uuid
+        description: The ID of the category to delete.
+    responses:
+      '200':
+        description: Category was successfully deleted.
+      '204':
+        description: No Content
+      '404':
+        description: Not Found

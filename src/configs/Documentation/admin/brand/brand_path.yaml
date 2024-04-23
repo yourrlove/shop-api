@@ -1,0 +1,80 @@
+# Path definition
+/brands:
+  get:
+    tags:
+    - Brand
+    summary: Get all Brands
+    description: Returns a list of all brands.
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Brand'
+  post:
+    tags:
+    - Brand
+    summary: Create a Brand
+    description: Creates a new brand.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateBrandRequestBody'
+    responses:
+      '201':
+        description: Created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Brand'
+      '400':
+        description: Bad Request
+  put:
+    tags:
+    - Brand
+    summary: Update a Brand
+    description: Updates an existing brand.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateBrandRequestBody'
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Brand'
+      '400':
+        description: Bad Request
+      '404':
+        description: Not Found
+  delete:
+    tags:
+    - Brand
+    summary: Delete a Brand
+    description: Deletes a brand by ID.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        format: uuid
+        description: The ID of the brand to delete.
+    responses:
+      '200':
+        description: Brand was successfully deleted.
+      '204':
+        description: No Content
+      '404':
+        description: Not Found
+
+      
+        

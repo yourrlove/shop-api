@@ -1,8 +1,8 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
-const { asyncHandler } = require('../helpers/index');
-const CategoryController = require('../controllers/category.controller');
+const { asyncHandler } = require('../../helpers/index');
+const CategoryController = require('../../controllers/category.controller');
 
 router.get('/', asyncHandler( CategoryController.getAllCategories ));
 router.post('/', asyncHandler( CategoryController.createCategory ));

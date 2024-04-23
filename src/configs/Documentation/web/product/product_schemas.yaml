@@ -1,0 +1,86 @@
+components:
+  schemas:    
+    CreateFilterRequestBody:
+      type: object
+      properties:
+        filters:
+          type: object
+          properties:
+            brand:
+              type: array
+              items:
+                type: string
+              nullable: true
+            category:
+              type: array
+              items:
+                type: string
+              nullable: true
+            size:
+              type: array
+              items:
+                type: string
+              nullable: true 
+            color:
+              type: array
+              items:
+                type: string
+              nullable: true
+            price:
+              type: array
+              items:
+                type: integer
+              nullable: true
+            rating:
+              type: integer
+              nullable: true
+        sort:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        quantity:
+          type: integer
+        status:
+          type: string
+        current_unit_price:
+          type: number
+        rating:
+          type: integer
+        thumbnail:
+          type: string
+        ProductDetail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductDetail'  # Reference internal schema
+        Brand:
+          $ref: '#/components/schemas/Brand'  # Reference internal schema
+
+    ProductDetail:
+      type: object
+      properties:
+        id:
+          type: string
+        size:
+          type: string
+        color:
+          type: string
+        status:
+          type: string
+
+    Brand:
+      type: object
+      properties:
+        name:
+          type: string
