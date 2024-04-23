@@ -4,6 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const { WEB_DOMAIN_URL } = require('./constants/index.js'); 
+
 // Routers
 const indexRouter = require('./routes/auth');
 const admin_api = require('./routes/admin/index');
@@ -25,7 +27,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 //init mysql db
 const { sequelize } = require('./databases/init.mysql')
@@ -33,14 +35,17 @@ const { sequelize } = require('./databases/init.mysql')
 // init mongodb
 // require('./databases/init.mongodb')
 
-// app.use('/api/web/api-docs', swaggerUi.serveFiles(webSpecification), swaggerUi.setup(webSpecification));
 app.use('/v1', indexRouter);
 app.use('/v1/admin', admin_api);
 app.use('/v1/web', user_api);
 
 /* GET home page. */
 app.get('/', function(req, res, next) {
-  res.render('index');
+  res.json({
+    "msg": "Hello World",
+    "web-api-docs": `${WEB_DOMAIN_URL}/v1/web/api-docs`,
+    "admin-api-docs": `${WEB_DOMAIN_URL}/v1/admin/api-docs`
+  });
 });
 
 // handling errors
