@@ -15,7 +15,12 @@ const admin = {
         },
         servers: [
           {
-            url: 'http://localhost:3000/v1/admin'
+            url: 'http://localhost:3000/v1/admin',
+            name: 'development',
+          }, 
+          {
+            url: 'https://api.yourrlove.com/v1/admin',
+            name: 'production',
           }
         ]
     },
@@ -36,7 +41,12 @@ const web = {
         },
         servers: [
           {
-            url: 'http://localhost:3000/v1/web'
+            url: 'http://localhost:3000/v1/web',
+            name: 'development',
+          },
+          {
+            url: 'https://api.yourrlove.com/v1/web',
+            name: 'production',
           }
         ]
     },
