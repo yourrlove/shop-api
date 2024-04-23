@@ -1,4 +1,4 @@
-  /role:
+  /roles:
     get:
       tags:
       - Role
@@ -36,7 +36,7 @@
         "500":
           description: Invalid input  
   
-  /role/{roleId}:
+  /roles/{roleId}:
     get:
       tags:
       - Role
