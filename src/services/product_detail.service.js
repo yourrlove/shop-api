@@ -1,5 +1,6 @@
 'use strict';
 const db = require('../models/index');
+const { BadRequestError, NotFoundError } = require('../core/error.response');
 const { generateUUID } = require('../helpers/index');
 
 
@@ -26,11 +27,12 @@ class ProductDetailService {
     }
 
     static delete = async ( id ) => {
-        await db.ProductDetail.destroy({ 
+        const result = await db.ProductDetail.destroy({ 
             where: { id: id },
             force: false 
         });
-        return "success to delete productDetail";
+        if(!result) throw new NotFoundError(`ProductDetail not found`);
+        return result;
     }
 
     static update = async ( id, body ) => {
@@ -39,6 +41,7 @@ class ProductDetailService {
         }, {
             where: { id: id }
         });
+        if(!productDetail) throw new NotFoundError(`ProductDetail not found`);
         return productDetail;
     }
 }

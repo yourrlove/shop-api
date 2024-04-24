@@ -1,0 +1,77 @@
+# Path definition
+/catalogues:
+  get:
+    tags:
+    - Catalogue
+    summary: Get all Categories
+    description: Returns a list of all catalogues.
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Catalogue'
+  post:
+    tags:
+    - Catalogue
+    summary: Create a Catalogue
+    description: Creates a new Catalogue.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateCatalogueRequestBody'
+    responses:
+      '201':
+        description: Created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Catalogue'
+      '400':
+        description: Bad Request
+  put:
+    tags:
+    - Catalogue
+    summary: Update a Catalogue
+    description: Updates an existing catalogue.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateCatalogueRequestBody'
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Catalogue'
+      '400':
+        description: Bad Request
+      '404':
+        description: Not Found
+  delete:
+    tags:
+    - Catalogue
+    summary: Delete a Catalogue
+    description: Deletes a catalogue by ID.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        format: uuid
+        description: The ID of the catalogue to delete.
+    responses:
+      '200':
+        description: Catalogue was successfully deleted.
+      '204':
+        description: No Content
+      '404':
+        description: Not Found

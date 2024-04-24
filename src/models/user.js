@@ -43,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: true
     },
+    refresh_token: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
     role_id: {
       type: DataTypes.UUID,
       allowNull: true

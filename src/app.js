@@ -3,69 +3,68 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const swaggerUi = require('swagger-ui-express');
-const swaggerJsdoc = require('swagger-jsdoc');
+const cors = require('cors');
+const { WEB_DOMAIN_URL } = require('./constants/index.js'); 
 
-// Router
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const productRouter = require('./routes/product');
-const roleRouter = require('./routes/role');
-const cartRouter = require('./routes/cart');
+
+// Routers
+const indexRouter = require('./routes/auth');
+const admin_api = require('./routes/admin/index');
+const user_api = require('./routes/user/index');
+// Middlewares
+const corsOptions = require('./configs/CORS/corsOptions');
+const credentials = require('./middlewares/credentials');
 
 const app = express();
+ 
+// Handle options credentials check - before CORS!
+// and fetch cookies credentials requirement
+app.use(credentials);
 
-const options = {
-    definition: {
-        openapi: '3.0.0',
-        info: {
-          title: 'YOLO Website API',
-          description: "This is a REST api for YOLO website. You can find out more about YOLO at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).",
-          version: '1.0.0',
-          contact: {
-            email: 'nanhvt2708@gmail.com'
-          },
-          termsOfService: 'http://swagger.io/terms/'
-        },
-        servers: [
-          {
-            url: 'http://localhost:3000'
-          }
-        ]
-    },
-    apis: [path.join(__dirname,'configs','swagger','**','*.yaml')], // files containing annotations as above
-  };
 
-const openapiSpecification = swaggerJsdoc(options);
+// Cross Origin Resource Sharing
+app.use(cors(corsOptions));
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 //init mysql db
-const { initialize, sequelize } = require('./databases/init.mysql')
-// initialize()
-// .then(() => {
-//   console.log('Connected Mysqldb Success');
-// })
-// .catch(err => {
-//   console.log(err);
-// });
-
-
-
+const { sequelize } = require('./databases/init.mysql')
 
 // init mongodb
 // require('./databases/init.mongodb')
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/products', productRouter);
-app.use('/roles', roleRouter);
-app.use('/cart', cartRouter);
 
+app.use('/v1', indexRouter);
+app.use('/v1/admin', admin_api);
+app.use('/v1/web', user_api);
+
+/* GET home page. */
+app.get('/', function(req, res, next) {
+  res.json({
+    "msg": "Hello World",
+    "web-api-docs": `${WEB_DOMAIN_URL}/v1/web/api-docs`,
+    "admin-api-docs": `${WEB_DOMAIN_URL}/v1/admin/api-docs`
+  });
+});
+
+// handling errors
+app.use((req, res, next) => {
+    const error = new Error('Not Found');
+    error.status = 404;
+    next(error);
+});
+
+app.use((error, req, res, next) => {
+    const statusCode = error.status || 500
+    return res.status(statusCode).json({
+        status: 'error',
+        code: statusCode,
+        message: error.message || 'Internal Server Error'
+    })
+});
 
 module.exports = app;

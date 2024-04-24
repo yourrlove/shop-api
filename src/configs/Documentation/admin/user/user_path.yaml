@@ -1,0 +1,127 @@
+  /users:
+    get:
+      tags:
+      - User
+      summary: Get all users
+      operationId: getallUser
+      response:
+        "200":
+          description: "successfully retrieved all users"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+    post:
+      deprecated: true
+      tags:
+      - User
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserBody'
+        required: true
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        "404":
+          description: Invalid role id
+        "409":
+          description: User already exists
+        "500":
+          description: Invalid input
+
+  /users/{userId}:
+    put:
+      deprecated: true
+      tags:
+      - User
+      summary: Updated user by Id
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      parameters:
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: Updated user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserBody'
+        required: true
+      responses:
+        "200":
+          description: Update user successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/UserResponse'
+        "404":
+          description: User not found
+        "500":
+          description: Invalid input
+    delete:
+      deprecated: true
+      tags:
+      - User
+      summary: Delete user by Id
+      description: This can only be done by the logged in user.
+      operationId: deleteUser
+      parameters:
+      - in: path
+        name: userId
+        schema:
+          type: string
+          format: uuid
+        required: true
+      responses:
+        "200":
+          description: Delete user successfully
+        "404":
+          description: User not found
+        
+
+  /users/{username}:
+    get:
+      deprecated: true
+      tags:
+      - User
+      summary: Get user by user name
+      operationId: getUserByName
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Invalid username supplied
+        "404":
+          description: User not found

@@ -1,0 +1,30 @@
+components:
+  schemas:
+    Brand:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 6104f511-ced8-4b36-aff1-920e7110373c
+        name:
+          type: string
+          example: Grant Burg
+        logo:
+          type: string
+          example: http://placeimg.com/640/480/abstract  # This will be removed in future versions
+        description:
+          type: string
+          example: Regional
+    
+    CreateBrandRequestBody:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Grant Burg
+        logo:
+          type: string
+          example: http://placeimg.com/640/480/abstract # This will be removed in future versions
+        description:
+          type: string
+          example: Regional

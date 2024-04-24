@@ -32,10 +32,21 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
     sequelize,
     modelName: 'Brand',
+    timestamps: true,
+    paranoid: true,
+    defaultScope: {
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'deletedAt']
+      }
+    }
   });
   return Brand;
 };

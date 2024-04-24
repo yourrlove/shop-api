@@ -1,6 +1,7 @@
 'use strict';
 const db = require('../models');
 const { generateUUID } = require('../helpers/index');
+const { BadRequestError } = require('../core/error.response');
 
 class UserService {
     static create = async ({ username, email, hash_password, role_name }) => {
@@ -9,6 +10,7 @@ class UserService {
             attributes: [ ['id', 'role_id'] ],
             raw: true
         });
+        if (!role_id) throw new BadRequestError('role id not found');
         const id = generateUUID();
         const user = await db.User.create({ 
             id,
@@ -31,6 +33,7 @@ class UserService {
             attributes: [ ['id', 'role_id'] ],
             raw: true
         });
+        if (!role_id) throw new BadRequestError('role id not found');
         const user = await db.User.update({ 
             username, 
             email, 
@@ -39,14 +42,16 @@ class UserService {
         }, {
             where: { id }
         });
-        return user ? "updated user successfully" : "failed to update user";
+        if(!user) throw new BadRequestError('failed to update user');
+        return user;
     }
 
     static delete = async ( id ) => {
         const user = await db.User.destroy({
             where: { id }
         });
-        return user ? "deleted user successfully" : "failed to delete user";
+        if(!user) throw new BadRequestError('failed to delete user');
+        return user;
     }
 }
 

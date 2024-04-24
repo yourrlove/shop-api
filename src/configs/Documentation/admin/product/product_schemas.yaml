@@ -1,0 +1,157 @@
+components:
+  schemas:    
+    CreateProductRequestBody:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+          - available
+          - sold
+          - unavailable
+        current_unit_price:
+          type: float
+        thumbnail:
+          type: string
+        brand_id:
+          type: string
+          format: uuid
+        catalogue_id:
+          type: string
+          format: uuid
+        tag_id:
+          type: string
+          format: uuid
+
+    UpdateProductRequestBody:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+          - unavailable
+          - available
+          - sold
+        thumbnail:
+          type: string
+        brand_id:
+          type: string
+          format: uuid
+        catalogue_id:
+          type: string
+          format: uuid
+        tag_id:
+          type: string
+          format: uuid
+
+    ProductResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        status:
+          type: string
+          enum:
+          - unavailable
+          - available
+          - sold
+        thumbnail:
+          type: string
+        brand_id:
+          type: string
+          format: uuid
+        catalogue_id:
+          type: string
+          format: uuid
+        tag_id:
+          type: string
+          format: uuid
+          
+    ProductDetailResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        description:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        status:
+          type: string
+          enum:
+          - unavailable
+          - available
+          - sold
+        size:
+          type: string
+        color:
+          type: string
+        image:
+          type: string
+        product_id:
+          type: string
+          format: uuid
+        
+    CreateProductDetailBody:
+      type: object
+      properties:
+        description:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        status:
+          type: string
+          enum:
+          - unavailable
+          - available
+          - sold
+        size:
+          type: string
+        color:
+          type: string
+        image:
+          type: string
+        product_id:
+          type: string
+          format: uuid
+
+    UpdateProductDetailBody:
+      type: object
+      properties:
+        description:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        status:
+          type: string
+          enum:
+          - unavailable
+          - available
+          - sold
+        size:
+          type: string
+        color:
+          type: string
+        image:
+          type: string
+          

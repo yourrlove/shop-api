@@ -1,0 +1,18 @@
+components:
+  schemas:
+    Catalogue:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 6104f511-ced8-4b36-aff1-920e7110373c
+        name:
+          type: string
+          example: Grant Burg
+
+    CreateCatalogueRequestBody:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Grant Burg

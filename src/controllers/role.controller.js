@@ -1,30 +1,28 @@
 'use strict';
+const { OK, CREATED, NO_CONTENT } = require('../core/success.response');
 const RoleService = require('../services/role.service');
 
 
 class RoleController {
     create_role = async (req, res, next) => {
-        try{
-            res.status(201).json(await RoleService.create(req.body));
-        } catch(err){
-            res.status(500).json(err.errors);
-        }
+        new CREATED({
+            message: 'Role created successfully!',
+            metadata: await RoleService.create(req.body)
+        }).send(res);
     }
 
     delete_role = async (req, res, next) => {
-        try {
-            res.status(200).json(await RoleService.delete(req.query.id));
-        } catch(err){
-            res.status(500).json(err);
-        }
+        new OK({
+            message: 'Role deleted successfully!',
+            metadata: await RoleService.delete(req.params.id)
+        }).send(res);
     }
 
     get_list_roles = async (req, res, next) => {
-        try {
-            res.status(200).json(await RoleService.get_all());
-        } catch(err) {
-            res.status(500).json(err);
-        }
+        new OK({
+            message: 'List Roles retrieved successfully!',
+            metadata: await RoleService.get_all()
+        }).send(res); 
     }
 }
 

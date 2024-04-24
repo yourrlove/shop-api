@@ -12,13 +12,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Product.hasMany(models.ProductDetail, {
+        as: 'ProductDetail',
         foreignKey: 'product_id',
       });
       Product.belongsTo(models.Brand, {
         foreignKey: 'brand_id',
       });
-      Product.belongsTo(models.Category, {
-        foreignKey: 'category_id',
+      Product.belongsTo(models.Catalogue, {
+        foreignKey: 'catalogue_id',
+      });
+      Product.belongsTo(models.Tag, {
+        foreignKey: 'tag_id',
       });
       Product.belongsToMany(models.ProductEntry, { through: 'ProductEntryDetail' });
       Product.hasMany(models.ProductEntryDetail);
@@ -52,6 +56,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       defaultValue: 0
     },
+    rating: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+      defaultValue: 0
+    },
     thumbnail: {
       type: DataTypes.STRING,
       allowNull: true
@@ -68,11 +77,19 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       }
     },
-    category_id: {
+    catalogue_id: {
       type: DataTypes.UUID,
       allowNull: true,
       references: {
-        model: 'Category',
+        model: 'Catalogue',
+        key: 'id'
+      }
+    },
+    tag_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'Tag',
         key: 'id'
       }
     }
@@ -80,7 +97,12 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Product',
     timestamps: true,
-    paranoid: true
+    paranoid: true,
+    defaultScope: {
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'deletedAt']
+      },
+    }
   });
   return Product;
 };

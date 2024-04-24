@@ -1,0 +1,86 @@
+  /roles:
+    get:
+      tags:
+      - Role
+      summary: Get all Roles
+      operationId: getallRoles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleResponse'
+    post:
+      tags:
+      - Role
+      summary: Create new role
+      operationId: CreateRoles
+      parameters:
+        - name: roles
+          in: query
+          description: Roles name to create
+          required: true
+          explode: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Role successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleResponse'
+        "500":
+          description: Invalid input  
+  
+  /roles/{roleId}:
+    get:
+      tags:
+      - Role
+      summary: Find role by ID
+      description: Returns a single product
+      operationId: getRoleById
+      parameters:
+      - name: roleId
+        in: path
+        description: ID of role to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleResponse'
+        "404":
+          description: Role not found
+    delete:
+      tags:
+      - Role
+      summary: Deletes a role
+      operationId: deleteRole
+      parameters:
+      - name: roleId
+        in: path
+        description: Role id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Role successfully deleted
+        "404":
+          description: Role not found
+
+
