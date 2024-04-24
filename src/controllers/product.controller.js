@@ -89,6 +89,13 @@ class ProductController {
         }).send(res);
     }
 
+    get_products_by_tag_name = async (req, res, next) => {
+        new OK({
+            message: 'List of products by tag',
+            metadata: await ProductService.get_by_tag_name(req.query.tagName)
+        }).send(res);
+    }
+
     filter_products = async (req, res, next) => {
         new OK({
             message: 'List of products',
