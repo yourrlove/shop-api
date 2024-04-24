@@ -11,8 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      ProductDetail.hasOne(models.CartItem);
-      ProductDetail.belongsTo(models.Product);
+      ProductDetail.hasOne(models.CartItem, {
+        foreignKey: 'product_detail_id'
+      });
+      ProductDetail.belongsTo(models.Product, {
+        foreignKey: 'product_id',
+      });
       ProductDetail.hasOne(models.OrderDetail);
     }
   }
@@ -53,6 +57,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'ProductDetail',
+    timestamps: true,
+    paranoid: true
   });
   return ProductDetail;
 };

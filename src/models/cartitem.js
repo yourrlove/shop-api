@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'cart_id',
       });
       CartItem.belongsTo(models.ProductDetail, {
-        foreignKey: 'product_id',
+        foreignKey: 'product_detail_id',
       });
     }
   }
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id',
       }
     },
-    product_id: {
+    product_detail_id: {
         primaryKey: true,
         type: DataTypes.UUID,
         references: {
@@ -44,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'CartItem',
+    timestamps: false,
   });
   return CartItem;
 };

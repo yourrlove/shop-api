@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       Cart.belongsTo(models.User, {
         foreignKey: 'user_id'
       });
-      Cart.hasMany(models.CartItem);
+      Cart.hasMany(models.CartItem, {
+        foreignKey: 'cart_id'
+      });
     }
   }
   Cart.init({
@@ -30,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Cart',
+    timestamps: false
   });
   return Cart;
 };

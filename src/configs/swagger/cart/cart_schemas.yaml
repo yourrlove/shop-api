@@ -1,0 +1,30 @@
+components:
+  schema:
+    Cart:
+      type: object
+      properties:
+        id:
+          type: string 
+          format: uuid
+        userid:
+          type: string 
+          format: uuid
+        quantity:
+          type: integer
+      xml:
+        name: Cart
+
+    CartItem:
+      type: object
+      properties:
+        cart_id:
+          type: string
+          format: uuid
+        product_detail_id:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+
+      
+      

@@ -11,6 +11,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const productRouter = require('./routes/product');
 const roleRouter = require('./routes/role');
+const cartRouter = require('./routes/cart');
 
 const app = express();
 
@@ -28,7 +29,7 @@ const options = {
         },
         servers: [
           {
-            url: 'https://localhost:3000/yolo/api/v1'
+            url: 'http://localhost:3000'
           }
         ]
     },
@@ -64,6 +65,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productRouter);
 app.use('/roles', roleRouter);
+app.use('/cart', cartRouter);
 
 
 module.exports = app;

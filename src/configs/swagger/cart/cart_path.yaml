@@ -1,0 +1,101 @@
+/cart:
+  get:
+    tags:
+      - Cart
+    summary: Get list of items in the user's cart
+    description: This endpoint retrieves the list of items in the user's cart. Requires user authentication.
+    operationId: getListOfCart
+    responses:
+      200:
+        description: Successful response
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Cart'
+      default:
+        description: Unexpected error
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: An unexpected error occurred.
+      
+/cart/getall/{user_id}:
+  get:
+    tags:
+      - Cart
+    summary: Get list of all items in the user's cart
+    description: This endpoint retrieves the list of items in the user's cart. Requires user authentication.
+    operationId: getListOfCart
+    parameters:
+      - name: user_id
+        in: path
+        description: ID of the user whose cart items are to be retrieved
+        required: true
+        schema:
+          type: string
+          format: uuid
+    responses:
+      200:
+        description: Successful response
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CartItem'
+      default:
+        description: Unexpected error
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: An unexpected error occurred.
+
+cart/{id}/addtocard:
+    post:
+      tags:
+        - Cart
+      summary: Add item to cart
+      description: Add an item to the user's cart by its ID.
+      operationId: addToCart
+      parameters:
+        - name: id
+          in: path
+          description: ID of the item to add to the cart
+          required: true
+          schema:
+            type: string
+            format: uuid  # Định dạng của ID, có thể thay đổi tùy theo yêu cầu của bạn
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: uuid
+                quantity:
+                  type: integer
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Item added to cart successfully
+        default:
+          description: Unexpected error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: An unexpected error occurred.
