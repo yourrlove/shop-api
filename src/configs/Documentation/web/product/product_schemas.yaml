@@ -11,7 +11,12 @@ components:
               items:
                 type: string
               nullable: true
-            category:
+            catalogue:
+              type: array
+              items:
+                type: string
+              nullable: true
+            tag:
               type: array
               items:
                 type: string
@@ -66,6 +71,8 @@ components:
             $ref: '#/components/schemas/ProductDetail'  # Reference internal schema
         Brand:
           $ref: '#/components/schemas/Brand'  # Reference internal schema
+        Tag:
+          $ref: '#/components/schemas/Tag' # Reference internal schema
 
     ProductDetail:
       type: object
@@ -84,3 +91,66 @@ components:
       properties:
         name:
           type: string
+
+    Tag:
+      type: object
+      properties:
+        name:
+          type: string
+
+    ProductResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        status:
+          type: string
+          enum:
+          - unavailable
+          - available
+          - sold
+        thumbnail:
+          type: string
+        ProductDetail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductDetail'  # Reference internal schema
+        Brand:
+          $ref: '#/components/schemas/Brand'  # Reference internal schema
+        Tag:
+          $ref: '#/components/schemas/Tag' # Reference internal schema
+          
+    ProductDetailResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        description:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        status:
+          type: string
+          enum:
+          - unavailable
+          - available
+          - sold
+        size:
+          type: string
+        color:
+          type: string
+        image:
+          type: string
+        product_id:
+          type: string
+          format: uuid

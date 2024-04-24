@@ -18,8 +18,11 @@ module.exports = (sequelize, DataTypes) => {
       Product.belongsTo(models.Brand, {
         foreignKey: 'brand_id',
       });
-      Product.belongsTo(models.Category, {
-        foreignKey: 'category_id',
+      Product.belongsTo(models.Catalogue, {
+        foreignKey: 'catalogue_id',
+      });
+      Product.belongsTo(models.Tag, {
+        foreignKey: 'tag_id',
       });
       Product.belongsToMany(models.ProductEntry, { through: 'ProductEntryDetail' });
       Product.hasMany(models.ProductEntryDetail);
@@ -74,11 +77,19 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       }
     },
-    category_id: {
+    catalogue_id: {
       type: DataTypes.UUID,
       allowNull: true,
       references: {
-        model: 'Category',
+        model: 'Catalogue',
+        key: 'id'
+      }
+    },
+    tag_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'Tag',
         key: 'id'
       }
     }

@@ -1,6 +1,6 @@
 components:
   schemas:
-    Category:
+    Tag:
       type: object
       properties:
         id:
@@ -8,11 +8,11 @@ components:
           example: 6104f511-ced8-4b36-aff1-920e7110373c
         name:
           type: string
-          example: Grant Burg
+          example: New Arrivals
 
-    CreateBrandRequestBody:
+    CreateTagRequestBody:
       type: object
       properties:
         name:
           type: string
-          example: Grant Burg
+          example: New Arrivals

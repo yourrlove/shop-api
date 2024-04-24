@@ -6,8 +6,8 @@ const usersRouter = require('./users');
 const productRouter = require('./product');
 const roleRouter = require('./role');
 const brandRouter = require('./brand');
-const categoryRouter = require('./category');
-
+const catalogueRouter = require('./catalogue');
+const tagRouter = require('./tag');
 
 const admin_api = express();
 
@@ -16,6 +16,7 @@ admin_api.use('/users', usersRouter);
 admin_api.use('/products', productRouter);
 admin_api.use('/roles', roleRouter);
 admin_api.use('/brands', brandRouter);
-admin_api.use('/categories', categoryRouter);
+admin_api.use('/catalogues', catalogueRouter);
+admin_api.use('/tags', tagRouter);
 
 module.exports = admin_api;

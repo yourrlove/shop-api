@@ -5,7 +5,8 @@ const configs = {
         WEB_DOMAIN_URL: "http://localhost:3000"
     },
     "production": {
-        WEB_DOMAIN_URL: "https://api.yourrlove.com"
+        // WEB_DOMAIN_URL: "https://api.yourrlove.com"
+        WEB_DOMAIN_URL: "http://13.55.150.32"
     }
 }
 
