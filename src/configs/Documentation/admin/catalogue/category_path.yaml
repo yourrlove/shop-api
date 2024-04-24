@@ -1,10 +1,10 @@
 # Path definition
-/categories:
+/catalogues:
   get:
     tags:
-    - Category
+    - Catalogue
     summary: Get all Categories
-    description: Returns a list of all categories.
+    description: Returns a list of all catalogues.
     responses:
       '200':
         description: OK
@@ -13,64 +13,64 @@
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/Category'
+                $ref: '#/components/schemas/Catalogue'
   post:
     tags:
-    - Category
-    summary: Create a Category
-    description: Creates a new Category.
+    - Catalogue
+    summary: Create a Catalogue
+    description: Creates a new Catalogue.
     requestBody:
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreateCategoryRequestBody'
+            $ref: '#/components/schemas/CreateCatalogueRequestBody'
     responses:
       '201':
         description: Created
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Category'
+              $ref: '#/components/schemas/Catalogue'
       '400':
         description: Bad Request
   put:
     tags:
-    - Category
-    summary: Update a Category
-    description: Updates an existing category.
+    - Catalogue
+    summary: Update a Catalogue
+    description: Updates an existing catalogue.
     requestBody:
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreateCategoryRequestBody'
+            $ref: '#/components/schemas/CreateCatalogueRequestBody'
     responses:
       '200':
         description: OK
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Category'
+              $ref: '#/components/schemas/Catalogue'
       '400':
         description: Bad Request
       '404':
         description: Not Found
   delete:
     tags:
-    - Category
-    summary: Delete a Category
-    description: Deletes a category by ID.
+    - Catalogue
+    summary: Delete a Catalogue
+    description: Deletes a catalogue by ID.
     parameters:
       - name: id
         in: path
         required: true
         type: string
         format: uuid
-        description: The ID of the category to delete.
+        description: The ID of the catalogue to delete.
     responses:
       '200':
-        description: Category was successfully deleted.
+        description: Catalogue was successfully deleted.
       '204':
         description: No Content
       '404':

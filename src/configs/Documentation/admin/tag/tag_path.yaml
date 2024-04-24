@@ -1,0 +1,77 @@
+# Path definition
+/tags:
+  get:
+    tags:
+    - Tag
+    summary: Get all Categories
+    description: Returns a list of all tags.
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Tag'
+  post:
+    tags:
+    - Tag
+    summary: Create a Tag
+    description: Creates a new Tag.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateTagRequestBody'
+    responses:
+      '201':
+        description: Created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tag'
+      '400':
+        description: Bad Request
+  put:
+    tags:
+    - Tag
+    summary: Update a Tag
+    description: Updates an existing tag.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateTagRequestBody'
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tag'
+      '400':
+        description: Bad Request
+      '404':
+        description: Not Found
+  delete:
+    tags:
+    - Tag
+    summary: Delete a Tag
+    description: Deletes a tag by ID.
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        format: uuid
+        description: The ID of the tag to delete.
+    responses:
+      '200':
+        description: Tag was successfully deleted.
+      '204':
+        description: No Content
+      '404':
+        description: Not Found

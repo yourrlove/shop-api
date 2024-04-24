@@ -8,7 +8,9 @@ tags:
   description: This endpoint is used to manage requests related to user roles.
 - name: Brand
   description: This endpoint is used to manage requests related to user brands.
-- name: Category
-  description: This endpoint is used to manage requests related to user categories.
+- name: Catalogue
+  description: This endpoint is used to manage requests related to user catalogues.
+- name: Tag
+  description: This endpoint is used to manage requests related to user tags.
 paths:
   $ref: './product/product_path.yaml'

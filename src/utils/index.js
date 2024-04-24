@@ -19,7 +19,8 @@ const removeNull = (object) => {
 
 const __options = (value, key) => {
     if(key === "brand") return "$Brand.name$";
-    if(key === "category") return "$Category.name$";
+    if(key === "catalogue") return "$Catalogue.name$";
+    if(key === "tag") return "$Tag.name$";
     if(productOptions.includes(key))  return `$ProductDetail.${key}$`;
     return key;
 }
