@@ -13,7 +13,8 @@
             example:
               filters:
                 brand: ["Apple"]
-                category: ["Watch"]
+                catalogue: ["Watch"]
+                tag: ["New Arrivals"]
                 size: ["S", "M", "L"]
                 color: ["Black", "White"]
                 price: [0, 100.0]
@@ -30,3 +31,133 @@
                   $ref: '#/components/schemas/Product'
         "400":
           description: Invalid status value
+  /products:
+    get:
+      tags:
+      - Product
+      summary: Get all products
+      operationId: getAllProducts
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+
+  /products/{productId}:
+    get:
+      tags:
+      - Product
+      summary: Find product by ID
+      description: Returns a single product
+      operationId: getProductById
+      parameters:
+      - name: productId
+        in: path
+        description: ID of product to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        "404":
+          description: Product not found
+        "500":
+          description: Invalid input
+
+  /products/findByBrandName:
+    get:
+      tags:
+      - Product
+      summary: Finds Product by brand name
+      description: Multiple product objects can be provided with comma separated
+      operationId: findProductsByBrandName
+      parameters:
+        - name: brandName
+          in: query
+          description: Brand name that need to be considered for filter
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: "GUCCI"
+      responses:
+        "200":
+          description: successful operation
+          content:
+           application/json:
+             schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/ProductResponse'
+        "400":
+          description: Invalid status value
+        
+  /products/findByCategoryName:
+    get:
+      tags:
+      - Product
+      summary: Finds Product by category name
+      description: "Muliple product objects can be provided with comma separated."
+      operationId: findProductsByCategoryName
+      parameters:
+      - name: categoryName
+        in: query
+        description: Category name to filter by
+        required: true
+        style: simple
+        explode: true
+        schema:
+          type: string
+          example: "T-shirt"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+        "400":
+          description: Invalid tag value
+
+  /products/{productId}/productdetails:
+    get:
+      tags:
+      - Product
+      summary: Get product details
+      operationId: getProductDetails
+      parameters:
+      - name: productId
+        in: path
+        description: ID of product to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductDetailResponse'
+        "404":
+          description: Product not found
+        "500":
+          description: Invalid input

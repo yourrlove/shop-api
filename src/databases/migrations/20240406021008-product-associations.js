@@ -34,14 +34,30 @@ module.exports = {
       )
     })
     .then(() => {
-      // Category hasMany Product
+      // Catalouge hasMany Product
       return queryInterface.addColumn(
         'Product',
-        'category_id',
+        'catalogue_id',
         {
           type: Sequelize.UUID,
           references: {
-            model: 'Category',
+            model: 'Catalogue',
+            key: 'id'
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'SET NULL'
+        }
+      )
+    })
+    .then(() => {
+      // Tag hasMany Product
+      return queryInterface.addColumn(
+        'Product',
+        'tag_id',
+        {
+          type: Sequelize.UUID,
+          references: {
+            model: 'Tag',
             key: 'id'
           },
           onUpdate: 'CASCADE',
@@ -127,10 +143,17 @@ module.exports = {
       )
     })
     .then(() => {
-      // remove Category hasMany Product
+      // remove Catalouge hasMany Product
       return queryInterface.removeColumn(
         'Product',
-        'category_id'
+        'catalogue_id'
+      )
+    })
+    .then(() => {
+      // remove Tag hasMany Product
+      return queryInterface.removeColumn(
+        'Product',
+        'tag_id'
       )
     })
     .then(() => {

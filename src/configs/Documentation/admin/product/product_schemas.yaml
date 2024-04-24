@@ -17,6 +17,15 @@ components:
           type: float
         thumbnail:
           type: string
+        brand_id:
+          type: string
+          format: uuid
+        catalogue_id:
+          type: string
+          format: uuid
+        tag_id:
+          type: string
+          format: uuid
 
     UpdateProductRequestBody:
       type: object
@@ -33,10 +42,13 @@ components:
           - sold
         thumbnail:
           type: string
-        brandId:
+        brand_id:
           type: string
           format: uuid
-        categoryId:
+        catalogue_id:
+          type: string
+          format: uuid
+        tag_id:
           type: string
           format: uuid
 
@@ -61,10 +73,13 @@ components:
           - sold
         thumbnail:
           type: string
-        brandId:
+        brand_id:
           type: string
           format: uuid
-        categoryId:
+        catalogue_id:
+          type: string
+          format: uuid
+        tag_id:
           type: string
           format: uuid
           
@@ -91,7 +106,7 @@ components:
           type: string
         image:
           type: string
-        productId:
+        product_id:
           type: string
           format: uuid
         
@@ -115,7 +130,7 @@ components:
           type: string
         image:
           type: string
-        productId:
+        product_id:
           type: string
           format: uuid
 
