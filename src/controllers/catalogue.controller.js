@@ -12,7 +12,7 @@ class CatalogueController {
 
     getAllCatalogues = async (req, res, next) => {
         new OK({
-            message: 'List of categories',
+            message: 'List of catalogues',
             metadata: await CatalogueService.get_all()
         }).send(res);
     }

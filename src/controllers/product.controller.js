@@ -1,8 +1,8 @@
 'use strict';
-const e = require('express');
 const { OK, CREATED } = require('../core/success.response');
 const ProductService = require('../services/product.service');
 const ProductDetailService = require('../services/product_detail.service');
+const { formatDataReturn } = require('../utils/index');
 
 class ProductController {
     create_product = async (req, res, next) => {
