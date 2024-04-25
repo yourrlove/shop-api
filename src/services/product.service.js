@@ -5,7 +5,7 @@ const { BadRequestError, NotFoundError } = require('../core/error.response');
 const BrandService = require('./brand.service');
 const CatalogueService = require('./catalogue.service');
 const TagService = require('./tag.service');
-const { formatKeys, getInfoData, removeNull } = require('../utils/index');
+const { formatKeys, getInfoData, removeNull, formatDataReturn } = require('../utils/index');
 const { Op } = require('sequelize');
 
 
@@ -32,34 +32,33 @@ class ProductService {
     }
 
     static get_all = async ( ) => {
-        const products = await db.Product.findAll ({ 
-            attributes: { exclude: ['brand_id', 'catalogue_id', 'tag_id'] },
-            include: [
-                {
-                    model: db.Brand,
-                    attributes: ['name'],
-                    required: true,
-                },
-                {
-                    model: db.Catalogue,
-                    attributes: ['name'],
-                    required: true,
-                },
-                {
-                    model: db.Tag,
-                    attributes: ['name'],
-                    required: true,
-                },
-                {
-                    model: db.ProductDetail,
-                    attributes: ['id','size', 'color','status'],
-                    required: false,
-                    as: 'ProductDetail',
-                }
-            ],
-            nest: true,
-            raw: true
-        });
+        const products = (
+            await db.Product.findAll ({ 
+                attributes: { exclude: ['brand_id', 'catalogue_id', 'tag_id'] },
+                include: [
+                    {
+                        model: db.Brand,
+                        attributes: ['name'],
+                        required: true,
+                    },
+                    {
+                        model: db.Catalogue,
+                        attributes: ['name'],
+                        required: true,
+                    },
+                    {
+                        model: db.Tag,
+                        attributes: ['name'],
+                        required: true,
+                    },
+                    {
+                        model: db.ProductDetail,
+                        attributes: ['size', 'color'],
+                        as: 'ProductDetail',
+                    }
+                ],
+                nest: true,
+            })).map(record => formatDataReturn(record.toJSON()))
         return products;
     }
 
@@ -114,7 +113,7 @@ class ProductService {
                 nest: true,
                 required: true,
         }))
-        .map(product => product.toJSON());
+        .map(product => formatDataReturn(product.toJSON()));
 
         return products;
     }
@@ -161,7 +160,7 @@ class ProductService {
                 nest: true,
                 required: true,
             }))
-            .map(product => product.toJSON());
+            .map(product => formatDataReturn(product.toJSON()));
         return products;
     }
 
@@ -206,7 +205,7 @@ class ProductService {
                 nest: true,
                 required: true
             }))
-            .map(product => product.toJSON());
+            .map(product => formatDataReturn(product.toJSON()));
         return products;
     }
 
@@ -246,7 +245,7 @@ class ProductService {
                 nest: true,
                 required: true,
             }))
-            .map(product => product.toJSON());
+            .map(product => formatDataReturn(product.toJSON()));
         return products;
     }
 
