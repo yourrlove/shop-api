@@ -55,6 +55,7 @@ module.exports = {
         {
           cart_id: {
             allowNull: false,
+            unique: false,
             type: Sequelize.UUID,
             primaryKey: true,
             references: {
@@ -66,14 +67,14 @@ module.exports = {
           },
           product_detail_id: {
             allowNull: false,
-            unique: true,
+            unique: false,
             type: Sequelize.UUID,
             primaryKey: true,
             references: {
                model: 'ProductDetail',
                key: 'id',
             },
-            onUpdate: 'CASCADE',
+            onUpdate: 'CASCADE',  
             onDelete: 'CASCADE',
           },
           quantity: {

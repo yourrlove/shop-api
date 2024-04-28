@@ -14,7 +14,6 @@ class ProductService {
         
         const isBrandIdExist = BrandService.is_exists(brand_id);
         if(!isBrandIdExist) throw new BadRequestError(`Brand id not found!`);
-
         const id = generateUUID();
         const product = await db.Product.create({ 
             id,

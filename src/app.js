@@ -6,6 +6,7 @@ const logger = require('morgan');
 const cors = require('cors');
 const { WEB_DOMAIN_URL } = require('./constants/index.js'); 
 
+
 // Routers
 const indexRouter = require('./routes/auth');
 const admin_api = require('./routes/admin/index');
@@ -19,6 +20,7 @@ const app = express();
 // Handle options credentials check - before CORS!
 // and fetch cookies credentials requirement
 app.use(credentials);
+
 
 // Cross Origin Resource Sharing
 app.use(cors(corsOptions));
@@ -34,6 +36,7 @@ const { sequelize } = require('./databases/init.mysql')
 
 // init mongodb
 // require('./databases/init.mongodb')
+
 
 app.use('/v1', indexRouter);
 app.use('/v1/admin', admin_api);
@@ -63,6 +66,5 @@ app.use((error, req, res, next) => {
         message: error.message || 'Internal Server Error'
     })
 });
-
 
 module.exports = app;

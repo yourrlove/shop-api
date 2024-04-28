@@ -21,7 +21,6 @@ class ProductDetailService {
     static get_all = async ( id ) => {
         const productDetails = await db.ProductDetail.findAll({ 
             where: { product_id: id },
-            
             raw: true
         });
         return productDetails;

@@ -13,7 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       });
       User.hasOne(models.Profile);
       User.hasMany(models.DeliveryInfor);
-      User.hasOne(models.Cart);
+      User.hasOne(models.Cart, {
+        foreignKey: 'user_id'
+      });
       User.hasMany(models.ProductEntry);
       User.hasMany(models.Order);
       User.belongsToMany(models.Notification, { through: 'UserNotification' });
