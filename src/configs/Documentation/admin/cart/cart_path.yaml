@@ -1,4 +1,4 @@
-/cart:
+/carts:
   get:
     tags:
       - Cart
