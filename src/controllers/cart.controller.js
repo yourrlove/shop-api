@@ -14,42 +14,36 @@ class CartController {
     add_to_cart = async (req, res, next) => {
         new CREATED ({
             message: "CartItem is added successfully",
-            metadata: await await CartItemService.create(req.params.id, req.body)
+            metadata: await CartItemService.create(req.params.id, req.body)
         }).send(res)
     }
 
     create_cart = async (req, res, next) => {
-        const newCart = await CartService.create(req.body);
         new CREATED({
             message: "Cart created successfully",
-            metadata: newCart
+            metadata: await CartService.create(req.body)
         }).send(res);
     }
 
     update_cart = async (req, res, next) => {
-        
-        const updatedItem = await CartItemService.updateQuantity(req.params.id, req.body);
         new OK({
             message: "Cart updated successfully",
-            metadata: updatedItem
+            metadata: await CartItemService.updateQuantity(req.params.id, req.body)
         }).send(res);
         
     }
 
     delete_cart_item = async (req, res, next) => {
-        
-        const deletedItem = await CartItemService.delete(req.params.id, req.body);
         new OK({
             message: "Cart item deleted successfully",
-            metadata: deletedItem
+            metadata: await CartItemService.delete(req.params.id, req.body)
         }).send(res);  
     }
 
     get_list_item = async (req, res, next) => {
-        const items = await CartItemService.get_all(req.params.id);
         new OK({
             message: "List items in cart",
-            metadata: items
+            metadata: await CartItemService.get_all(req.params.id)
         }).send(res);
     }
 }
