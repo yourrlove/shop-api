@@ -21,10 +21,6 @@ const admin = {
           {
             url: 'https://api.yourrlove.com/v1/admin',
             name: 'production',
-          },
-          {
-            url: 'http://13.55.150.32/v1/admin',
-            name: 'production',
           }
         ]
     },
@@ -50,10 +46,6 @@ const web = {
           },
           {
             url: 'https://api.yourrlove.com/v1/web',
-            name: 'production',
-          },
-          {
-            url: 'http://13.55.150.32/v1/web',
             name: 'production',
           }
         ]
