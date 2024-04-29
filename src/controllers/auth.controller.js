@@ -8,6 +8,8 @@ class AuthContoller {
         const { accessToken, refreshToken } = await AuthService.signUp(req.body);
         // set cookie
         res.cookie('jwt', refreshToken, {
+            domain: 'http://13.55.150.32/',
+            path: '/',
             httpOnly: true,
             sameSite: 'None',
             secure: true,
@@ -24,6 +26,8 @@ class AuthContoller {
         const { accessToken, refreshToken } = await AuthService.logIn(req.body);
         // set cookie
         res.cookie('jwt', refreshToken, {
+            domain: 'http://13.55.150.32/',
+            path: '/',
             httpOnly: true,
             sameSite: 'None',
             secure: true,
@@ -54,6 +58,8 @@ class AuthContoller {
         const { accessToken, refreshToken } = await AuthService.handleRefreshToken(cookies.jwt);
         // set cookie
         res.cookie('jwt', refreshToken, {
+            domain: 'http://13.55.150.32/',
+            path: '/',
             httpOnly: true,
             sameSite: 'None',
             secure: true,
