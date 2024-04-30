@@ -8,14 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.UUID
       },
-      name: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      phone_number: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
       province: {
         allowNull: false,
         type: Sequelize.STRING

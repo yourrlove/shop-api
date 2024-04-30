@@ -12,21 +12,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       DeliveryInfor.belongsTo(models.User);
-      DeliveryInfor.hasMany(models.Order);
+      DeliveryInfor.hasMany(models.Invoice);
     }
   }
   DeliveryInfor.init({
     id: {
       type: DataTypes.UUID,
       primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    phone_number: {
-      type: DataTypes.STRING,
-      allowNull: false
     },
     province: {
       type: DataTypes.STRING,

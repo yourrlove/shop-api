@@ -4,9 +4,9 @@ const { webSpecification } = require('../../configs/Documentation/swagger-config
 
 const productRouter = require('./product');
 
-const user_api = express();
+const web_api = express();
 
-user_api.use('/api-docs', swaggerUi.serveFiles(webSpecification), swaggerUi.setup(webSpecification));
-user_api.use('/products', productRouter);
+web_api.use('/api-docs', swaggerUi.serveFiles(webSpecification), swaggerUi.setup(webSpecification));
+web_api.use('/products', productRouter);
 
-module.exports = user_api;
+module.exports = web_api;

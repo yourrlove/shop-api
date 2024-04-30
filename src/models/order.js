@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Order.belongsTo(models.User);
-      Order.belongsTo(models.DeliveryInfor);
       Order.hasMany(models.OrderDetail);
+      Order.hasMany(models.Invoice);
       Order.belongsTo(models.Promotion);
     }
   }
@@ -32,29 +32,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 'pending'
     },
-    delivery_price: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-      defaultValue: 0
-    },
-    tax: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-      defaultValue: 0
-    },
     user_id: {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'User',
-        key: 'id'
-      }
-    },
-    delivery_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: 'DeliveryInfor',
         key: 'id'
       }
     },
@@ -65,12 +47,11 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Promotion',
         key: 'id'
       }
-    }
+    },
   }, {
     sequelize,
     modelName: 'Order',
     timestamps: true,
-    updatedAt: false,
   });
   return Order; 
 };
