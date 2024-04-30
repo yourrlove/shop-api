@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      OrderDetail.belongsTo(models.ProductDetail);
+      // OrderDetail.belongsTo(models.ProductDetail);
       OrderDetail.belongsTo(models.Order);
     }
   }
@@ -24,12 +24,12 @@ module.exports = (sequelize, DataTypes) => {
             key: 'order_id'
         }
     },
-    product_id: {
+    product_detail_id: {
         type: DataTypes.UUID,
         primaryKey: true,
         references: {
             model: 'ProductDetail',
-            key: 'product_id'
+            key: 'id'
         }
     }
   }, {

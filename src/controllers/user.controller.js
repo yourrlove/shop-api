@@ -31,6 +31,13 @@ class UserController {
             metadata: await UserService.delete(req.params.id)
         }).send(res);
     }
+
+    get_current_user = async (req, res, next) => {
+        new OK({
+            message: 'User retrieved successfully',
+            metadata: await UserService.get_basic_infor(req.user)
+        }).send(res);
+    }
 }
 
 module.exports = new UserController();

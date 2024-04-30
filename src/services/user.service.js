@@ -53,6 +53,19 @@ class UserService {
         if(!user) throw new BadRequestError('failed to delete user');
         return user;
     }
+
+    static get_basic_infor = async (user_id) => {
+        //Username
+        const { username } = await db.User.findOne({id: user_id});
+        // Cart
+        //
+        //Notifications
+        //
+
+        return {
+            username,
+        }
+    }
 }
 
 module.exports = UserService;

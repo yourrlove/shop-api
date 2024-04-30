@@ -20,7 +20,7 @@ module.exports = {
     .then(() => {
       // Order hasOne DeliveryInfor
       return queryInterface.addColumn(
-        'Order',
+        'Invoice',
         'delivery_id',
         {
           type: Sequelize.UUID,
@@ -40,6 +40,7 @@ module.exports = {
         {
           order_id: {
             type: Sequelize.UUID,
+            unique: false,
             primaryKey: true,
             allowNull: false,
             references: {
@@ -49,8 +50,9 @@ module.exports = {
             onUpdate: 'CASCADE',
             onDelete: 'CASCADE'
           },
-          product_id: {
+          product_detail_id: {
             type: Sequelize.UUID,
+            unique: true,
             primaryKey: true,
             allowNull: false,
             references: {
@@ -81,7 +83,60 @@ module.exports = {
           onUpdate: 'CASCADE',
           onDelete: 'SET NULL'
         }
+
       );
+    })
+    .then(() => {
+      // Invoice - Invoice Details - Product Details
+      return queryInterface.createTable(
+        'InvoiceDetail',
+        {
+          invoice_id: {
+            type: Sequelize.UUID,
+            unique: false,
+            primaryKey: true,
+            allowNull: false,
+            references: {
+              model: 'Invoice',
+              key: 'id'
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE'
+          },
+          product_detail_id: {
+            type: Sequelize.UUID,
+            unique: true,
+            primaryKey: true,
+            allowNull: false,
+            references: {
+              model: 'ProductDetail',
+              key: 'id'
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE'
+          },
+          quantity: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+          }
+        }
+      )
+    })
+    .then(() => {
+      //Invoice - Order
+      return queryInterface.addColumn(
+        'Invoice',
+        'order_id',
+        {
+          type: Sequelize.UUID,
+          references: {
+            model: 'Order',
+            key: 'id'
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'SET NULL'
+        }
+      )
     })
   },
 
@@ -94,7 +149,7 @@ module.exports = {
     .then(() => {
       // remove Order hasOne DeliveryInfor
       return queryInterface.removeColumn(
-        'Order',
+        'Invoice',
         'delivery_id'
       )
     }).then(() => {
@@ -107,6 +162,10 @@ module.exports = {
         'Order',
         'promotion_id'
       )
+    })
+    .then(() => {
+      // remove Invoice - Invoice Details - Product Details
+      return queryInterface.dropTable('InvoiceDetail')
     })
   }
 };

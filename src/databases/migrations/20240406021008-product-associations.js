@@ -108,10 +108,10 @@ module.exports = {
             onUpdate: 'CASCADE',
             onDelete: 'CASCADE'
           },
-          size: {
+          description: {
             type: Sequelize.STRING,
-            allowNull: false
-          }, 
+            allowNull: true
+          },
           color: {
             type: Sequelize.STRING,
             allowNull: false
@@ -124,6 +124,10 @@ module.exports = {
             type: Sequelize.FLOAT,
             allowNull: false
           },
+          status: {
+            type: Sequelize.STRING,
+            allowNull: false
+          }
         }
       )
     })

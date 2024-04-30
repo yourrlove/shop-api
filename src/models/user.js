@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE'
       });
-      User.hasOne(models.Profile);
       User.hasMany(models.DeliveryInfor);
       User.hasOne(models.Cart, {
         foreignKey: 'user_id'
@@ -36,6 +35,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     hash_password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    first_name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    phone_number: {
       type: DataTypes.STRING,
       allowNull: false
     },

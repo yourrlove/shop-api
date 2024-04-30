@@ -20,16 +20,8 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      size: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
       color: {
         allowNull: false,
-        type: Sequelize.STRING
-      },
-      image: {
-        allowNull: true,
         type: Sequelize.STRING
       },
       createdAt: {

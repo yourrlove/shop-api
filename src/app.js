@@ -10,7 +10,7 @@ const { WEB_DOMAIN_URL } = require('./constants/index.js');
 // Routers
 const indexRouter = require('./routes/auth');
 const admin_api = require('./routes/admin/index');
-const user_api = require('./routes/user/index');
+const web_api = require('./routes/web/index');
 // Middlewares
 const corsOptions = require('./configs/CORS/corsOptions');
 const credentials = require('./middlewares/credentials');
@@ -40,7 +40,7 @@ const { sequelize } = require('./databases/init.mysql')
 
 app.use('/v1', indexRouter);
 app.use('/v1/admin', admin_api);
-app.use('/v1/web', user_api);
+app.use('/v1/web', web_api);
 
 /* GET home page. */
 app.get('/', function(req, res, next) {

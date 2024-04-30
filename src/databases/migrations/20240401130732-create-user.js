@@ -8,16 +8,24 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.UUID
       },
-      username: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
       email: {
         allowNull: false,
         type: Sequelize.STRING
       },
       hash_password: {
         allowNull: false,
+        type: Sequelize.STRING
+      },
+      first_name: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      last_name: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      phone_number: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       is_active: {
