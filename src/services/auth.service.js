@@ -45,11 +45,11 @@ class AuthService {
         return token;
     }
 
-    static logIn = async ({ username, password }) => {
-       const user = await db.User.findOne({ where: { username: username }});
+    static logIn = async ({ email, password }) => {
+       const user = await db.User.findOne({ where: { email: email }});
        if(!user)
-            throw new AuthFailureError('Wrong username!');
-        const isPassMatch = bcrypt.compare(password, user.hash_password);
+            throw new AuthFailureError('Wrong email!');
+        const isPassMatch = await bcrypt.compare(password, user.hash_password);
         if(!isPassMatch)
             throw new AuthFailureError('Wrong password!');
 
