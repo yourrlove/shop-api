@@ -7,8 +7,7 @@ const { createKeyTokenPair } = require('../utils/authUtils');
 const JWT = require('jsonwebtoken');
 
 class AuthService {
-    static signUp = async ({ username, email, password }) => {
-        console.log(password);
+    static signUp = async ({  first_name, last_name, email, password, phone_number }) => {
         // setp1: check if email is already registered
         const isEmailExists = await db.User.findOne({ where: { email: email }} , { raw: true });
         if(isEmailExists) 
@@ -18,7 +17,7 @@ class AuthService {
         const passwordHash = await bcrypt.hash(password, 10);
         const user_id = generateUUID();
         const { role_id }  = await db.Role.findOne({ 
-            where : { name: 'User' },
+            where : { name: 'user' },
             attributes: [ ['id', 'role_id'] ],
             raw: true
         });
@@ -32,7 +31,9 @@ class AuthService {
 
         const newUser = await db.User.create({
             id: user_id,
-            username,
+            first_name,
+            last_name,
+            phone_number,
             email,
             hash_password: passwordHash,
             refresh_token: token.refreshToken,
@@ -44,11 +45,11 @@ class AuthService {
         return token;
     }
 
-    static logIn = async ({ username, password }) => {
-       const user = await db.User.findOne({ where: { username: username }});
+    static logIn = async ({ email, password }) => {
+       const user = await db.User.findOne({ where: { email: email }});
        if(!user)
-            throw new AuthFailureError('Wrong username!');
-        const isPassMatch = bcrypt.compare(password, user.hash_password);
+            throw new AuthFailureError('Wrong email!');
+        const isPassMatch = await bcrypt.compare(password, user.hash_password);
         if(!isPassMatch)
             throw new AuthFailureError('Wrong password!');
 
