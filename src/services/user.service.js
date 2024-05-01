@@ -4,7 +4,7 @@ const { generateUUID } = require('../helpers/index');
 const { BadRequestError } = require('../core/error.response');
 
 class UserService {
-    static create = async ({ username, email, hash_password, role_name }) => {
+    static create = async ({ first_name, last_name, email, password, phone_number, role_name="user" }) => {
         const { role_id }  = await db.Role.findOne({ 
             where : { name: role_name },
             attributes: [ ['id', 'role_id'] ],
@@ -14,7 +14,9 @@ class UserService {
         const id = generateUUID();
         const user = await db.User.create({ 
             id,
-            username, 
+            first_name,
+            last_name, 
+            phone_number,
             email, 
             hash_password,
             role_id
@@ -56,14 +58,14 @@ class UserService {
 
     static get_basic_infor = async (user_id) => {
         //Username
-        const { username } = await db.User.findOne({id: user_id});
+        const { first_name, last_name } = await db.User.findOne({id: user_id});
         // Cart
         //
         //Notifications
         //
 
         return {
-            username,
+            name: first_name + ' ' + last_name,
         }
     }
 }
