@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { asyncHandler } = require('../../helpers/index');
-const productController = require('../../controllers/product.controller')
-
+const productController = require('../../controllers/product.controller');
+const UploadController = require('../../controllers/upload.controller');
+const { uploadDisk } = require('../../configs/config.multer');
 
 
 router.post('/', asyncHandler( productController.create_product ));
@@ -24,5 +25,8 @@ router.get('/categories', asyncHandler( productController.get_products_by_catego
 // filter products
 router.post('/filter', asyncHandler( productController.filter_products));
 
+//upload product image
+router.post('/:id/thumb', uploadDisk.single('file'), asyncHandler( UploadController.upload_product_thumbnail ));
+router.post('/productdetails/:id/upload', uploadDisk.array('files'), asyncHandler( UploadController.upload_product_detail_images ));
 
 module.exports = router;
