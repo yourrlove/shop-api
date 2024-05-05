@@ -2,6 +2,12 @@
 const db = require("../models/index");
 const { BadRequestError, NotFoundError } = require("../core/error.response");
 const { generateUUID } = require("../helpers/index");
+const {
+  uploadImageFromLocal,
+  uploadMultipleImages,
+} = require("../services/upload.service");
+const { config: { CLOUD_IMAGE_FOLDER }} = require('../constants/index'); 
+
 
 class ProductDetailService {
   static create = async (product_id, { quantity, color, size, image }) => {
@@ -56,6 +62,42 @@ class ProductDetailService {
     );
     if (!productDetail) throw new NotFoundError(`ProductDetail not found`);
     return productDetail;
+  };
+
+  static update_image = async (files, product_detail_id) => {
+    const product = await db.ProductDetail.findOne({
+      where: { id: product_detail_id },
+      attributes: ["color"],
+      include: [
+        {
+          model: db.Product,
+          attributes: ["name"],
+          include: [
+            {
+              model: db.Brand,
+              attributes: ["name"],
+            },
+          ],
+        },
+      ],
+      raw: true,
+    });
+    const urls = await uploadMultipleImages({
+      files: files,
+      name: `${product["Product.name"]}-${product.color}`,
+      folderName: `${CLOUD_IMAGE_FOLDER}${product["Product.Brand.name"]}`,
+    });
+
+    await Promise.all(
+      urls.map(async (url) => {
+        return await db.Image.create({
+          id: generateUUID(),
+          url: url.image_url,
+          product_detail_id: product_detail_id,
+        });
+      })
+    );
+    return urls;
   };
 }
 

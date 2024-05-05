@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Image.belongsTo(models.ProductDetail, {
         foreignKey: 'product_detail_id',
+        as: 'images'
       })
     }
   }

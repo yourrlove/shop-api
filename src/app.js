@@ -4,7 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
-const { WEB_DOMAIN_URL } = require('./constants/index.js'); 
+const compression = require('compression');
+const { config: { WEB_DOMAIN_URL }} = require('./constants/index.js'); 
 
 
 // Routers
@@ -29,6 +30,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(compression());
 // app.use(express.static(path.join(__dirname, 'public')));
 
 //init mysql db

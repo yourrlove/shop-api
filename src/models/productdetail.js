@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       ProductDetail.hasMany(models.Image, {
         foreignKey: 'product_detail_id',
-        as: 'image'
+        as: 'images'
       });
     }
   }
@@ -59,7 +59,12 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'ProductDetail',
     timestamps: true,
-    paranoid: true
+    paranoid: true,
+    defaultScope: {
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'deletedAt']
+      },
+    }
   });
   return ProductDetail;
 };
