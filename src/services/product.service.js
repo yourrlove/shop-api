@@ -10,12 +10,9 @@ const {
   getInfoData,
   removeNull,
   formatDataReturn,
+  getValues
 } = require("../utils/index");
 const { Op } = require("sequelize");
-const {
-  uploadImageFromLocal,
-  uploadMultipleImages,
-} = require("../services/upload.service");
 const { config: { CLOUD_IMAGE_FOLDER }} = require('../constants/index'); 
 
 class ProductService {
@@ -319,30 +316,24 @@ class ProductService {
     });
   };
 
-  static update_thumbnail = async (file, product_id) => {
+  static update_thumbnail = async (product_id, product_detail_id, orders) => {
     const product = await db.Product.findOne({
       where: { id: product_id },
-      attributes: ['name'],
-      include: [
-        {
-          model: db.Brand,
-          attributes: ["name"],
-          required: true,
-        },
-      ],
-      raw: true
     });
     if (!product) throw new NotFoundError(`Product not found!`);
-    const url = await uploadImageFromLocal({
-      path: file.path,
-      folderName: `${CLOUD_IMAGE_FOLDER}${product["Brand.name"]}`,
-      name: `thumb-${product.name}`
+    const image_urls = await db.Image.findAll({
+      where: {
+        product_detail_id: product_detail_id,
+        order: orders
+      },
+      attributes: ["url"],
+      order: [["order", "ASC"]],
+      raw: true,
     })
-    await db.Product.update(
-      { thumbnail: url.image_url }
-     ,
-      { where: { id: product_id } });
-    return product;
+    if (!image_urls) throw new NotFoundError(`Image not found!`);
+    //merge 2 image urls into one to store in thumbnail
+    product.thumbnail = getValues(image_urls, "url").join(',');
+    return await product.save();
   }
 }
 

@@ -43,9 +43,12 @@ const __returnOptions = (value, key) => {
   return value;
 };
 
+const getValues = (object, key) => _.map(object, key);
+
 module.exports = {
   getInfoData,
   formatKeys,
   removeNull,
   formatDataReturn,
+  getValues
 };

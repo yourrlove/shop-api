@@ -24,12 +24,16 @@ module.exports = (sequelize, DataTypes) => {
       unique: true
     },
     url: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
     },
     product_detail_id: {
       type: DataTypes.UUID,
       allowNull: true
+    },
+    order: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     }
   }, {
     sequelize,

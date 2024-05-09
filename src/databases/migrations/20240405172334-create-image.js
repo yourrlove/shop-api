@@ -12,7 +12,7 @@ module.exports = {
       url: {
         allowNull: false,
         unique: false,
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
     });
   },
