@@ -15,7 +15,6 @@ class CartService {
         const cart = await db.Cart.create({
             id : id,
             user_id: user_id,
-            quantity: 100
         })
         return cart;
     }
