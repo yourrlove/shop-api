@@ -20,7 +20,7 @@ const uploadMultipleImages = async ({ files, folderName, name}) => {
     const imagesToUpload = files.map( async (file, index) => {
         return await uploadImageFromLocal({
             path: file.path,
-            name: `${name}-${index}`,
+            name: `${name}-0${index}`,
             folderName: folderName
         });
     });

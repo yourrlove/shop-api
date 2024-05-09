@@ -6,13 +6,9 @@ const ProductService = require('../services/product.service');
 
 class UploadController {
     upload_product_thumbnail = async (req, res, next) => {
-        const { file } = req;
-        if (!file) {
-            throw new BadRequestError('File missing!');  
-        }
         new OK({
             message: 'Product thumbnail uploaded successfully!',
-            metadata: await ProductService.update_thumbnail(file, req.params.id)
+            metadata: await ProductService.update_thumbnail(req.params.productId, req.params.productdetailId, req.body.orders)
         }).send(res);
     }
 

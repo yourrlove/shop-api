@@ -26,7 +26,7 @@ router.get('/categories', asyncHandler( productController.get_products_by_catego
 router.post('/filter', asyncHandler( productController.filter_products));
 
 //upload product image
-router.post('/:id/thumb', uploadDisk.single('file'), asyncHandler( UploadController.upload_product_thumbnail ));
+router.post('/:productId/:productdetailId/thumb', asyncHandler( UploadController.upload_product_thumbnail ));
 router.post('/productdetails/:id/upload', uploadDisk.array('files'), asyncHandler( UploadController.upload_product_detail_images ));
 
 module.exports = router;

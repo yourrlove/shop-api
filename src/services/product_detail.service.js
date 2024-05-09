@@ -3,7 +3,6 @@ const db = require("../models/index");
 const { BadRequestError, NotFoundError } = require("../core/error.response");
 const { generateUUID } = require("../helpers/index");
 const {
-  uploadImageFromLocal,
   uploadMultipleImages,
 } = require("../services/upload.service");
 const { config: { CLOUD_IMAGE_FOLDER }} = require('../constants/index'); 
@@ -89,12 +88,23 @@ class ProductDetailService {
     });
 
     await Promise.all(
-      urls.map(async (url) => {
-        return await db.Image.create({
-          id: generateUUID(),
-          url: url.image_url,
-          product_detail_id: product_detail_id,
-        });
+      urls.map(async (url, index) => {
+        const imageExist = await db.Image.findOne({ where: {order: index, product_detail_id: product_detail_id }});
+        if (imageExist) {
+          return await db.Image.update({
+            url: url.image_url,
+          },
+          {
+            where: { id: imageExist.id },
+          });
+        } else {
+          return await db.Image.create({
+            id: generateUUID(),
+            url: url.image_url,
+            product_detail_id: product_detail_id,
+            order: index,
+          });
+        }
       })
     );
     return urls;
