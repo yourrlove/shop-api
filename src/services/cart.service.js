@@ -11,11 +11,12 @@ class CartService {
     }
 
     static create = async (user_id) => {
-        const id = generateUUID();
         const cart = await db.Cart.create({
-            id : id,
-            user_id: user_id,
+            id : user_id,
         })
+        if (!cart) {
+            throw new BadRequestError('Failed to create user cart');
+        }
         return cart;
     }
 }
