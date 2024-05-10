@@ -26,17 +26,17 @@ class AuthContoller {
         const { accessToken, refreshToken } = await AuthService.logIn(req.body);
         // set cookie
         res.cookie('jwt', refreshToken, {
-            domain: 'api.yourrlove.com',
+            // domain: 'api.yourrlove.com',
             path: '/',
             httpOnly: true,
-            sameSite: 'None',
-            secure: true,
-            partitioned: true,
+            sameSite: 'strict',
+            // secure: true,
+            // partitioned: true,
             maxAge: 60 * 60 * 24 * 1000
         });
         new OK({
             message: 'Login successfully!',
-            metadata: accessToken
+            metadata: { accessToken, refreshToken }
         }).send(res);
     }
 

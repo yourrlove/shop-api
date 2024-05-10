@@ -2,25 +2,18 @@
 const db = require('../models');
 const { generateUUID } = require('../helpers/index');
 const { BadRequestError } = require('../core/error.response');
+const CartService = require('../services/cart.service');
+const { includes } = require('lodash');
 
 class UserService {
-    static create = async ({ first_name, last_name, email, password, phone_number, role_name="user" }) => {
-        const { role_id }  = await db.Role.findOne({ 
-            where : { name: role_name },
-            attributes: [ ['id', 'role_id'] ],
-            raw: true
-        });
-        if (!role_id) throw new BadRequestError('role id not found');
-        const id = generateUUID();
+    static create = async ( userBody ) => {
         const user = await db.User.create({ 
-            id,
-            first_name,
-            last_name, 
-            phone_number,
-            email, 
-            hash_password,
-            role_id
+            ...userBody,
         });
+        if(!user) {
+            throw new BadRequestError('Failed to create user! Something went wrong! Please try again!');
+        }
+        const cart = await CartService.create(user.id);
         return user;
     }
 
@@ -60,12 +53,40 @@ class UserService {
         //Username
         const { first_name, last_name } = await db.User.findOne({id: user_id});
         // Cart
-        //
+        const cartInfor = await db.Cart.findAll({
+            where: {
+                id: user_id
+            },
+            include: {
+                model: db.CartItem,
+                attributes: ['product_detail_id'],
+                include: {
+                    model: db.ProductDetail,
+                    attributes: ['description'],
+                    include: [
+                        {
+                            model: db.Product,
+                            attributes: ['current_unit_price'],
+                        },
+                        {
+                            model: db.Image,
+                            attributes: ['url'],
+                            where: {
+                                order: 0
+                            },
+                            as: 'images',
+                        }
+                    ]
+                }
+            },
+            require: true
+        })
         //Notifications
         //
 
         return {
             name: first_name + ' ' + last_name,
+            cart: cartInfor
         }
     }
 }
