@@ -35,10 +35,9 @@ const __returnOptions = (value, key) => {
   if (key === "Catalogue") return value.name;
   if (key === "Tag") return value.name;
   if (key === "ProductDetail") {
-    return {
-      color: _.map(value, "color"),
-      size: _.uniq(_.map(_.flattenDeep(_.map(value, "size")), "type")),
-    };
+    return value.map((p) => {
+      return { ...p, size: _.map(p.size, "type") };
+    });
   }
   return value;
 };
@@ -50,5 +49,5 @@ module.exports = {
   formatKeys,
   removeNull,
   formatDataReturn,
-  getValues
+  getValues,
 };

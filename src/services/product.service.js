@@ -67,7 +67,7 @@ class ProductService {
                 },
                 {
                     model: db.ProductDetail,
-                    attributes: ["color"],
+                    attributes: { exclude: ['product_id', 'status', 'createdAt', 'updatedAt', 'deletedAt'] },
                     as: "ProductDetail",
                     include: [
                         {
@@ -79,7 +79,8 @@ class ProductService {
                 },
             ],
             nest: true,
-        })).map(record => formatDataReturn(record.toJSON()))
+        }))
+        .map(record => formatDataReturn(record.toJSON()))
 
     return products;
   };
@@ -115,7 +116,7 @@ class ProductService {
         include: [
           {
             model: db.ProductDetail,
-            attributes: ["id", "color", "status"],
+            attributes: { exclude: ['product_id', 'status', 'createdAt', 'updatedAt', 'deletedAt'] },
             required: true,
             as: "ProductDetail",
           },
@@ -162,7 +163,7 @@ class ProductService {
         include: [
           {
             model: db.ProductDetail,
-            attributes: ["color"],
+            attributes: { exclude: ['product_id', 'status', 'createdAt', 'updatedAt', 'deletedAt'] },
             as: "ProductDetail",
             include: [
                 {
@@ -215,7 +216,7 @@ class ProductService {
         include: [
           {
             model: db.ProductDetail,
-            attributes: ["color"],
+            attributes: { exclude: ['product_id', 'status', 'createdAt', 'updatedAt', 'deletedAt'] },
             as: "ProductDetail",
             include: [
                 {
@@ -262,7 +263,7 @@ class ProductService {
         include: [
           {
             model: db.ProductDetail,
-            attributes: ["color"],
+            attributes: { exclude: ['product_id', 'status', 'createdAt', 'updatedAt', 'deletedAt'] },
             as: "ProductDetail",
             include: [
                 {
