@@ -1,40 +1,41 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class OrderDetail extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
-      // OrderDetail.belongsTo(models.ProductDetail);
-      OrderDetail.belongsTo(models.Order);
+      // Define foreign key associations here
+      OrderDetail.belongsTo(models.ProductDetail, {
+          foreignKey: 'product_detail_id', // Tên của cột khóa ngoại trong bảng OrderDetail
+          targetKey: 'id' // Tên của cột khóa chính trong bảng ProductDetail
+      });
+      OrderDetail.belongsTo(models.Orders, {
+          foreignKey: 'order_id', // Tên của cột khóa ngoại trong bảng OrderDetail
+          targetKey: 'id' // Tên của cột khóa chính trong bảng Orders
+      });
     }
   }
   OrderDetail.init({
     order_id: {
         type: DataTypes.UUID,
         primaryKey: true,
-        references: {
-            model: 'Order',
-            key: 'order_id'
-        }
+        allowNull: false
     },
     product_detail_id: {
         type: DataTypes.UUID,
         primaryKey: true,
-        references: {
-            model: 'ProductDetail',
-            key: 'id'
-        }
+        allowNull: false,
+    },
+    quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     }
   }, {
     sequelize,
     modelName: 'OrderDetail',
+    tableName: 'OrderDetail',
+    timestamps: false,
+    //freezeTableName: true,
   });
   return OrderDetail;
 };

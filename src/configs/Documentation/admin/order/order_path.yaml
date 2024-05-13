@@ -1,0 +1,78 @@
+/orders:
+  post:
+    tags:
+    - Order
+    summary: Create Order for customer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateOrder'
+    responses:
+      '200':
+        description: OK. Order created successfully.
+        content:
+          application/json:
+            example: OK. Order created successfully.
+      '400':
+        description: Bad request. Invalid input.
+        content:
+          application/json:
+            example: Bad request. Invalid input. 
+  
+/orders/{order_id}/orderdetails:
+  post:
+    tags:
+    - Order
+    summary: Create Order detail for customer
+    parameters:
+      - name: order_id
+        in: path
+        description: ID of the order
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateOrderDetail'
+    responses:
+      '200':
+        description: OK. Order Detail created successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderMetadata'
+      '400':
+        description: Bad request. Invalid input.
+        content:
+          application/json:
+            example: Bad request. Invalid input. 
+
+/orders/{user_id}:
+  get:
+      tags:
+      - Order
+      summary: Create Order detail for customer
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the order
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK. There are the order and detail of each
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDetailMetadata'
+        '400':
+          description: Bad request. Invalid input.
+          content:
+            application/json:
+              example: Bad request. Invalid input. 

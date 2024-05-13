@@ -29,7 +29,7 @@ module.exports = {
           },
           product_detail_id: {
             allowNull: false,
-            unique: true,
+            unique: false,
             type: Sequelize.UUID,
             primaryKey: true,
             references: {

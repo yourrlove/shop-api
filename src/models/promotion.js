@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association 
-      Promotion.hasMany(models.Order);
+      Promotion.hasMany(models.Orders);
     }
   }
   Promotion.init({

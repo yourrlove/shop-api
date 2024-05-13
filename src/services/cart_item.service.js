@@ -6,7 +6,7 @@ const { NotFoundError } = require('../core/error.response');
 
 class CartItemService {
     // add product(s) to cart
-    static create = async (product_detail_id, { user_id, quantity }) => {
+    static create = async (product_detail_id, {user_id, quantity }) => {
         let cart = await db.Cart.findOne({
             where: {
                 user_id: user_id
@@ -100,6 +100,7 @@ class CartItemService {
 
         return "Cart item deleted successfully";
     }
+
 }
 
 module.exports = CartItemService;

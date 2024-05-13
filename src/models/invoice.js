@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Invoice.belongsTo(models.Order, {
+      Invoice.belongsTo(models.Orders, {
         foreignKey: "order_id",
       });
       Invoice.belongsTo(models.DeliveryInfor);
@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-          model: "Order",
+          model: "Orders",
           key: "id",
         },
       },
