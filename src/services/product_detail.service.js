@@ -1,41 +1,96 @@
 "use strict";
 const db = require("../models/index");
+const ProductService = require("./product.service");
 const { BadRequestError, NotFoundError } = require("../core/error.response");
-const { generateUUID } = require("../helpers/index");
 const {
-  uploadMultipleImages,
-} = require("../services/upload.service");
-const { config: { CLOUD_IMAGE_FOLDER }} = require('../constants/index'); 
-
+  generateUUID,
+  generateSlug,
+  generateSKUno,
+} = require("../helpers/index");
+const {
+  getValues,
+  formatDataReturn,
+  formatKeys,
+  getInfoData,
+  removeNull,
+} = require("../utils/index");
+const { uploadMultipleImages } = require("../services/upload.service");
+const {
+  config: { CLOUD_IMAGE_FOLDER },
+} = require("../constants/index");
+const { Op } = require("sequelize");
 
 class ProductDetailService {
-  static create = async (product_id, { quantity, color, size, image }) => {
-    const [productDetail, created] = await db.ProductDetail.findOrCreate({
-      where: { product_id: product_id, color: color },
-      defaults: {
-        id: generateUUID(),
-        quantity,
-        color,
-        product_id,
-      },
+  static create = async (
+    product_id,
+    { sku_desc, sku_color, sku_size, sku_quantity, sku_price, files }
+  ) => {
+    const product = await db.Product.findOne({
+      where: { id: product_id },
+      include: [
+        {
+          model: db.Brand,
+          attributes: ["name", "code"],
+        },
+        {
+          model: db.Catalogue,
+          attributes: ["name", "code"],
+        },
+      ],
+      raw: true,
     });
-    const new_size = await db.Size.create({
+    if (!product) {
+      throw new NotFoundError(`Product not found`);
+    }
+    const sku_slug = generateSlug(`${product.product_slug} ${sku_color}`);
+    const sku_no = generateSKUno({
+      brand_code: product["Brand.code"],
+      catalogue_code: product["Catalogue.code"],
+      product_id,
+      sku_color,
+      sku_size,
+    });
+
+    const urls = await uploadMultipleImages({
+      files: files,
+      name: `${sku_slug}`,
+      folderName: `${CLOUD_IMAGE_FOLDER}${product["Brand.name"]}`,
+    });
+    const productSku = await db.ProductDetail.create({
       id: generateUUID(),
-      type: size,
-      quantity: quantity,
-      product_detail_id: productDetail.id,
+      sku_no,
+      sku_desc,
+      sku_color,
+      sku_size,
+      sku_quantity,
+      sku_price,
+      sku_image: getValues(urls, "image_url"),
+      sku_slug,
+      product_id,
     });
-    const new_image = await db.Image.create({
-      id: generateUUID(),
-      url: image,
-      product_detail_id: productDetail.id,
-    });
-    return productDetail;
+    return productSku;
   };
 
-  static get_all = async (id) => {
+  static isExistSkuNo(sku_no) {
+    return db.ProductDetail.findOne({ sku_no: sku_no });
+  }
+
+  static get_all = async () => {
     const productDetails = await db.ProductDetail.findAll({
-      where: { product_id: id },
+      include: {
+        model: db.Product,
+        attributes: ["product_name"],
+        include: [
+          {
+            model: db.Brand,
+            attributes: ["name"],
+          },
+          {
+            model: db.Tag,
+            attributes: ["name", "label"],
+          },
+        ],
+      },
       raw: true,
     });
     return productDetails;
@@ -65,49 +120,112 @@ class ProductDetailService {
 
   static update_image = async (files, product_detail_id) => {
     const product = await db.ProductDetail.findOne({
-      where: { id: product_detail_id },
-      attributes: ["color"],
-      include: [
-        {
-          model: db.Product,
-          attributes: ["name"],
-          include: [
-            {
-              model: db.Brand,
-              attributes: ["name"],
-            },
-          ],
+      where: { sku_id: product_detail_id },
+      include: {
+        model: db.Product,
+        attributes: ["product_name", "product_slug"],
+        include: {
+          model: db.Brand,
+          attributes: ["name", "code"],
         },
-      ],
-      raw: true,
+      },
     });
     const urls = await uploadMultipleImages({
       files: files,
-      name: `${product["Product.name"]}-${product.color}`,
-      folderName: `${CLOUD_IMAGE_FOLDER}${product["Product.Brand.name"]}`,
+      name: `${product.sku_slug}`,
+      folderName: `${CLOUD_IMAGE_FOLDER}${product.Product.Brand.name}`,
+    });
+    product.sku_image = getValues(urls, "image_url");
+    await product.save();
+    return product;
+  };
+
+  static filter_by_query_options = async ({
+    filters,
+    sort = ["product_name", "ASC"],
+  }) => {
+    const new_filters = this.__formatFiltersOptions(filters);
+    const products = await db.ProductDetail.findAll({
+      where: {
+        ...new_filters,
+      },
+      include: {
+        model: db.Product,
+        include: [
+          {
+            model: db.Brand,
+            attributes: ["name"],
+          },
+          {
+            model: db.Catalogue,
+            attributes: ["name"],
+          },
+          {
+            model: db.Tag,
+            attributes: ["name", "label"],
+          },
+        ],
+      },
+      order:[[ db.Product, ...sort]],
+      nest: true,
+      required: true,
+    })
+    //.map((product) => formatDataReturn(product.toJSON()));
+    return products;
+  };
+
+  static __formatFiltersOptions = (filters) => {
+    const fomart_filters = formatKeys(
+      getInfoData(
+        ["brand", "catalogue", "tag", "size", "color", "rating"],
+        filters
+      )
+    );
+    return removeNull({
+      ...fomart_filters,
+      "$Product.product_price$": filters.price
+        ? { [Op.between]: filters.price }
+        : null,
+    });
+  };
+
+  static createProductDetailslug = async () => {
+    const products = await db.ProductDetail.findAll({
+      include: {
+        model: db.Product,
+        attributes: ["product_name", "product_slug"],
+        include: [
+          {
+            model: db.Brand,
+            attributes: ["name", "code"],
+          },
+          {
+            model: db.Catalogue,
+            attributes: ["name", "code"],
+          },
+        ],
+      },
     });
 
     await Promise.all(
-      urls.map(async (url, index) => {
-        const imageExist = await db.Image.findOne({ where: {order: index, product_detail_id: product_detail_id }});
-        if (imageExist) {
-          return await db.Image.update({
-            url: url.image_url,
-          },
-          {
-            where: { id: imageExist.id },
-          });
-        } else {
-          return await db.Image.create({
-            id: generateUUID(),
-            url: url.image_url,
-            product_detail_id: product_detail_id,
-            order: index,
-          });
-        }
+      products.map(async (product) => {
+        const sku_slug = generateSlug(
+          `${product.Product.product_slug} ${product.sku_color}`
+        );
+        const sku_no = generateSKUno({
+          brand_code: product.Product.Brand.code,
+          catalogue_code: product.Product.Catalogue.code,
+          product_id: product.product_id,
+          sku_color: product.sku_color,
+          sku_size: product.sku_size,
+        });
+
+        product.sku_no = sku_no;
+        product.sku_slug = sku_slug;
+        await product.save();
       })
     );
-    return urls;
+    return products;
   };
 }
 

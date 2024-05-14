@@ -4,9 +4,9 @@ const { NotFoundError } = require('../core/error.response');
 const db = require('../models/index');
 
 class CatalogueService {
-    static create = async ({ name }) => {
+    static create = async ({ name, code }) => {
         const id = generateUUID();
-        const category = await db.Catalogue.create({ id, name });
+        const category = await db.Catalogue.create({ id, name, code });
         return category;
     }
 

@@ -4,7 +4,6 @@ const { generateUUID } = require('../helpers/index');
 class CartService {
     static get_all = async () => {
         const carts = await db.Cart.findAll({
-            attributes: ['id', 'quantity','user_id'],
             raw: true
         });
         return carts;

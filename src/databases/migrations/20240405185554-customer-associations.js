@@ -4,37 +4,60 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     return queryInterface
-      .addColumn("DeliveryInfor", "user_id", {
+      .addColumn("delivery_infors", "user_id", {
         type: Sequelize.UUID,
         references: {
-          model: "User",
-          key: "id",
+          model: "users",
+          key: "user_id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       })
       .then(() => {
-        return queryInterface.createTable("CartItem", {
+        return queryInterface.addColumn("carts", "user_id", {
+          type: Sequelize.UUID,
+          references: {
+            model: "users",
+            key: "user_id",
+          },
+          onUpdate: "CASCADE",
+          onDelete: "SET NULL",
+        });
+      })
+      .then(() => {
+        return queryInterface.createTable("cart_items", {
           cart_id: {
+            allowNull: false,
+            type: Sequelize.UUID,
+            primaryKey: true,
+            unique: false,
+            references: {
+              model: "carts",
+              key: "cart_id",
+            },
+            onUpdate: "CASCADE",
+            onDelete: "CASCADE",
+          },
+          product_id: {
+            allowNull: false,
+            type: Sequelize.UUID,
+            primaryKey: true,
+            unique: false,
+            references: {
+              model: "products",
+              key: "product_id",
+            },
+            onUpdate: "CASCADE",
+            onDelete: "CASCADE",
+          },
+          sku_id: {
             allowNull: false,
             unique: false,
             type: Sequelize.UUID,
             primaryKey: true,
             references: {
-              model: "Cart",
-              key: "id",
-            },
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
-          },
-          product_detail_id: {
-            allowNull: false,
-            unique: true,
-            type: Sequelize.UUID,
-            primaryKey: true,
-            references: {
-              model: "ProductDetail",
-              key: "id",
+              model: "product_skus",
+              key: "sku_id",
             },
             onUpdate: "CASCADE",
             onDelete: "CASCADE",
@@ -50,10 +73,13 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     // remove User hasMany DeliveryInfor
     return queryInterface
-      .removeColumn("DeliveryInfor", "user_id")
+      .removeColumn("delivery_infors", "user_id")
+      .then(() => {
+        return queryInterface.removeColumn("carts", "user_id");
+      })
       .then(() => {
         // remove CartItem
-        return queryInterface.dropTable("CartItem");
+        return queryInterface.dropTable("cart_items");
       });
   },
 };

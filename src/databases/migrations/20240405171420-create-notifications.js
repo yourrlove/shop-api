@@ -2,8 +2,8 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Notification', {
-      id: {
+    await queryInterface.createTable('notifications', {
+      notification_id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID
@@ -19,6 +19,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Notification');
+    await queryInterface.dropTable('notifications');
   }
 };

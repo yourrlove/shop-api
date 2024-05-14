@@ -12,13 +12,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Order.belongsTo(models.User);
-      Order.hasMany(models.OrderDetail);
-      Order.hasMany(models.Invoice);
-      Order.belongsTo(models.Promotion);
+      // Order.hasMany(models.OrderDetail);
+      // Order.hasMany(models.Invoice);
+      // Order.belongsTo(models.Promotion);
     }
   }
   Order.init({
-    id: {
+    order_id: {
       primaryKey: true,
       type: DataTypes.UUID
     },
@@ -51,6 +51,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Order',
+    tableName: 'orders',
     timestamps: true,
   });
   return Order; 

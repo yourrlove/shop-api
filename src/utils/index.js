@@ -22,27 +22,24 @@ const formatDataReturn = (object) => {
 };
 
 const __options = (value, key) => {
-  if (key === "brand") return "$Brand.name$";
-  if (key === "catalogue") return "$Catalogue.name$";
-  if (key === "tag") return "$Tag.name$";
-  if (key === "color") return `$ProductDetail.${key}$`;
-  if (key === "size") return `$ProductDetail.size.type$`;
+  if (key === "brand") return "$Product.Brand.name$";
+  if (key === "catalogue") return "$Product.Catalogue.name$";
+  if (key === "tag") return "$Product.Tag.name$";
+  if (key === "rating") return `$Product.product_rating$`;
+  if (key === "color") return `sku_color`;
+  if (key === "size") return `sku_size`;
   return key;
 };
 
 const __returnOptions = (value, key) => {
   if (key === "Brand") return value.name;
   if (key === "Catalogue") return value.name;
-  if (key === "Tag") return value.name;
-  if (key === "ProductDetail") {
-    return value.map((p) => {
-      return { ...p, size: _.map(p.size, "type") };
-    });
-  }
+  if (key === "Tag") return value.label;
   return value;
 };
 
 const getValues = (object, key) => _.map(object, key);
+
 
 module.exports = {
   getInfoData,

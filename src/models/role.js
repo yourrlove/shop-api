@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Role.init({
-    id: {
+    role_id: {
       type: DataTypes.UUID,
       primaryKey: true
     },
@@ -40,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Role',
+    tableName: 'roles',
     timestamps: false
   });
   return Role;

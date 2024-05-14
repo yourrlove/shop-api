@@ -27,6 +27,7 @@
     "mysql2": "^3.9.3",
     "refs": "^0.9.7",
     "sequelize": "^6.37.1",
+    "slug": "^9.0.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1"

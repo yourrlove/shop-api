@@ -5,9 +5,9 @@ const db = require('../models/index');
 const { NotFoundError } = require('../core/error.response');
 
 class BrandService {
-    static create = async ({ name, logo, description }) => {
+    static create = async ({ name, logo, description, code }) => {
         const id = generateUUID();
-        const brand = await db.Brand.create({ id, name, logo, description });
+        const brand = await db.Brand.create({ id, name, logo, description, code });
         return brand;
     }
 
