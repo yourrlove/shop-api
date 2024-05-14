@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association 
-      Promotion.hasMany(models.Order);
+      // Promotion.hasMany(models.Order);
     }
   }
   Promotion.init({
-    id: {
+    promotion_id: {
       primaryKey: true,
       type: DataTypes.UUID,
     },
@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Promotion',
+    tableName: 'promotions',
     timestamps: true
   });
   return Promotion;

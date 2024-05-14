@@ -6,36 +6,36 @@ module.exports = {
     await queryInterface.sequelize.query(
       `
       CREATE TRIGGER product_total_quantity_insert
-        AFTER INSERT ON ProductDetail
+        BEFORE INSERT ON product_skus
         FOR EACH ROW
         BEGIN
-          UPDATE Product
-          SET quantity = quantity + NEW.quantity
-          WHERE id = NEW.product_id;
+          UPDATE products
+          SET product_quantity = product_quantity + NEW.sku_quantity
+          WHERE product_id = NEW.product_id;
         END;
       `    
     );
     await queryInterface.sequelize.query(
       `
       CREATE TRIGGER product_total_quantity_update
-        BEFORE UPDATE ON ProductDetail
+        BEFORE UPDATE ON product_skus
         FOR EACH ROW
         BEGIN
-          UPDATE Product
-          SET quantity = quantity - OLD.quantity + NEW.quantity
-          WHERE id = NEW.product_id;
+          UPDATE products
+          SET product_quantity = product_quantity - OLD.sku_quantity + NEW.sku_quantity
+          WHERE product_id = NEW.product_id;
         END;
       `
     );
     await queryInterface.sequelize.query(
       `
       CREATE TRIGGER product_total_quantity_delete
-        BEFORE DELETE ON ProductDetail
+        BEFORE DELETE ON product_skus
         FOR EACH ROW
         BEGIN
-          UPDATE Product
-          SET quantity = quantity - OLD.quantity
-          WHERE id = OLD.product_id;
+          UPDATE products
+          SET product_quantity = product_quantity - OLD.sku_quantity
+          WHERE product_id = OLD.product_id;
         END;
       `
     );

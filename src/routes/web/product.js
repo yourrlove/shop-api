@@ -13,4 +13,6 @@ router.get('/brands', asyncHandler( productController.get_products_by_brand_name
 //find product by category
 router.get('/categories', asyncHandler( productController.get_products_by_category_name ));
 
+router.post('/slugs', asyncHandler( productController.create_product_slug ));
+
 module.exports = router;

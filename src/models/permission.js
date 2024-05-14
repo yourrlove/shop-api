@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Permission.init({
-    id: {
+    permission_id: {
       primaryKey: true,
       type: DataTypes.UUID
     },
@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Permission',
+    tableName: 'permissions'
   });
   return Permission;
 };

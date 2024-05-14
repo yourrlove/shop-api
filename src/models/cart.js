@@ -14,13 +14,13 @@ module.exports = (sequelize, DataTypes) => {
       Cart.hasMany(models.CartItem, {
         foreignKey: 'cart_id'
       });
-      Cart.belongsTo(models.User, {
-        foreignKey: 'id',
-      });
+      // Cart.belongsTo(models.User, {
+      //   foreignKey: 'id',
+      // });
     }
   }
   Cart.init({
-    id: {
+    cart_id: {
       primaryKey: true,
       allowNull: false,
       type: DataTypes.UUID,
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id',
       }
     },
-    quantity: {
+    total_quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Cart',
+    tableName: 'carts',
     timestamps: false
   });
   return Cart;

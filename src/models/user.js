@@ -15,14 +15,14 @@ module.exports = (sequelize, DataTypes) => {
       User.hasOne(models.Cart, {
         foreignKey: 'id'
       });
-      User.hasMany(models.ProductEntry);
+      // User.hasMany(models.ProductEntry);
       User.hasMany(models.Order);
-      User.belongsToMany(models.Notification, { through: 'UserNotification' });
-      User.hasMany(models.UserNotification);
+      // User.belongsToMany(models.Notification, { through: 'UserNotification' });
+      // User.hasMany(models.UserNotification);
     }
   }
   User.init({
-    id: {
+    user_id: {
       type: DataTypes.UUID,
       primaryKey: true
     },
@@ -65,6 +65,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
+    tableName: 'users',
     timestamps: true,
     paranoid: true
   });

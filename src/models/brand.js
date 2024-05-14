@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Brand.init({
-    id: {
+    brand_id: {
       primaryKey: true,
       type: DataTypes.UUID
     },
@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: true
     },
+    code: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     deletedAt: {
       type: DataTypes.DATE,
       allowNull: true
@@ -40,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Brand',
+    tableName: 'brands',
     timestamps: true,
     paranoid: true,
     defaultScope: {

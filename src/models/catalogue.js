@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Catalogue.init({
-    id: {
+    Catalogue_id: {
       primaryKey: true,
       allowNull: false,
       type: DataTypes.UUID
@@ -27,9 +27,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true
     },
+    code: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    }
   }, {
     sequelize,
     modelName: 'Catalogue',
+    tableName: 'catalogues',
     timestamps: false,
   });
   return Catalogue;

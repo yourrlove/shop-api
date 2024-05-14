@@ -13,7 +13,6 @@ class UserService {
         if(!user) {
             throw new BadRequestError('Failed to create user! Something went wrong! Please try again!');
         }
-        const cart = await CartService.create(user.id);
         return user;
     }
 

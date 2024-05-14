@@ -31,22 +31,22 @@ class AuthService {
     const passwordHash = await bcrypt.hash(password, 10);
     const { role_id } = await db.Role.findOne({
       where: { name: 'user' },
-      attributes: [["id", "role_id"]],
+      attributes: ["role_id"],
       raw: true,
     });
 
     if (!role_id) throw new BadRequestError("Role not found");
-    const id = generateUUID();
+    const user_id = generateUUID();
     // step3: create token pair
     const tokens = createKeyTokenPair(
-      { user_id: id, role_id: role_id },
+      { user_id: user_id, role_id: role_id },
       process.env.ACCESS_TOKEN_KEY_SECRET,
       process.env.REFRESH_TOKEN_KEY_SECRET
     );
     if (!tokens) throw new ConflictRequestError("Failed to create tokens!");
 
     const newUser = await UserService.create({
-      id,
+      user_id,
       first_name,
       last_name,
       phone_number,

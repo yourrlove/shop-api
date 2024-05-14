@@ -11,13 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      ProductEntry.belongsTo(models.User);
-      ProductEntry.belongsToMany(models.Product, { through: 'ProductEntryDetail' });
-      ProductEntry.hasMany(models.ProductEntryDetail);
+      // ProductEntry.belongsTo(models.User);
+      // ProductEntry.belongsToMany(models.Product, { through: 'ProductEntryDetail' });
+      // ProductEntry.hasMany(models.ProductEntryDetail);
     }
   }
   ProductEntry.init({
-    id: {
+    product_entry_id: {
       type: DataTypes.UUID,
       primaryKey: true
     },
@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'ProductEntry',
+    tableName: 'product_entries',
     timestamps: true
   });
   return ProductEntry;

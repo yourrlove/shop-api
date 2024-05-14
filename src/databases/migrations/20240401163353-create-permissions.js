@@ -2,20 +2,24 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Catalogue', {
-      id: {
+    await queryInterface.createTable('permissions', {
+      permission_id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID
       },
-      name: {
+      path: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true
       },
+      method: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Catalogue');
+    await queryInterface.dropTable('permissions');
   }
 };

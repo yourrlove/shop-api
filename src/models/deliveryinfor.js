@@ -12,11 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       DeliveryInfor.belongsTo(models.User);
-      DeliveryInfor.hasMany(models.Invoice);
+      // DeliveryInfor.hasMany(models.Invoice);
     }
   }
   DeliveryInfor.init({
-    id: {
+    delivery_id: {
       type: DataTypes.UUID,
       primaryKey: true
     },
@@ -43,6 +43,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'DeliveryInfor',
+    tableName: 'delivery_infors',
   });
   return DeliveryInfor;
 };

@@ -24,46 +24,52 @@ module.exports = (sequelize, DataTypes) => {
       Product.belongsTo(models.Tag, {
         foreignKey: 'tag_id',
       });
-      Product.belongsToMany(models.ProductEntry, { through: 'ProductEntryDetail' });
-      Product.hasMany(models.ProductEntryDetail);
+      // Product.belongsToMany(models.ProductEntry, { through: 'ProductEntryDetail' });
+      // Product.hasMany(models.ProductEntryDetail);
     }
   }
   Product.init({
-    id: {
+    product_id: {
+      allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID
     },
-    name: {
+    product_name: {
+      allowNull: false,
       type: DataTypes.STRING,
-      allowNull: false
+      unique: true
     },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true
-    },
-    quantity: {
-      type: DataTypes.INTEGER,
+    product_desc: {
       allowNull: true,
+      type: DataTypes.TEXT
+    },
+    product_quantity: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
       defaultValue: 0
     },
-    status: {
-      type: DataTypes.STRING,
+    product_status: {
       allowNull: false,
+      type: DataTypes.STRING,
       defaultValue: 'available'
     },
-    current_unit_price: {
-      type: DataTypes.FLOAT,
+    product_price: {
+      allowNull: false,
+      type: DataTypes.FLOAT
+    },
+    product_rating: {
       allowNull: true,
+      type: DataTypes.FLOAT,
       defaultValue: 0
     },
-    rating: {
-      type: DataTypes.FLOAT,
-      allowNull: true,
-      defaultValue: 0
+    product_slug: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true
     },
-    thumbnail: {
-      type: DataTypes.TEXT,
-      allowNull: true
+    product_thumb: {
+      allowNull: true,
+      type: DataTypes.JSON,
     },
     deletedAt: {
       type: DataTypes.DATE,
@@ -96,6 +102,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Product',
+    tableName: 'products',
     timestamps: true,
     paranoid: true,
     defaultScope: {
