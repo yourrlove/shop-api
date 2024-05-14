@@ -10,7 +10,7 @@ router.post('/', asyncHandler( productController.create_product ));
 router.get('/', asyncHandler( productController.get_list_products ));
 router.put('/:id', asyncHandler( productController.update_product ));
 router.delete('/:id', asyncHandler( productController.delete_product ));
-router.post('/:id/productdetails', asyncHandler( productController.create_product_detail ));
+router.post('/:id/productdetails', uploadDisk.array('files'), asyncHandler( productController.create_product_detail ));
 router.get('/:id/productdetails', asyncHandler( productController.get_all_product_details ));
 router.delete('/productdetails/:id', asyncHandler( productController.delete_product_detail ));
 router.put('/productdetails/:id', asyncHandler( productController.update_product_detail ));
@@ -26,7 +26,7 @@ router.get('/categories', asyncHandler( productController.get_products_by_catego
 router.post('/filter', asyncHandler( productController.filter_products));
 
 //upload product image
-router.post('/:productId/:productdetailId/thumb', asyncHandler( UploadController.upload_product_thumbnail ));
+router.post('/:productId/thumb', uploadDisk.array('files'), asyncHandler( UploadController.upload_product_thumbnail ));
 router.post('/productdetails/:id/upload', uploadDisk.array('files'), asyncHandler( UploadController.upload_product_detail_images ));
 
 module.exports = router;

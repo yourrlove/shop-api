@@ -6,7 +6,6 @@ const { formatDataReturn } = require('../utils/index');
 
 class ProductController {
     create_product = async (req, res, next) => {
-
         new OK({
             message: 'Product created successfully',
             metadata: await ProductService.create(req.body)
@@ -16,7 +15,7 @@ class ProductController {
     get_list_products = async (req, res, next) => {
         new OK({
             message: 'List of products',
-            metadata: await ProductService.get_all()
+            metadata: await ProductDetailService.get_all()
         }).send(res);
     }
 
@@ -37,7 +36,7 @@ class ProductController {
     create_product_detail = async (req, res, next) => {
         new CREATED({
             message: 'Product detail created successfully',
-            metadata: await ProductDetailService.create(req.params.id, req.body)
+            metadata: await ProductDetailService.create(req.params.id, { ...req.body, files: req.files })
         }).send(res);
     }
 
@@ -100,9 +99,16 @@ class ProductController {
     filter_products = async (req, res, next) => {
         new OK({
             message: 'List of products',
-            metadata: await ProductService.filter_by_query_options(req.body)
+            metadata: await ProductDetailService.filter_by_query_options(req.body)
         }).send(res);
     }    
+
+    create_product_slug = async (req, res, next) => {
+        new CREATED({
+            message: 'Product slug created successfully',
+            metadata: await ProductDetailService.createProductDetailslug()
+        }).send(res);
+    }
 }
 
 module.exports = new ProductController();
