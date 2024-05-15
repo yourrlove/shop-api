@@ -14,9 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       Cart.hasMany(models.CartItem, {
         foreignKey: 'cart_id'
       });
-      // Cart.belongsTo(models.User, {
-      //   foreignKey: 'id',
-      // });
+      Cart.belongsTo(models.User, {
+        foreignKey: 'user_id',
+      });
     }
   }
   Cart.init({
@@ -34,6 +34,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 0,
     },
+    user_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'User',
+        key: 'user_id'
+      }
+    }
   }, {
     sequelize,
     modelName: 'Cart',

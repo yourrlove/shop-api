@@ -36,7 +36,7 @@ class AuthContoller {
         });
         new OK({
             message: 'Login successfully!',
-            metadata: { accessToken, refreshToken }
+            metadata: { accessToken }
         }).send(res);
     }
 
