@@ -10,6 +10,7 @@ const {
 const { createKeyTokenPair } = require("../utils/authUtils");
 const JWT = require("jsonwebtoken");
 const UserService = require("../services/user.service");
+const CartService = require("../services/cart.service");
 
 class AuthService {
   static signUp = async ({
@@ -55,7 +56,7 @@ class AuthService {
       role_id,
       refresh_token: tokens.refreshToken,
     });
-
+    const cart = await CartService.create(newUser.user_id)  
     return tokens;
   };
 
