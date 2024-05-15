@@ -79,7 +79,6 @@ class ProductDetailService {
     const productDetails = await db.ProductDetail.findAll({
       include: {
         model: db.Product,
-        attributes: ["product_name"],
         include: [
           {
             model: db.Brand,
@@ -89,9 +88,12 @@ class ProductDetailService {
             model: db.Tag,
             attributes: ["name", "label"],
           },
+          {
+            model: db.Catalogue,
+            attributes: ["name"]
+          }
         ],
       },
-      raw: true,
     });
     return productDetails;
   };
@@ -166,10 +168,10 @@ class ProductDetailService {
           },
         ],
       },
-      order:[[ db.Product, ...sort]],
+      order: [[db.Product, ...sort]],
       nest: true,
       required: true,
-    })
+    });
     //.map((product) => formatDataReturn(product.toJSON()));
     return products;
   };
