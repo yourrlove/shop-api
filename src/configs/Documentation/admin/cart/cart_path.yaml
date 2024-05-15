@@ -22,7 +22,7 @@
               type: string
               example: An unexpected error occurred.
       
-/cart/getall/{user_id}:
+/carts/getall/{user_id}:
   get:
     tags:
       - Cart
@@ -54,7 +54,7 @@
               type: string
               example: An unexpected error occurred.
 
-cart/{id}/addtocard:
+carts/{id}:
     post:
       tags:
         - Cart
@@ -99,3 +99,86 @@ cart/{id}/addtocard:
               schema:
                 type: string
                 example: An unexpected error occurred.
+
+/carts/createcart:
+  post:
+    tags:
+      - Cart
+    summary: Create the cart for user
+    description: Creates a cart for a user.
+    operationId: createCart
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: string
+                format: uuid
+              quantity:
+                type: integer
+    responses:
+      200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Create cart successfully
+
+/carts/{id}:
+  put:
+    tags:
+      - Cart
+    summary: Modify the quantity of product item
+    description: This endpoint use to modify the quantity of product item in cart
+    operationId: putQuantity
+    parameters:
+      - name: id
+        in: path
+        description: ID of the product expected to modify quantity
+        required: true
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              cart_id: 
+                type: string
+                format: uuid
+              quantity:
+                type: integer
+  delete:
+    tags: 
+      - Cart
+    summary: delete the product item from cart
+    description: This endpoint takes reposibility for deleting the product item from cart
+    operationId: deleteItem
+    parameters:
+      - name: id
+        in: path
+        description: ID of the product expected to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              cart_id: 
+                type: string
+                format: uuid
