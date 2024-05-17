@@ -67,7 +67,7 @@ class AuthService {
     if (!isPassMatch) throw new AuthFailureError("Wrong password!");
 
     const token = createKeyTokenPair(
-      { user_id: user.id, role_id: user.role_id },
+      { user_id: user.user_id, role_id: user.role_id },
       process.env.ACCESS_TOKEN_KEY_SECRET,
       process.env.REFRESH_TOKEN_KEY_SECRET
     );
