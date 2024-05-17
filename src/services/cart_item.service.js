@@ -95,7 +95,7 @@ class CartItemService {
 
     const cartitem = await db.CartItem.findAll({
       where: {
-        cart_id: cart.id,
+        cart_id: cart.cart_id,
       },
       include: {
         model: db.ProductDetail,
