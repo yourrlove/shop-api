@@ -7,13 +7,13 @@ const { NotFoundError, BadRequestError } = require("../core/error.response");
 class CartItemService {
   // add product(s) to cart
   static create = async (user_id, { sku_id, product_id, quantity }) => {
-    const user = await db.User.findOne({ id: user_id });
+    const user = await db.User.findOne({ user_id: user_id });
     if (!user) {
       throw new NotFoundError("User not found");
     }
     let cart = await db.Cart.findOne({
       where: {
-        id: user_id,
+        user_id: user_id,
       },
     });
     if (!cart) {
@@ -23,7 +23,7 @@ class CartItemService {
     const productDetail = await db.ProductDetail.findOne({
       where: {
         product_id: product_id,
-        id: sku_id,
+        sku_id: sku_id,
       },
     });
 
@@ -32,11 +32,11 @@ class CartItemService {
     }
     const [cartItem, created] = await db.CartItem.findOrCreate({
       where: {
-        cart_id: cart.id,
+        cart_id: cart.cart_id,
         sku_id: sku_id,
       },
       defaults: {
-        cart_id: cart.id,
+        cart_id: cart.cart_id,
         sku_id: sku_id,
         product_id: product_id,
         quantity: quantity,
@@ -61,7 +61,7 @@ class CartItemService {
     }
     const cart = await db.Cart.findOne({
       where: {
-        id: cart_id,
+        cart_id: cart_id,
       },
     });
     if (!cart) {
@@ -85,7 +85,7 @@ class CartItemService {
   static get_all = async (user_id, cart_id) => {
     const cart = await db.Cart.findOne({
       where: {
-        id: cart_id,
+        cart_id: cart_id,
       },
     });
 
@@ -116,13 +116,13 @@ class CartItemService {
   };
 
   static deleteCartItem = async (user_id, cart_id, sku_id) => {
-    const user = await db.User.findOne({id: user_id});
+    const user = await db.User.findOne({user_id: user_id});
     if (!user) {
       throw new NotFoundError("User not found");
     }
     const cart = await db.Cart.findOne({
       where: {
-        id: cart_id,
+        cart_id: cart_id,
       },
     });
     if (!cart) {
