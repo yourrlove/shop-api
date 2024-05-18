@@ -229,6 +229,13 @@ class ProductDetailService {
     );
     return products;
   };
+
+  static getSkuDetails = async (sku_id) => {
+    const product_sku = await db.ProductDetail.findOne({
+      sku_id: sku_id,
+    }) 
+    return product_sku;
+  }
 }
 
 module.exports = ProductDetailService;
