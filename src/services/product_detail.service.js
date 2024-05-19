@@ -233,6 +233,9 @@ class ProductDetailService {
   static getSkuDetails = async (sku_id, fields=[]) => {
     const product_sku = await db.ProductDetail.findOne({
       where: { sku_id: sku_id },
+      include: {
+        model: db.Product
+      },
       raw: true
     });
     if (!product_sku) {
