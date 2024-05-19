@@ -230,11 +230,15 @@ class ProductDetailService {
     return products;
   };
 
-  static getSkuDetails = async (sku_id) => {
+  static getSkuDetails = async (sku_id, fields=[]) => {
     const product_sku = await db.ProductDetail.findOne({
-      sku_id: sku_id,
-    }) 
-    return product_sku;
+      where: { sku_id: sku_id },
+      raw: true
+    });
+    if (!product_sku) {
+      throw new NotFoundError(`Product SKU not found`);
+    }
+    return getInfoData(fields = fields, product_sku);
   }
 }
 
