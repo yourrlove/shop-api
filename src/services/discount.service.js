@@ -79,7 +79,7 @@ class DiscountService {
         discount_code: discount_code,
         discount_is_active: true,
       },
-      raw: true
+      raw: true,
     });
     if (!discount) {
       throw new NotFoundError("Discount code not found!");
@@ -98,7 +98,7 @@ class DiscountService {
     return product_skus;
   };
 
-  static update = async (discount_id, updateBody={}) => {
+  static update = async (discount_id, updateBody = {}) => {
     const discount = await db.Discount.findOne({
       where: {
         discount_id: discount_id,
@@ -108,17 +108,21 @@ class DiscountService {
     if (!discount) {
       throw new NotFoundError("Discount code not found!");
     }
-    const updatedDiscount = await db.Discount.update(
-        updateBody,
-        {
-            where: {
-                discount_id: discount_id,
-            },
-            raw: true,
-        }
-    );
+    if (
+        new Date() > new Date(discount.discount_start_date) ||
+        new Date() > new Date(discount.discount_end_date)
+      ) {
+        throw new BadRequestError("Discount code has expired!");
+      }
+    
+    const updatedDiscount = await db.Discount.update(updateBody, {
+      where: {
+        discount_id: discount_id,
+      },
+      raw: true,
+    });
     return updatedDiscount[0];
-  }
+  };
 
   static delete = async (discount_id) => {
     const discount = await db.Discount.findOne({
@@ -137,7 +141,48 @@ class DiscountService {
       raw: true,
     });
     return deletedDiscount[0];
-  }
+  };
+
+  static getDiscountAmount = async ({ discount_code, cart_items }) => {
+    const discount = await db.Discount.findOne({
+      where: {
+        discount_code: discount_code,
+        discount_is_active: true,
+      },
+      raw: true,
+    });
+
+    if (!discount) {
+      throw new NotFoundError("Discount code not found!");
+    }
+
+    if (discount.discount_used_count >= discount.discount_max_use) {
+      throw new BadRequestError("Discount code has exceeded max use!");
+    }
+
+    let discount_amount = 0;
+    for (let i = 0; i < cart_items.length; i++) {
+      if( discount.discount_sku_ids.includes(cart_items[i].sku_id)) {
+        discount_amount += cart_items[i].sku_price;
+      }
+    }
+    if(discount_amount === 0) {
+      throw new NotFoundError("Discount code is not valid for the items in cart!");
+    };
+
+    // need to consider about using the discount fixed amount
+    if (discount.discount_type === "fixed_amount") {
+      discount_amount = discount.discount_value;
+    }
+    if (discount.discount_type === "percentage") {
+      discount_amount = (discount.discount_value / 100) * discount_amount;
+    }
+
+    return  {
+      discount_amount,
+      discount_desc: discount.discount_desc,
+    };
+  };
 }
 
 module.exports = DiscountService;
