@@ -2,6 +2,7 @@ const db = require("../models/index");
 const { BadRequestError, NotFoundError } = require("../core/error.response");
 const ProductDetailService = require("./product_detail.service");
 const DiscountService = require("./discount.service");
+const _ = require("lodash");
 
 class CheckOutService {
   static checkOutReviewCart = async ({
@@ -22,10 +23,10 @@ class CheckOutService {
     }
     cart_items = await Promise.all(
       cart_items.map(async (item) => {
-        const { sku_price } = await ProductDetailService.getSkuDetails(
+        const sku_price = _.get( await ProductDetailService.getSkuDetails(
           item.sku_id,
-          ["sku_price"]
-        );
+          ["Product.product_price"]
+        ), ["Product.product_price"]);
         return { ...item, sku_price };
       })
     );
