@@ -17,35 +17,67 @@ module.exports = (sequelize, DataTypes) => {
       // Order.belongsTo(models.Promotion);
     }
   }
-  Order.init({
+  Order.init({  
     order_id: {
       primaryKey: true,
       type: DataTypes.UUID
     },
-    total_price: {
+    order_total_price: {
       type: DataTypes.FLOAT,
       allowNull: false,
-      defaultValue: 0
     },
-    status: {
-      type: DataTypes.STRING,
+    order_discount_amount: {
       allowNull: false,
-      defaultValue: 'pending'
+      type: DataTypes.FLOAT,
+    },
+    order_shipping_price: {
+      allowNull: false,
+      type: DataTypes.FLOAT,
+    },
+    order_final_price: {
+      allowNull: false,
+      type: DataTypes.FLOAT,
+    },
+    order_payment_method: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    order_status: {
+      allowNull: false,
+      type: DataTypes.ENUM,
+      values: ["pending", "confirmed", "cancelled", "shipped", "delivered"],
+      defaultValue: "pending",
+    },
+    order_province: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    order_city: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    order_district: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    order_street: {
+      allowNull: false,
+      type: DataTypes.STRING,
     },
     user_id: {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: 'User',
-        key: 'id'
+        model: 'users',
+        key: 'user_id'
       }
     },
-    promotion_id: {
+    discount_id: {
       type: DataTypes.UUID,
       allowNull: true,
       references: {
-        model: 'Promotion',
-        key: 'id'
+        model: 'discounts',
+        key: 'discount_id'
       }
     },
   }, {
