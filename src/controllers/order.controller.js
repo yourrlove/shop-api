@@ -3,6 +3,14 @@ const OrderService = require('../services/order.service');
 const { OK, CREATED } =  require('../core/success.response');
 
 class OrderController {
+
+    checkOutDeliveryInformation = async (req, res, next) => {
+        new OK ({
+            message: 'Check out delivery information',
+            metadata: await CheckOutService.checkOutDeliveryInformation (req.user.user_id)
+        }).send(res);
+    }
+
     checkOutReviewOrder = async (req, res, next) => {
         new OK ({
             message: 'Check out order review',

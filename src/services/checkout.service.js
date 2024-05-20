@@ -118,6 +118,21 @@ class CheckOutService {
       payment_method,
     };
   };
+
+  static checkOutDeliveryInformation = async (user_id) => {
+    const personal_detail = await db.User.findOne({
+      where: { user_id: user_id },
+      attributes: ["first_name", "last_name", "email", "phone_number"],
+    });
+    if(!personal_detail) {
+      throw new NotFoundError('User not found');
+    }
+    const shipping_address = await DeliveryInforService.getDeliveryDefault(user_id);
+    return {
+      personal_detail,
+      shipping_address,
+    };
+  }
 }
 
 module.exports = CheckOutService;
