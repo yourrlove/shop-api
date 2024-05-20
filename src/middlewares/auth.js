@@ -8,7 +8,6 @@ const verifyToken = (req, res, next) => {
     if (!token) throw new AuthFailureError('Invalid Request');
     JWT.verify(token, process.env.ACCESS_TOKEN_KEY_SECRET, (err, decoded) => {
         if (err) throw new ForbiddenRequestError('Unauthorized request');
-        console.log(decoded);
         req.user = decoded;
         next();
     });
