@@ -4,7 +4,7 @@ const { NotFoundError, BadRequestError } = require('../core/error.response');
 const UserService = require('./user.service');
 
 class DeliveryInforService {
-    static create = async (user_id, { province, city, district, street, is_default }) => {
+    static create = async (user_id, { province_city, district, ward, street, is_default }) => {
         const user = await db.User.findOne({ user_id: user_id});
         if (!user) {
             throw new NotFoundError('User not found');
@@ -19,9 +19,9 @@ class DeliveryInforService {
             const deliveryinfor = await db.DeliveryInfor.create({
                 delivery_id: generateUUID(),
                 user_id: user_id,
-                province: province,
-                city: city,
+                province_city: province_city,
                 district: district,
+                ward: ward,
                 street: street,
                 is_default: is_default
             });

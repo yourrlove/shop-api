@@ -8,15 +8,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.UUID
       },
-      province: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      city: {
+      province_city: {
         allowNull: false,
         type: Sequelize.STRING
       },
       district: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      ward: {
         allowNull: false,
         type: Sequelize.STRING
       },

@@ -22,15 +22,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       primaryKey: true
     },
-    province: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    city: {
+    province_city: {
       type: DataTypes.STRING,
       allowNull: false
     },
     district: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    ward: {
       type: DataTypes.STRING,
       allowNull: false
     },
