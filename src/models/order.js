@@ -48,15 +48,15 @@ module.exports = (sequelize, DataTypes) => {
       values: ["pending", "confirmed", "cancelled", "shipped", "delivered"],
       defaultValue: "pending",
     },
-    order_province: {
-      allowNull: false,
-      type: DataTypes.STRING,
-    },
-    order_city: {
+    order_province_city: {
       allowNull: false,
       type: DataTypes.STRING,
     },
     order_district: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    order_ward: {
       allowNull: false,
       type: DataTypes.STRING,
     },

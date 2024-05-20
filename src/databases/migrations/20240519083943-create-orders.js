@@ -35,15 +35,15 @@ module.exports = {
         values: ["pending", "confirmed", "cancelled", "shipped", "delivered"],
         defaultValue: "pending",
       },
-      order_province: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      order_city: {
+      order_province_city: {
         allowNull: false,
         type: Sequelize.STRING,
       },
       order_district: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      order_ward: {
         allowNull: false,
         type: Sequelize.STRING,
       },

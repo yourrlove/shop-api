@@ -15,7 +15,6 @@ class OrderService {
     delivery_information,
     payment_method,
   }) => {
-
     const user = await db.User.findByPk(user_id);
     if (!user) {
       throw new NotFoundError("User not found");
@@ -48,11 +47,11 @@ class OrderService {
         order_shipping_price: checkOutResult.shipping_price,
         order_final_price: checkOutResult.final_price,
         order_payment_method: checkOutResult.payment_method,
-        order_province:
-          checkOutResult.delivery_information.shipping_address.province,
-        order_city: checkOutResult.delivery_information.shipping_address.city,
+        order_province_city:
+          checkOutResult.delivery_information.shipping_address.province_city,
         order_district:
           checkOutResult.delivery_information.shipping_address.district,
+        order_ward: checkOutResult.delivery_information.shipping_address.ward,
         order_street:
           checkOutResult.delivery_information.shipping_address.street,
         user_id: user_id,
@@ -60,7 +59,7 @@ class OrderService {
       });
       return newOrder;
     } catch (error) {
-        console.error(error);
+      console.error(error);
       throw new BadRequestError("Create order failed, please try again!");
     }
   };
