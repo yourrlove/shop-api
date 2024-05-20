@@ -69,6 +69,18 @@ class UserService {
             cart: cartInfor
         }
     }
+
+    static getUserDetails = async (user_id, fields=[]) => {
+        const user = await db.User.findOne({
+            where: {
+                user_id: user_id
+            },
+            attributes: fields,
+            raw: true
+        });
+        if (!user) throw new BadRequestError('User not found');
+        return user;
+    }
 }
 
 module.exports = UserService;

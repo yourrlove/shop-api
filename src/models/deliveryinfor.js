@@ -11,7 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      DeliveryInfor.belongsTo(models.User);
+      DeliveryInfor.belongsTo(models.User, {
+        foreignKey: 'user_id',
+      });
       // DeliveryInfor.hasMany(models.Invoice);
     }
   }
@@ -30,7 +32,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     street: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true,
+      unique: true
     },
     is_default: {
       type: DataTypes.BOOLEAN,
@@ -44,6 +47,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'DeliveryInfor',
     tableName: 'delivery_infors',
+    timestamps: false,
   });
   return DeliveryInfor;
 };

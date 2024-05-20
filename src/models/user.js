@@ -11,7 +11,9 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE'
       });
-      User.hasMany(models.DeliveryInfor);
+      User.hasMany(models.DeliveryInfor, {
+        foreignKey: 'user_id'
+      });
       User.hasOne(models.Cart, {
         foreignKey: 'user_id'
       });
