@@ -114,11 +114,9 @@ class DeliveryInforService {
                 user_id: user_id,
                 is_default: true
             },
+            attributes: { exclude: ['delivery_id', 'user_id'] },
             raw: true
         });
-        if (!delivery_infor) {
-            throw new NotFoundError('DeliveryInfor not found');
-        }
         return delivery_infor;
     } 
 }

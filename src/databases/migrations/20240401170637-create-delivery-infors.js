@@ -12,6 +12,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      city: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       district: {
         allowNull: false,
         type: Sequelize.STRING

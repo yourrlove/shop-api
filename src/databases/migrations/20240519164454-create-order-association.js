@@ -17,13 +17,6 @@ module.exports = {
         key: "discount_id",
       },
     });
-    await queryInterface.addColumn("orders", "delivery_id", {
-      type: Sequelize.UUID,
-      references: {
-        model: "delivery_infors",
-        key: "delivery_id",
-      },
-    });
     await queryInterface.createTable("order_details", {
       order_id: {
         type: Sequelize.UUID,
@@ -53,7 +46,6 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     await queryInterface.removeColumn("orders", "user_id");
     await queryInterface.removeColumn("orders", "discount_id");
-    await queryInterface.removeColumn("orders", "delivery_id");
     await queryInterface.dropTable("order_details");
   },
 };
