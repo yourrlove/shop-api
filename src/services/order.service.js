@@ -29,7 +29,7 @@ class OrderService {
       payment_method,
     });
     let discountId = null;
-    if(discount_code === null) {
+    if(discount_code !== null) {
       const { discount_id } = await db.Discount.findOne({
         where: {
           discount_code: discount_code,
