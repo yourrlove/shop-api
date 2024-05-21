@@ -14,7 +14,7 @@ class DeliveryInforController {
         new OK({
             message: 'List of DeliveryInfor',
             metadata: await DeliveryInforService.getAll(req.user.user_id)
-        });
+        }).send(res);
     }
 
     updateDeliveryInfor = async (req, res, next) => {
