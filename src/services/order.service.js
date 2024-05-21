@@ -28,17 +28,19 @@ class OrderService {
       delivery_information,
       payment_method,
     });
+    let discountId = null;
+    if(discount_code === null) {
+      const { discount_id } = await db.Discount.findOne({
+        where: {
+          discount_code: discount_code,
+          discount_is_active: true,
+        },
+        attributes: ["discount_id"],
+        raw: true,
+      });
+      discountId = discount_id;
+    }
 
-    const { discount_id } = await db.Discount.findOne({
-      where: {
-        discount_code: discount_code,
-        discount_is_active: true,
-      },
-      attributes: ["discount_id"],
-      raw: true,
-    });
-
-    console.log(checkOutResult);
     try {
       const newOrder = await db.Order.create({
         order_id: generateUUID(),
@@ -55,7 +57,7 @@ class OrderService {
         order_street:
           checkOutResult.delivery_information.shipping_address.street,
         user_id: user_id,
-        discount_id: discount_id,
+        discount_id: discountId,
       });
       return newOrder;
     } catch (error) {
