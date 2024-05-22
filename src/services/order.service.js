@@ -111,7 +111,7 @@ class OrderService {
     });
     const orders = await db.Order.findAll({
       where: { user_id: user_id },
-      attributes: ["order_id", "order_final_price", "order_status", "updatedAt"],
+      attributes: ["order_id", "order_final_price", "order_status", "order_payment_method", "updatedAt"],
       order: [sortBy],
       plain: true,
     });

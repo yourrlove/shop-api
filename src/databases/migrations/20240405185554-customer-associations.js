@@ -38,6 +38,15 @@ module.exports = {
             onUpdate: "CASCADE",
             onDelete: "CASCADE",
           },
+          product_id: {
+            allowNull: false,
+            type: Sequelize.UUID,
+            unique: false,
+            references: {
+              model: "products",
+              key: "product_id",
+            },
+          },
           sku_id: {
             allowNull: false,
             unique: false,
