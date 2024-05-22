@@ -105,7 +105,7 @@ module.exports = (sequelize, DataTypes) => {
            ? moment(rawValue).format("YYYY-MM-DD")
             : null;
         },
-      }
+      },   
     },
     {
       sequelize,
