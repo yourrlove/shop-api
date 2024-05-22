@@ -31,14 +31,6 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id',
         }
     },
-    product_id: {
-      type: DataTypes.UUID,
-      required: true,
-      references: {
-        model: 'Product',
-        key: 'id',
-      }
-    },
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,

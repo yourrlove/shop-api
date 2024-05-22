@@ -37,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
     street: {
       type: DataTypes.STRING,
       allowNull: true,
-      unique: true
     },
     is_default: {
       type: DataTypes.BOOLEAN,

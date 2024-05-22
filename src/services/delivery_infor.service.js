@@ -2,12 +2,21 @@ const db = require("../models/index");
 const { generateUUID } = require("../helpers/index");
 const { NotFoundError, BadRequestError } = require("../core/error.response");
 const UserService = require("./user.service");
+const { checkRequestParams, removeNull } = require("../utils/index");
+
 
 class DeliveryInforService {
   static create = async (
     user_id,
     { province_city, district, ward, street, is_default }
   ) => {
+    checkRequestParams({
+      province_city,
+      district,
+      ward,
+      street,
+      is_default,
+    })
     const user = await db.User.findOne({ user_id: user_id });
     if (!user) {
       throw new NotFoundError("User not found");
@@ -49,6 +58,9 @@ class DeliveryInforService {
   };
 
   static update = async (user_id, delivery_id, updateBody) => {
+    updateBody = removeNull(updateBody);
+    checkRequestParams(updateBody);
+    
     const user = await db.User.findOne({
       user_id: user_id,
     });
