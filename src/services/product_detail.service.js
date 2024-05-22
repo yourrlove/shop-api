@@ -90,8 +90,8 @@ class ProductDetailService {
           },
           {
             model: db.Catalogue,
-            attributes: ["name"]
-          }
+            attributes: ["name"],
+          },
         ],
       },
     });
@@ -107,13 +107,31 @@ class ProductDetailService {
     return result;
   };
 
-  static update = async (id, body) => {
+  static update = async (sku_id, body) => {
+    body = removeNull(body);
     const productDetail = await db.ProductDetail.update(
       {
         ...body,
       },
       {
         where: { id: id },
+      }
+    );
+    if (!productDetail) throw new NotFoundError(`ProductDetail not found`);
+    return productDetail;
+  };
+
+  static updateStock = async (sku_id, { sku_quantity }) => {
+    body = removeNull(body);
+    const productDetail = await db.ProductDetail.increment(
+      {
+        sku_quantity: sku_quantity,
+      },
+      {
+        where: {
+          sku_id: sku_id,
+          sku_quantity: { [Op.gt]: 0 },
+        },
       }
     );
     if (!productDetail) throw new NotFoundError(`ProductDetail not found`);
@@ -230,19 +248,19 @@ class ProductDetailService {
     return products;
   };
 
-  static getSkuDetails = async (sku_id, fields=[]) => {
+  static getSkuDetails = async (sku_id, fields = []) => {
     const product_sku = await db.ProductDetail.findOne({
       where: { sku_id: sku_id },
       include: {
-        model: db.Product
+        model: db.Product,
       },
-      raw: true
+      raw: true,
     });
     if (!product_sku) {
       throw new NotFoundError(`Product SKU not found`);
     }
-    return getInfoData(fields = fields, product_sku);
-  }
+    return getInfoData((fields = fields), product_sku);
+  };
 }
 
 module.exports = ProductDetailService;
