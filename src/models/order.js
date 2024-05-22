@@ -92,21 +92,26 @@ module.exports = (sequelize, DataTypes) => {
         get() {
           const rawValue = this.getDataValue("createdAt");
           return rawValue
-            ? moment(rawValue).format("DD-MM-YYYY")
+            ? moment(rawValue).format("YYYY-MM-DD")
             : null;
         },
       },
+      updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        get() {
+          const rawValue = this.getDataValue("updatedAt");
+          return rawValue
+           ? moment(rawValue).format("YYYY-MM-DD")
+            : null;
+        },
+      },   
     },
     {
       sequelize,
       modelName: "Order",
       tableName: "orders",
       timestamps: true,
-      defaultScope: {
-        attributes: {
-          exclude: ["updatedAt"],
-        },
-      },
     }
   );
   return Order;

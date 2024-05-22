@@ -104,14 +104,14 @@ class OrderService {
 
   static getUserOrders = async (
     user_id,
-    { sortBy = ["createdAt", "DESC"] }
+    { sortBy = ["updatedAt", "DESC"] }
   ) => {
     checkRequestParams({
       sortBy,
     });
     const orders = await db.Order.findAll({
       where: { user_id: user_id },
-      attributes: ["order_id", "order_final_price", "order_status", "createdAt"],
+      attributes: ["order_id", "order_final_price", "order_status", "updatedAt"],
       order: [sortBy],
       plain: true,
     });
