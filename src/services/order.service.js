@@ -4,7 +4,11 @@ const { BadRequestError, NotFoundError } = require("../core/error.response");
 const { generateUUID } = require("../helpers/index");
 const DeliveryInforService = require("./delivery_infor.service");
 const CheckOutService = require("./checkout.service");
-const { where } = require("sequelize");
+const { checkRequestParams } = require("../utils/index");
+const order = require("../models/order");
+const { raw } = require("mysql2");
+const ProductDetailService = require("./product_detail.service");
+const { or } = require("sequelize");
 
 class OrderService {
   static create = async ({
@@ -15,6 +19,13 @@ class OrderService {
     delivery_information,
     payment_method,
   }) => {
+    checkRequestParams({
+      discount_code,
+      ...delivery_information.shipping_address,
+      ...delivery_information.personal_detail,
+      payment_method,
+    });
+
     const user = await db.User.findByPk(user_id);
     if (!user) {
       throw new NotFoundError("User not found");
@@ -29,7 +40,7 @@ class OrderService {
       payment_method,
     });
     let discountId = null;
-    if(discount_code !== null) {
+    if (discount_code !== null) {
       const { discount_id } = await db.Discount.findOne({
         where: {
           discount_code: discount_code,
@@ -59,11 +70,85 @@ class OrderService {
         user_id: user_id,
         discount_id: discountId,
       });
+
+      // create orderDetails
+      const order_details = await Promise.all(
+        cart_items.map(async (item) => {
+          return await db.OrderDetail.create({
+            order_id: newOrder.order_id,
+            sku_id: item.sku_id,
+            quantity: item.quantity,
+            order_detail_price: item.price,
+            order_detail_quantity: item.quantity,
+          });
+        })
+      );
+
+      // remove cart items
+      await Promise.all(
+        cart_items.map(async (item) => {
+          await db.CartItem.destroy({
+            where: {
+              cart_id: cart_id,
+              sku_id: item.sku_id,
+            },
+          });
+        })
+      );
+
       return newOrder;
     } catch (error) {
-      console.error(error);
-      throw new BadRequestError("Create order failed, please try again!");
+      throw new BadRequestError(error.errors[0].message);
     }
+  };
+
+  static getUserOrders = async (
+    user_id,
+    { sortBy = ["updatedAt", "DESC"] }
+  ) => {
+    checkRequestParams({
+      sortBy,
+    });
+    const orders = await db.Order.findAll({
+      where: { user_id: user_id },
+      attributes: ["order_id", "order_final_price", "order_status", "updatedAt"],
+      order: [sortBy],
+      plain: true,
+    });
+    return orders;
+  };
+
+  static updateStatus = async (user_id, order_id, { status }) => {
+    const user = await db.User.findByPk(user_id);
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+    const order = await db.Order.findByPk(order_id);
+    if (!order) {
+      throw new NotFoundError("Order not found");
+    }
+    if (status === "confirmed") {
+      const orderDetails = await db.OrderDetail.findAll({
+        where: {
+          order_id: order_id,
+        },
+        raw: true,
+      });
+      await Promise.all(
+        orderDetails.map(async (item) => {
+          const product = await db.ProductDetail.findByPk(item.sku_id);
+          if (
+            product.sku_quantity > 0 &&
+            product.sku_quantity > item.order_detail_quantity
+          )
+            product.sku_quantity =
+              product.sku_quantity - item.order_detail_quantity;
+          return await product.save();
+        })
+      );
+    }
+    order.order_status = status;
+    return await order.save();
   };
 }
 

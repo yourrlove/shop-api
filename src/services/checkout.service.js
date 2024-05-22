@@ -29,18 +29,20 @@ class CheckOutService {
             cart_id: cart_id,
             sku_id: item.sku_id,
             quantity: item.quantity,
+            "$ProductDetail.Product.product_price$": item.price
           },
+          include: {
+            model: db.ProductDetail,
+            include: {
+              model: db.Product,
+            },
+          },
+          raw: true,
         });
         if (!isValidItem) {
           throw new NotFoundError("Cart item not valid");
         }
-        const sku_price = _.get(
-          await ProductDetailService.getSkuDetails(item.sku_id, [
-            "Product.product_price",
-          ]),
-          ["Product.product_price"]
-        );
-        return { ...item, sku_price };
+        return item;
       })
     );
 
@@ -53,8 +55,9 @@ class CheckOutService {
 
     // calculate the total price without discount
     CartCheckOut.total_price = cart_items.reduce((sum, item) => {
-      return sum + item.sku_price * item.quantity;
+      return sum + item.price * item.quantity;
     }, 0);
+
 
     if (discount_code) {
       ({
