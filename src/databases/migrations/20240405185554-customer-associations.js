@@ -41,14 +41,11 @@ module.exports = {
           product_id: {
             allowNull: false,
             type: Sequelize.UUID,
-            primaryKey: true,
             unique: false,
             references: {
               model: "products",
               key: "product_id",
             },
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
           },
           sku_id: {
             allowNull: false,

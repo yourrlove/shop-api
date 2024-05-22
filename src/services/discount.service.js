@@ -163,7 +163,7 @@ class DiscountService {
     let discount_amount = 0;
     for (let i = 0; i < cart_items.length; i++) {
       if( discount.discount_sku_ids.includes(cart_items[i].sku_id)) {
-        discount_amount += cart_items[i].sku_price;
+        discount_amount += cart_items[i].price;
       }
     }
     if(discount_amount === 0) {
