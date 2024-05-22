@@ -12,8 +12,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       // OrderDetail.belongsTo(models.ProductDetail);
-      OrderDetail.belongsTo(models.Order);
-      OrderDetail.belongsTo(models.ProductDetail);
+      OrderDetail.belongsTo(models.Order, {
+        foreignKey: 'order_id',
+      });
+      OrderDetail.belongsTo(models.ProductDetail, {
+        foreignKey: 'sku_id',
+      });
     }
   }
   OrderDetail.init({
@@ -33,11 +37,11 @@ module.exports = (sequelize, DataTypes) => {
             key: 'sku_id'
         }
     },
-    quantity: {
+    order_detail_quantity: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    price: {
+    order_detail_price: {
       type: DataTypes.FLOAT,
       allowNull: false,
     }
