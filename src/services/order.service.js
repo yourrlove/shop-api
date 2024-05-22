@@ -113,7 +113,6 @@ class OrderService {
       where: { user_id: user_id },
       attributes: ["order_id", "order_final_price", "order_status", "order_payment_method", "updatedAt"],
       order: [sortBy],
-      plain: true,
     });
     return orders;
   };
