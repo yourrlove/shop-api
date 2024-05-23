@@ -11,5 +11,6 @@ router.post('/checkout', verifyToken, asyncHandler( OrderController.checkOutRevi
 router.post('/', verifyToken, asyncHandler( OrderController.createOrder ));
 router.get('/', verifyToken, asyncHandler( OrderController.getUserOrders ));
 router.put('/:order_id', verifyToken, asyncHandler( OrderController.updateOrderStatus ));
+router.get('/:order_id', verifyToken, asyncHandler( OrderController.getOrderDetail ));
 
 module.exports = router;

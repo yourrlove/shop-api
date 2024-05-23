@@ -91,9 +91,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         get() {
           const rawValue = this.getDataValue("createdAt");
-          return rawValue
-            ? moment(rawValue).format("YYYY-MM-DD")
-            : null;
+          return rawValue ? moment(rawValue).format("YYYY-MM-DD") : null;
         },
       },
       updatedAt: {
@@ -101,11 +99,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         get() {
           const rawValue = this.getDataValue("updatedAt");
-          return rawValue
-           ? moment(rawValue).format("YYYY-MM-DD")
-            : null;
+          return rawValue ? moment(rawValue).format("YYYY-MM-DD") : null;
         },
-      },   
+      },
     },
     {
       sequelize,
