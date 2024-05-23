@@ -50,6 +50,13 @@ class OrderController {
       ),
     }).send(res);
   }
+
+  getOrderDetail = async (req, res, next) => {
+    new OK({
+      message: "Get order detail",
+      metadata: await OrderService.getOrderDetail(req.user.user_id, req.params.order_id),
+    }).send(res);
+  };
 }
 
 module.exports = new OrderController();

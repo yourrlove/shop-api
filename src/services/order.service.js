@@ -8,7 +8,10 @@ const { checkRequestParams } = require("../utils/index");
 const order = require("../models/order");
 const { raw } = require("mysql2");
 const ProductDetailService = require("./product_detail.service");
-const { or } = require("sequelize");
+const { or, where } = require("sequelize");
+const { model } = require("mongoose");
+const discount = require("../models/discount");
+const { includes } = require("lodash");
 
 class OrderService {
   static create = async ({
@@ -111,7 +114,13 @@ class OrderService {
     });
     const orders = await db.Order.findAll({
       where: { user_id: user_id },
-      attributes: ["order_id", "order_final_price", "order_status", "order_payment_method", "updatedAt"],
+      attributes: [
+        "order_id",
+        "order_final_price",
+        "order_status",
+        "order_payment_method",
+        "updatedAt",
+      ],
       order: [sortBy],
     });
     return orders;
@@ -148,6 +157,49 @@ class OrderService {
     }
     order.order_status = status;
     return await order.save();
+  };
+
+  static getOrderDetail = async (user_id, order_id) => {
+    const order = await db.Order.findOne({
+      where: {
+        order_id: order_id,
+        user_id: user_id,
+      },
+      attributes: { exclude: ["updatedAt"] },
+      include: {
+        model: db.Discount,
+        attributes: ["discount_value", "discount_desc"],
+      },
+    });
+    if (!order) {
+      throw new NotFoundError("Order not found");
+    }
+    const orderDetails = await db.OrderDetail.findAll({
+      where: {
+        order_id: order_id,
+      },
+      attributes: { exclude: ["order_id"] },
+      include: [
+        {
+          model: db.ProductDetail,
+          attributes: ["sku_color", "sku_color", "sku_size", "sku_image"],
+          include: [
+            {
+              model: db.Product,
+              attributes: ["product_id", "product_name", "product_price"],
+              include: [
+                {
+                  model: db.Brand,
+                  attributes: ["name"],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    return { order, orderDetails };
   };
 }
 
