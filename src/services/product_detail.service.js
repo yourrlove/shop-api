@@ -75,7 +75,7 @@ class ProductDetailService {
     return db.ProductDetail.findOne({ sku_no: sku_no });
   }
 
-  static get_all = async () => {
+  static get_all = async ({ limit, offset }) => {
     const productDetails = await db.ProductDetail.findAll({
       include: {
         model: db.Product,
@@ -94,6 +94,8 @@ class ProductDetailService {
           },
         ],
       },
+      limit: limit,
+      offset: offset * limit,
     });
     return productDetails;
   };
@@ -163,6 +165,8 @@ class ProductDetailService {
   static filter_by_query_options = async ({
     filters,
     sort = ["product_name", "ASC"],
+    limit,
+    offset,
   }) => {
     const new_filters = this.__formatFiltersOptions(filters);
     const products = await db.ProductDetail.findAll({
@@ -189,6 +193,8 @@ class ProductDetailService {
       order: [[db.Product, ...sort]],
       nest: true,
       required: true,
+      limit: limit,
+      offset: offset * limit,
     });
     //.map((product) => formatDataReturn(product.toJSON()));
     return products;
@@ -248,18 +254,29 @@ class ProductDetailService {
     return products;
   };
 
-  static getSkuDetails = async (sku_id, fields = []) => {
+  static getSkuDetails = async (sku_id) => {
     const product_sku = await db.ProductDetail.findOne({
       where: { sku_id: sku_id },
+      attributes: { exclude: ["product_id"] },
       include: {
         model: db.Product,
+        attributes: { exclude: ["brand_id", "catalogue_id", "tag_id"] },
+        include: [
+          {
+            model: db.Brand,
+            attributes: ["name", "code"],
+          },
+          {
+            model: db.Tag,
+            attributes: ["name", "label"],
+          },
+        ],
       },
-      raw: true,
     });
     if (!product_sku) {
       throw new NotFoundError(`Product SKU not found`);
     }
-    return getInfoData((fields = fields), product_sku);
+    return product_sku;
   };
 }
 

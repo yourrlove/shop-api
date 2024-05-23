@@ -182,7 +182,7 @@ class OrderService {
       include: [
         {
           model: db.ProductDetail,
-          attributes: ["sku_color", "sku_color", "sku_size", "sku_image"],
+          attributes: ["sku_no", "sku_color", "sku_color", "sku_size", "sku_image"],
           include: [
             {
               model: db.Product,

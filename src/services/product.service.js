@@ -171,18 +171,19 @@ class ProductService {
         nest: true,
         required: true,
       })
-    ).map((product) => formatDataReturn(product.toJSON()));
+    )
+    //.map((product) => formatDataReturn(product.toJSON()));
 
     return products;
   };
 
-  static get_by_brand_name = async (brandName) => {
+  static get_by_brand_name = async (brandName, limit, offset) => {
     const brand_id = await BrandService.get_id_by_name(brandName);
     if (!brand_id) throw new BadRequestError(`Brand name not found!`);
-    return await this.get_by_brand_id(brand_id);
+    return await this.get_by_brand_id(brand_id, limit, offset);
   };
 
-  static get_by_catalogue_id = async (catalogue_id) => {
+  static get_by_catalogue_id = async (catalogue_id, limit, offset) => {
     const isCatalogueExist = await CatalogueService.is_exists(catalogue_id);
     if (!isCatalogueExist) throw new BadRequestError(`Catalogue id not found!`);
 
@@ -229,17 +230,20 @@ class ProductService {
             required: true,
           },
         ],
+        limit: limit, 
+        offset: offset * limit,
         nest: true,
         required: true,
       })
-    ).map((product) => formatDataReturn(product.toJSON()));
+    )
+    //.map((product) => formatDataReturn(product.toJSON()));
     return products;
   };
 
-  static get_by_catalogue_name = async (catalogueName) => {
+  static get_by_catalogue_name = async (catalogueName, limit, offset) => {
     const catalogue_id = await CatalogueService.get_id_by_name(catalogueName);
     if (!catalogue_id) throw new BadRequestError(`Catalogue name not found!`);
-    return await this.get_by_catalogue_id(catalogue_id);
+    return await this.get_by_catalogue_id(catalogue_id, limit, offset);
   };
 
   static filter_by_query_options = async ({
@@ -298,7 +302,7 @@ class ProductService {
     return products;
   };
 
-  static get_by_tag_id = async (tag_id) => {
+  static get_by_tag_id = async (tag_id, limit, offset) => {
     const isTagExist = await TagService.is_exists(tag_id);
     if (!isTagExist) throw new BadRequestError(`Tag id not found!`);
 
@@ -345,17 +349,20 @@ class ProductService {
             required: true,
           },
         ],
+        limit: limit, 
+        offset: offset * limit,
         nest: true,
         required: true,
       })
-    ).map((product) => formatDataReturn(product.toJSON()));
+    )
+    //.map((product) => formatDataReturn(product.toJSON()));
     return products;
   };
 
-  static get_by_tag_name = async (tagName) => {
+  static get_by_tag_name = async (tagName, limit, offset) => {
     const tag_id = await TagService.get_id_by_name(tagName);
     if (!tag_id) throw new BadRequestError(`Tag name not found!`);
-    return await this.get_by_tag_id(tag_id);
+    return await this.get_by_tag_id(tag_id, limit, offset);
   };
 
   static __formatFiltersOptions = (filters) => {

@@ -7,6 +7,7 @@ const productController = require('../../controllers/product.controller');
 router.post('/filter', asyncHandler( productController.filter_products));
 router.get('/', asyncHandler( productController.get_list_products ));
 router.get('/:id/productdetails', asyncHandler( productController.get_all_product_details ));
+router.get('/productdetails/:sku_id', asyncHandler( productController.getProductDetail ));
 
 // find product by brand
 router.get('/brands', asyncHandler( productController.get_products_by_brand_name ));
