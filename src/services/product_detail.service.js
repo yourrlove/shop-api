@@ -26,7 +26,7 @@ class ProductDetailService {
     { sku_desc, sku_color, sku_size, sku_quantity, sku_price, files }
   ) => {
     const product = await db.Product.findOne({
-      where: { id: product_id },
+      where: { product_id: product_id },
       include: [
         {
           model: db.Brand,
@@ -57,7 +57,7 @@ class ProductDetailService {
       folderName: `${CLOUD_IMAGE_FOLDER}${product["Brand.name"]}`,
     });
     const productSku = await db.ProductDetail.create({
-      id: generateUUID(),
+      sku_id: generateUUID(),
       sku_no,
       sku_desc,
       sku_color,
@@ -102,7 +102,7 @@ class ProductDetailService {
 
   static delete = async (id) => {
     const result = await db.ProductDetail.destroy({
-      where: { id: id },
+      where: { sku_id: id },
       force: false,
     });
     if (!result) throw new NotFoundError(`ProductDetail not found`);
@@ -116,7 +116,7 @@ class ProductDetailService {
         ...body,
       },
       {
-        where: { id: id },
+        where: { sku_id: sku_id },
       }
     );
     if (!productDetail) throw new NotFoundError(`ProductDetail not found`);
