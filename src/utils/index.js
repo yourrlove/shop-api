@@ -38,8 +38,8 @@ const __options = (value, key) => {
   if (key === "catalogue") return "$Product.Catalogue.name$";
   if (key === "tag") return "$Product.Tag.name$";
   if (key === "rating") return `$Product.product_rating$`;
-  if (key === "color") return `sku_color`;
-  if (key === "size") return `sku_size`;
+  // if (key === "color") return `sku_color`;
+  // if (key === "size") return `sku_size`;
   return key;
 };
 
