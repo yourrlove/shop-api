@@ -39,12 +39,12 @@ class ProductService {
     if (!catalogue) throw new NotFoundError(`Catalogue id not found!`);
     if (!tag) throw new NotFoundError(`Tag id not found!`);
 
-    const id = generateUUID();
+    const product_id = generateUUID();
     const product_slug = generateSlug(
       `${brand.name} ${catalogue.name} ${product_name}`
     );
     const product = await db.Product.create({
-      id,
+      product_id,
       product_name,
       product_desc,
       product_price,
@@ -115,7 +115,7 @@ class ProductService {
         ...body,
       },
       {
-        where: { id: id },
+        where: { product_id: id },
       }
     );
     if (!product[0]) throw new NotFoundError(`Product not found`);
@@ -123,7 +123,7 @@ class ProductService {
   };
 
   static delete = async (id) => {
-    const product = await db.Product.destroy({ where: { id: id } });
+    const product = await db.Product.destroy({ where: { product_id: id } });
     if (!product) throw new NotFoundError(`Product not found`);
     return product;
   };
@@ -382,7 +382,7 @@ class ProductService {
 
   static update_thumbnail = async (product_id, files) => {
     const product = await db.Product.findOne({
-      where: { id: product_id },
+      where: { product_id: product_id },
       include: {
         model: db.Brand,
         attributes: ["name"],
@@ -405,7 +405,7 @@ class ProductService {
 
   static isProductExist = async (product_id) => {
     return await db.Product.findOne({
-      where: { id: product_id },
+      where: { product_id: product_id },
       include: [
         {
           model: db.Brand,
