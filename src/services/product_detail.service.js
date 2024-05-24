@@ -96,8 +96,6 @@ class ProductDetailService {
           },
         ],
       },
-      limit: limit,
-      offset: offset * limit,
     });
     return productDetails;
   };
