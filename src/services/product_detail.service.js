@@ -191,6 +191,8 @@ class ProductDetailService {
         ],
       },
       order: [[db.Product, ...sort]],
+      limit: limit,
+      offset: offset * limit,
       nest: true,
       required: true,
     });
