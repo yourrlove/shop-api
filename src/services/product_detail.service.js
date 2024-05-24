@@ -282,6 +282,9 @@ class ProductDetailService {
   };
 
   static getProductDetailsById = async (query) => {
+    if(query === undefined || query === null || query === "") {
+      return;
+    }
     const list_sku_ids =  await this.fetchData(query);
     const product_skus = await db.ProductDetail.findAll({
       where: { sku_id: { [Op.in]: list_sku_ids } },
