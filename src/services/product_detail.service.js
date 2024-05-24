@@ -1,4 +1,5 @@
 "use strict";
+const axios = require('axios');
 const db = require("../models/index");
 const ProductService = require("./product.service");
 const { BadRequestError, NotFoundError } = require("../core/error.response");
@@ -13,6 +14,7 @@ const {
   formatKeys,
   getInfoData,
   removeNull,
+  extractFields
 } = require("../utils/index");
 const { uploadMultipleImages } = require("../services/upload.service");
 const {
@@ -278,6 +280,59 @@ class ProductDetailService {
     }
     return product_sku;
   };
+
+  static getProductDetailsById = async (query) => {
+    if(query === undefined || query === null || query === "") {
+      return;
+    }
+    const list_sku_ids =  await this.fetchData(query);
+    const product_skus = await db.ProductDetail.findAll({
+      where: { sku_id: { [Op.in]: list_sku_ids } },
+      attributes: { exclude: ["product_id"] },
+      include: {
+        model: db.Product,
+        attributes: { exclude: ["brand_id", "catalogue_id", "tag_id"] },
+        include: [
+          {
+            model: db.Brand,
+            attributes: ["name", "code"],
+          },
+          {
+            model: db.Tag,
+            attributes: ["name", "label"],
+          },
+        ],
+      },
+    });
+    if (!product_skus) {
+      throw new NotFoundError(`Product SKUs not found`);
+    }
+    return product_skus;
+  };
+
+  static fetchData = async (query) => {
+    try {
+
+      let data = JSON.stringify({
+        "query": query
+      });
+      
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'http://3.27.214.37/api/query',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        data : data
+      };
+      const response = await axios.request(config)
+      
+      return extractFields(response.data, 'metadata.sku_id');
+    } catch (error) {
+      console.error('Error making API call:', error);
+    }
+  }
 }
 
 module.exports = ProductDetailService;
