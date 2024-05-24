@@ -52,6 +52,10 @@ const __returnOptions = (value, key) => {
 
 const getValues = (object, key) => _.map(object, key);
 
+const extractFields = (array, fieldPath) => {
+  return _.map(array, item => _.get(item, fieldPath));
+}
+
 module.exports = {
   getInfoData,
   formatKeys,
@@ -60,4 +64,5 @@ module.exports = {
   getValues,
   checkRequestParams,
   flattenNestedObject,
+  extractFields
 };
