@@ -96,8 +96,6 @@ class ProductDetailService {
           },
         ],
       },
-      limit: limit,
-      offset: offset * limit,
     });
     return productDetails;
   };
@@ -195,8 +193,6 @@ class ProductDetailService {
       order: [[db.Product, ...sort]],
       nest: true,
       required: true,
-      limit: limit,
-      offset: offset * limit,
     });
     //.map((product) => formatDataReturn(product.toJSON()));
     return products;
