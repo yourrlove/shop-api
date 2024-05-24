@@ -132,6 +132,13 @@ class ProductController {
       metadata: await ProductDetailService.getSkuDetails(req.params.sku_id),
     }).send(res);
   }
+
+  searchProduct = async (req, res, next) => {
+    new OK({
+      message: "Product detail retrieved successfully",
+      metadata: await ProductDetailService.getProductDetailsById(req.body.query),
+    }).send(res);
+  }
 }
 
 module.exports = new ProductController();
