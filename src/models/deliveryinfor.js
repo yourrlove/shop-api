@@ -11,16 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      DeliveryInfor.belongsTo(models.User);
-      DeliveryInfor.hasMany(models.Invoice);
+      DeliveryInfor.belongsTo(models.User, {
+        foreignKey: 'user_id',
+      });
+      // DeliveryInfor.hasMany(models.Invoice);
     }
   }
   DeliveryInfor.init({
-    id: {
+    delivery_id: {
       type: DataTypes.UUID,
       primaryKey: true
     },
-    province: {
+    province_city: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -28,9 +30,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    street: {
+    ward: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    street: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     is_default: {
       type: DataTypes.BOOLEAN,
@@ -43,6 +49,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'DeliveryInfor',
+    tableName: 'delivery_infors',
+    timestamps: false,
   });
   return DeliveryInfor;
 };

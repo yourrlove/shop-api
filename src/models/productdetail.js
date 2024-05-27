@@ -12,52 +12,74 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       ProductDetail.hasMany(models.CartItem, {
-        foreignKey: 'product_detail_id',
+        foreignKey: 'sku_id',
       });
       ProductDetail.belongsTo(models.Product, {
         foreignKey: 'product_id',
       });
-      //ProductDetail.hasOne(models.OrderDetail);
-      ProductDetail.hasMany(models.Size, {
-        foreignKey: 'product_detail_id',
-        as: 'size'
-      });
-      ProductDetail.hasMany(models.Image, {
-        foreignKey: 'product_detail_id',
-        as: 'images'
-      });
+      // //ProductDetail.hasOne(models.OrderDetail);
+      // ProductDetail.hasMany(models.Size, {
+      //   foreignKey: 'product_detail_id',
+      //   as: 'size'
+      // });
     }
   }
   ProductDetail.init({
-    id: {
-      type: DataTypes.UUID,
-      primaryKey: true
+    sku_id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.UUID
     },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true
+    sku_no: {
+      allowNull: false,
+      unique: true,
+      type: DataTypes.STRING
     },
-    quantity: {
-      type: DataTypes.INTEGER,
+    sku_desc: {
       allowNull: true,
-      defaultValue: 0
+      type: DataTypes.TEXT
     },
-    status: {
+    sku_color: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    sku_size: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    sku_price: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    sku_image: {
+      allowNull: true,
+      type: DataTypes.JSON,
+    },
+    sku_quantity: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
+    sku_status: {
+      allowNull: false,
       type: DataTypes.STRING,
-      allowNull: true,
       defaultValue: 'available'
     },
-    color: {
-      type: DataTypes.STRING,
-      allowNull: true
+    sku_slug: {
+      allowNull: false,
+      type: DataTypes.STRING
     },
     product_id: {
       type: DataTypes.UUID,
       allowNull: true
     },
+    deletedAt: {
+      allowNull: true,
+      type: DataTypes.DATE
+    }
   }, {
     sequelize,
     modelName: 'ProductDetail',
+    tableName: 'product_skus',
     timestamps: true,
     paranoid: true,
     defaultScope: {

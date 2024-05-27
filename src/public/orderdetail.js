@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class RolePermission extends Model {
+  class OrderDetail extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,31 +11,30 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      RolePermission.belongsTo(models.Role);
-      RolePermission.belongsTo(models.Permission);
+      // OrderDetail.belongsTo(models.ProductDetail);
+      OrderDetail.belongsTo(models.Order);
     }
   }
-  RolePermission.init({
-    role_id: {
-      primaryKey: true,
-      type: DataTypes.UUID,
-      references: {
-        model: 'Role',
-        key: 'id'
-      }
-    },
-    permission_id: {
-        primaryKey: true,
+  OrderDetail.init({
+    order_id: {
         type: DataTypes.UUID,
+        primaryKey: true,
         references: {
-          model: 'Permission',
-          key: 'id'
+            model: 'Order',
+            key: 'order_id'
+        }
+    },
+    product_detail_id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
+        references: {
+            model: 'ProductDetail',
+            key: 'id'
         }
     }
   }, {
     sequelize,
-    modelName: 'RolePermission',
-    tableName: 'role_permissions'
+    modelName: 'OrderDetail',
   });
-  return RolePermission;
+  return OrderDetail;
 };

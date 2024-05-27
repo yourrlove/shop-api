@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association 
-      Notification.belongsToMany(models.User, { through: 'UserNotification' });
-      Notification.hasMany(models.UserNotification);
+      //Notification.belongsToMany(models.User, { through: 'UserNotification' });
+      // Notification.hasMany(models.UserNotification);
     }
   }
   Notification.init({
-    id: {
+    notification_id: {
       type: DataTypes.UUID,
       primaryKey: true
     },
@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Notification',
+    tableName: 'notifications',
   });
   return Notification;
 };

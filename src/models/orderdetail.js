@@ -4,14 +4,13 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class OrderDetail extends Model {
     static associate(models) {
-      // Define foreign key associations here
-      OrderDetail.belongsTo(models.ProductDetail, {
-          foreignKey: 'product_detail_id', // Tên của cột khóa ngoại trong bảng OrderDetail
-          targetKey: 'id' // Tên của cột khóa chính trong bảng ProductDetail
+      // define association here
+      // OrderDetail.belongsTo(models.ProductDetail);
+      OrderDetail.belongsTo(models.Order, {
+        foreignKey: 'order_id',
       });
-      OrderDetail.belongsTo(models.Orders, {
-          foreignKey: 'order_id', // Tên của cột khóa ngoại trong bảng OrderDetail
-          targetKey: 'id' // Tên của cột khóa chính trong bảng Orders
+      OrderDetail.belongsTo(models.ProductDetail, {
+        foreignKey: 'sku_id',
       });
     }
   }
@@ -19,23 +18,32 @@ module.exports = (sequelize, DataTypes) => {
     order_id: {
         type: DataTypes.UUID,
         primaryKey: true,
-        allowNull: false
+        references: {
+            model: 'orders',
+            key: 'order_id'
+        }
     },
-    product_detail_id: {
+    sku_id: {
         type: DataTypes.UUID,
         primaryKey: true,
+        references: {
+            model: 'product_skus',
+            key: 'sku_id'
+        }
+    },
+    order_detail_quantity: {
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
-    quantity: {
-      type: DataTypes.INTEGER,
+    order_detail_price: {
+      type: DataTypes.FLOAT,
       allowNull: false,
     }
   }, {
     sequelize,
     modelName: 'OrderDetail',
-    tableName: 'OrderDetail',
+    tableName: 'order_details',
     timestamps: false,
-    //freezeTableName: true,
   });
   return OrderDetail;
 };

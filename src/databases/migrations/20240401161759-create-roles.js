@@ -2,20 +2,24 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Cart', {
-      id: {
+    await queryInterface.createTable('roles', {
+      role_id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID
       },
-      quantity: {
-        type: Sequelize.INTEGER,
+      name: {
+        type: Sequelize.ENUM,
+        values: [
+          'admin',
+          'user'
+        ],
         allowNull: false,
-        defaultValue: 0
-      },
+        unique: true
+      }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Cart');
+    await queryInterface.dropTable('roles');
   }
 };

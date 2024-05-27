@@ -11,18 +11,22 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE'
       });
-      User.hasMany(models.DeliveryInfor);
-      User.hasOne(models.Cart, {
-        foreignKey: 'id'
+      User.hasMany(models.DeliveryInfor, {
+        foreignKey: 'user_id'
       });
-      User.hasMany(models.ProductEntry);
-      User.hasMany(models.Orders);
-      User.belongsToMany(models.Notification, { through: 'UserNotification' });
-      User.hasMany(models.UserNotification);
+      User.hasOne(models.Cart, {
+        foreignKey: 'user_id'
+      });
+      // User.hasMany(models.ProductEntry);
+      User.hasMany(models.Order, {
+        foreignKey: 'user_id'
+      });
+      // User.belongsToMany(models.Notification, { through: 'UserNotification' });
+      // User.hasMany(models.UserNotification);
     }
   }
   User.init({
-    id: {
+    user_id: {
       type: DataTypes.UUID,
       primaryKey: true
     },
@@ -65,6 +69,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
+    tableName: 'users',
     timestamps: true,
     paranoid: true
   });

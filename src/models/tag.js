@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Tag.init({
-    id: {
+    tag_id: {
       primaryKey: true,
       allowNull: false,
       type: DataTypes.UUID
@@ -27,9 +27,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true
     },
+    label: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    }
   }, {
     sequelize,
     modelName: 'Tag',
+    tableName: 'tags',
     timestamps: false,
   });
   return Tag;

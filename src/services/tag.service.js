@@ -5,8 +5,8 @@ const db = require('../models/index');
 
 class TagService {
     static create = async ({ name }) => {
-        const id = generateUUID();
-        const tag = await db.Tag.create({ id, name });
+        const tag_id = generateUUID();
+        const tag = await db.Tag.create({ tag_id, name });
         return tag;
     }
 
@@ -15,13 +15,13 @@ class TagService {
     }
 
     static update = async ( id, { name }) => {
-        const tag = await db.Tag.update({ name }, {where: { id: id }});
+        const tag = await db.Tag.update({ name }, {where: { tag_id: id }});
         if (!tag[0]) throw new NotFoundError('Tag not found');
         return tag;
     }
 
     static delete = async (id) => {
-        const result = await db.Tag.destroy({ where: { id: id }});
+        const result = await db.Tag.destroy({ where: { tag_id: id }});
         if(!result) throw new NotFoundError(`Tag not found`);
         return result;
     }
@@ -31,7 +31,7 @@ class TagService {
     }
 
     static get_id_by_name = async (name) => {
-        const { id } = await db.Tag.findOne({ where: { name: name }, raw: true });
+        const { tag_id } = await db.Tag.findOne({ where: { name: name }, raw: true });
         return id;
     }
 }

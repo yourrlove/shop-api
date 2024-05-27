@@ -20,7 +20,6 @@ class UserService {
         if(!user) {
             throw new BadRequestError('Failed to create user! Something went wrong! Please try again!');
         }
-        const cart = await CartService.create(user.id);
         return user;
     }
 
@@ -58,33 +57,14 @@ class UserService {
 
     static get_basic_infor = async (user_id) => {
         //Username
-        const { first_name, last_name } = await db.User.findOne({id: user_id});
+        const { first_name, last_name } = await db.User.findOne({user_id: user_id});
         // Cart
-        const cartInfor = await db.Cart.findAll({
+        const cartInfor = await db.Cart.findOne({
             where: {
-                id: user_id
+                user_id: user_id
             },
             include: {
                 model: db.CartItem,
-                attributes: ['product_detail_id'],
-                include: {
-                    model: db.ProductDetail,
-                    attributes: ['description'],
-                    include: [
-                        {
-                            model: db.Product,
-                            attributes: ['current_unit_price'],
-                        },
-                        {
-                            model: db.Image,
-                            attributes: ['url'],
-                            where: {
-                                order: 0
-                            },
-                            as: 'images',
-                        }
-                    ]
-                }
             },
             require: true
         })
@@ -95,6 +75,18 @@ class UserService {
             name: first_name + ' ' + last_name,
             cart: cartInfor
         }
+    }
+
+    static getUserDetails = async (user_id, fields=[]) => {
+        const user = await db.User.findOne({
+            where: {
+                user_id: user_id
+            },
+            attributes: fields,
+            raw: true
+        });
+        if (!user) throw new BadRequestError('User not found');
+        return user;
     }
 }
 

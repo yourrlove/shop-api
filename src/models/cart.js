@@ -15,12 +15,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'cart_id'
       });
       Cart.belongsTo(models.User, {
-        foreignKey: 'id',
+        foreignKey: 'user_id',
       });
     }
   }
   Cart.init({
-    id: {
+    cart_id: {
       primaryKey: true,
       allowNull: false,
       type: DataTypes.UUID,
@@ -29,14 +29,23 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id',
       }
     },
-    quantity: {
+    total_quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
     },
+    user_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'User',
+        key: 'user_id'
+      }
+    }
   }, {
     sequelize,
     modelName: 'Cart',
+    tableName: 'carts',
     timestamps: false
   });
   return Cart;

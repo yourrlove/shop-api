@@ -10,6 +10,7 @@ const {
 const { createKeyTokenPair } = require("../utils/authUtils");
 const JWT = require("jsonwebtoken");
 const UserService = require("../services/user.service");
+const CartService = require("../services/cart.service");
 
 class AuthService {
   static signUp = async ({
@@ -31,22 +32,22 @@ class AuthService {
     const passwordHash = await bcrypt.hash(password, 10);
     const { role_id } = await db.Role.findOne({
       where: { name: 'user' },
-      attributes: [["id", "role_id"]],
+      attributes: ["role_id"],
       raw: true,
     });
 
     if (!role_id) throw new BadRequestError("Role not found");
-    const id = generateUUID();
+    const user_id = generateUUID();
     // step3: create token pair
     const tokens = createKeyTokenPair(
-      { user_id: id, role_id: role_id },
+      { user_id: user_id, role_id: role_id },
       process.env.ACCESS_TOKEN_KEY_SECRET,
       process.env.REFRESH_TOKEN_KEY_SECRET
     );
     if (!tokens) throw new ConflictRequestError("Failed to create tokens!");
 
     const newUser = await UserService.create({
-      id,
+      user_id,
       first_name,
       last_name,
       phone_number,
@@ -55,7 +56,7 @@ class AuthService {
       role_id,
       refresh_token: tokens.refreshToken,
     });
-
+    const cart = await CartService.create(newUser.user_id)  
     return tokens;
   };
 
@@ -66,7 +67,7 @@ class AuthService {
     if (!isPassMatch) throw new AuthFailureError("Wrong password!");
 
     const token = createKeyTokenPair(
-      { user_id: user.id, role_id: user.role_id },
+      { user_id: user.user_id, role_id: user.role_id },
       process.env.ACCESS_TOKEN_KEY_SECRET,
       process.env.REFRESH_TOKEN_KEY_SECRET
     );

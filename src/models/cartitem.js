@@ -4,18 +4,13 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class CartItem extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // define association here
       CartItem.belongsTo(models.Cart, {
         foreignKey: 'cart_id',
       });
       CartItem.belongsTo(models.ProductDetail, {
-        foreignKey: 'product_detail_id',
+        foreignKey: 'sku_id',
       });
     }
   }
@@ -28,13 +23,20 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id',
       }
     },
-    product_detail_id: {
+    sku_id: {
         primaryKey: true,
         type: DataTypes.UUID,
         references: {
           model: 'ProductDetail',
           key: 'id',
         }
+    },
+    product_id: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'Product',
+        key: 'product_id',
+      }
     },
     quantity: {
       type: DataTypes.INTEGER,
@@ -44,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'CartItem',
+    tableName: 'cart_items',
     timestamps: false,
   });
   return CartItem;

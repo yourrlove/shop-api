@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      ProductEntryDetail.belongsTo(models.ProductEntry);
-      ProductEntryDetail.belongsTo(models.Product);
+      // ProductEntryDetail.belongsTo(models.ProductEntry);
+      // ProductEntryDetail.belongsTo(models.Product);
     }
   }
   ProductEntryDetail.init({
@@ -53,6 +53,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'ProductEntryDetail',
+    tableName: 'product_entry_details',
     timestamps: true
   });
   return ProductEntryDetail;

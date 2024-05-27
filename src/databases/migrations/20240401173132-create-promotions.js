@@ -2,31 +2,27 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('DeliveryInfor', {
-      id: {
+    await queryInterface.createTable('promotions', {
+      promotion_id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID
       },
-      province: {
+      deposit: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.FLOAT
       },
-      district: {
+      createdAt: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       },
-      street: {
+      updatedAt: {
         allowNull: false,
-        type: Sequelize.STRING
-      },
-      is_default: {
-        allowNull: true,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.DATE
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('DeliveryInfor');
+    await queryInterface.dropTable('promotions');
   }
 };
