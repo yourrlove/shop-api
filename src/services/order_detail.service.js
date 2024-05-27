@@ -6,11 +6,8 @@ const OrderService = require('../services/order.service')
 
 class OrderDetailService {
     static createdetail = async (user_id, productList) => {
-        console.log(user_id)
         const order = await OrderService.create(user_id);
-        console.log(order)
         const order_id = order.id;
-        console.log(order_id)
         const createdOrderDetails = [];
         debugger
         try {

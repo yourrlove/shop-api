@@ -6,12 +6,8 @@ const DeliveryInforService = require("./delivery_infor.service");
 const CheckOutService = require("./checkout.service");
 const { checkRequestParams } = require("../utils/index");
 const order = require("../models/order");
-const { raw } = require("mysql2");
 const ProductDetailService = require("./product_detail.service");
-const { or, where } = require("sequelize");
-const { model } = require("mongoose");
-const discount = require("../models/discount");
-const { includes } = require("lodash");
+const PaymentService = require("./payment.service");
 
 class OrderService {
   static create = async ({
@@ -70,6 +66,7 @@ class OrderService {
         order_ward: checkOutResult.delivery_information.shipping_address.ward,
         order_street:
           checkOutResult.delivery_information.shipping_address.street,
+        order_code: Date.now(),
         user_id: user_id,
         discount_id: discountId,
       });
@@ -77,19 +74,46 @@ class OrderService {
       // create orderDetails
       const order_details = await Promise.all(
         cart_items.map(async (item) => {
-          return await db.OrderDetail.create({
-            order_id: newOrder.order_id,
-            sku_id: item.sku_id,
-            quantity: item.quantity,
-            order_detail_price: item.price,
-            order_detail_quantity: item.quantity,
-          });
+          const product = await db.ProductDetail.findByPk(item.sku_id);
+          if (
+            product.sku_quantity > 0 &&
+            product.sku_quantity > item.quantity
+          ) {
+            const order_item = await db.OrderDetail.create({
+              order_id: newOrder.order_id,
+              sku_id: item.sku_id,
+              quantity: item.quantity,
+              order_detail_price: item.price,
+              order_detail_quantity: item.quantity,
+            });
+
+            product.sku_quantity = product.sku_quantity - order.order_detail_quantity;
+            await product.save();
+            return order_item;
+          }
         })
       );
+
+      let order_items = [];
 
       // remove cart items
       await Promise.all(
         cart_items.map(async (item) => {
+          const product = await db.ProductDetail.findOne({
+            where: {
+              sku_id: item.sku_id,
+            },
+            include: {
+              model: db.Product,
+            },
+          });
+          order_items.push({
+            name: product.Product.product_name,
+            size: product.sku_size,
+            color: product.sku_color,
+            price: item.price,
+            quantity: item.quantity,
+          });
           await db.CartItem.destroy({
             where: {
               cart_id: cart_id,
@@ -98,6 +122,15 @@ class OrderService {
           });
         })
       );
+
+      if (payment_method === "Bank Transfer") {
+        const checkoutUrl = await PaymentService.createPaymentLink({
+          order_code: newOrder.order_code,
+          final_price: newOrder.order_final_price,
+          order_items: order_items,
+        });
+        return checkoutUrl;
+      }
 
       return newOrder;
     } catch (error) {
@@ -119,6 +152,7 @@ class OrderService {
         "order_final_price",
         "order_status",
         "order_payment_method",
+        "order_code",
         "updatedAt",
       ],
       order: [sortBy],
@@ -135,7 +169,7 @@ class OrderService {
     if (!order) {
       throw new NotFoundError("Order not found");
     }
-    if (status === "confirmed") {
+    if (status === "cancelled") {
       const orderDetails = await db.OrderDetail.findAll({
         where: {
           order_id: order_id,
@@ -145,12 +179,7 @@ class OrderService {
       await Promise.all(
         orderDetails.map(async (item) => {
           const product = await db.ProductDetail.findByPk(item.sku_id);
-          if (
-            product.sku_quantity > 0 &&
-            product.sku_quantity > item.order_detail_quantity
-          )
-            product.sku_quantity =
-              product.sku_quantity - item.order_detail_quantity;
+          product.sku_quantity = product.sku_quantity + item.order_detail_quantity;
           return await product.save();
         })
       );
@@ -182,7 +211,13 @@ class OrderService {
       include: [
         {
           model: db.ProductDetail,
-          attributes: ["sku_no", "sku_color", "sku_color", "sku_size", "sku_image"],
+          attributes: [
+            "sku_no",
+            "sku_color",
+            "sku_color",
+            "sku_size",
+            "sku_image",
+          ],
           include: [
             {
               model: db.Product,

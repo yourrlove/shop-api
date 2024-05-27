@@ -7,6 +7,7 @@ const userRouter = require('./user');
 const cartRouter = require('./cart')
 const deliveryRouter = require('./delivery_infor');
 const orderRouter = require('./order');
+const paymentRouter = require('./payment');
 
 const web_api = express();
 
@@ -16,5 +17,6 @@ web_api.use('/users', userRouter);
 web_api.use('/cart', cartRouter);
 web_api.use('/deliveryinfors', deliveryRouter);
 web_api.use('/orders', orderRouter);
+web_api.use('/payment', paymentRouter);
 
 module.exports = web_api;

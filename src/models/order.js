@@ -51,8 +51,13 @@ module.exports = (sequelize, DataTypes) => {
       order_status: {
         allowNull: false,
         type: DataTypes.ENUM,
-        values: ["pending", "confirmed", "cancelled", "shipped", "delivered"],
+        values: ["pending", "confirmed", "cancelled", "shipping", "delivered"],
         defaultValue: "pending",
+      },
+      order_code: {
+        allowNull: false,
+        type: DataTypes.BIGINT,
+        unique: true,
       },
       order_province_city: {
         allowNull: false,
