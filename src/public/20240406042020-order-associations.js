@@ -5,7 +5,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     // User hasMany Orders
     return queryInterface.addColumn(
-      'Order',
+      'Orders',
       'user_id',
       {
         type: Sequelize.UUID,
@@ -44,7 +44,7 @@ module.exports = {
             primaryKey: true,
             allowNull: false,
             references: {
-              model: 'Order',
+              model: 'Orders',
               key: 'id'
             },
             onUpdate: 'CASCADE',
@@ -52,7 +52,7 @@ module.exports = {
           },
           product_detail_id: {
             type: Sequelize.UUID,
-            unique: true,
+            unique: false,
             primaryKey: true,
             allowNull: false,
             references: {
@@ -72,7 +72,7 @@ module.exports = {
     .then(() => {
       // Order - Promotion
       return queryInterface.addColumn(
-        'Order',
+        'Orders',
         'promotion_id',
         {
           type: Sequelize.UUID,
@@ -105,7 +105,7 @@ module.exports = {
           },
           product_detail_id: {
             type: Sequelize.UUID,
-            unique: true,
+            unique: false,
             primaryKey: true,
             allowNull: false,
             references: {
@@ -130,7 +130,7 @@ module.exports = {
         {
           type: Sequelize.UUID,
           references: {
-            model: 'Order',
+            model: 'Orders',
             key: 'id'
           },
           onUpdate: 'CASCADE',
@@ -143,7 +143,7 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     // remove User hasMany Orders
     return queryInterface.removeColumn(
-      'Order',
+      'Orders',
       'user_id'
     )
     .then(() => {
@@ -159,7 +159,7 @@ module.exports = {
     .then(() => {
       // remove Order - Promotion
       return queryInterface.removeColumn(
-        'Order',
+        'Orders',
         'promotion_id'
       )
     })
