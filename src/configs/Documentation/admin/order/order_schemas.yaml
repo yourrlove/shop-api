@@ -1,0 +1,136 @@
+components:
+  schemas:
+    Catalogue:
+    type: object
+    properties:
+      id:
+        type: string
+        example: 6104f511-ced8-4b36-aff1-920e7110373c
+      user_id:
+        type: string
+        example: 6104f511-ced8-4b36-aff1-920e7110373c
+      total_price:
+        type: decimal
+        example: 999.999
+      status:
+        type: bool
+      promotion_id:
+        type: string
+        example: 6104f511-ced8-4b36-aff1-920e7110373c
+
+    CreateOrderDetail:
+      type: array
+      items:
+        type: object
+        properties:
+          product_detail_id:
+            type: string
+            example: 6104f511-ced8-4b36-aff1-920e7110373c
+          quantity:
+            type: integer
+            example: 5
+      example:
+        - product_detail_id: "6104f511-ced8-4b36-aff1-920e7110373c"
+          quantity: 5
+        - product_detail_id: "6104f511-ced8-4b36-aff1-920e7110373c"
+          quantity: 3
+
+    OrderDetailMetadata:
+      type: object
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: "34930311-57bd-43a3-a1e6-5aa700e4265c"
+        product_detail_id:
+          type: string
+          format: uuid
+          example: "53862f25-b2b1-48e3-b391-eec67b846f2b"
+        quantity:
+          type: integer
+          example: 3
+
+    OrderMetadata:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/Order'
+        Order_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDetail'
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "26d2a885-7b8b-4285-8fd6-66b7c1dc9281"
+        total_price:
+          type: number
+          format: double
+          example: 239.92
+        user_id:
+          type: string
+          format: uuid
+          example: "dbfd59b1-db5b-4177-b461-90ed1102f676"
+
+    OrderDetail:
+      type: object
+      properties:
+        OrderDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDetailItem'
+
+    OrderDetailItem:
+      type: object
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: "26d2a885-7b8b-4285-8fd6-66b7c1dc9281"
+        product_detail_id:
+          type: string
+          format: uuid
+          example: "53862f25-b2b1-48e3-b391-eec67b846f2b"
+        quantity:
+          type: integer
+          example: 3
+        ProductDetail:
+          $ref: '#/components/schemas/ProductDetail'
+
+    ProductDetail:
+      type: object
+      properties:
+        color:
+          type: string
+          example: "blue"
+        product_id:
+          type: string
+          format: uuid
+          example: "1a5e6f55-bd9c-499e-9145-efb147c11592"
+        Product:
+          $ref: '#/components/schemas/Product'
+
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "TEST PRODUCT"
+        description:
+          type: string
+          example: "Product Description"
+        current_unit_price:
+          type: number
+          format: double
+          example: 29.99
+        rating:
+          type: integer
+          example: 0
+        thumbnail:
+          type: string
+          format: uri
+          example: "http://example.com/thumbnail.jpg"

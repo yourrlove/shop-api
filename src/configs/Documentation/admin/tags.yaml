@@ -12,5 +12,7 @@ tags:
   description: This endpoint is used to manage requests related to user catalogues.
 - name: Tag
   description: This endpoint is used to manage requests related to user tags.
+- name: Order
+  description: This endpoint is used to manage requests related to user Order.
 paths:
   $ref: './product/product_path.yaml'

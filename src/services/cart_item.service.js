@@ -5,21 +5,21 @@ const CartService = require("../services/cart.service");
 const { NotFoundError, BadRequestError } = require("../core/error.response");
 
 class CartItemService {
-  // add product(s) to cart
-  static create = async (user_id, { product_detail_id, quantity }) => {
-    const cart = await db.Cart.findOne({
-      where: {
-        id: user_id,
-      },
-    });
-    if (!cart) {
-      throw new NotFoundError("User cart not found!");
-    }
-    const productDetail = await db.ProductDetail.findOne({
-      where: {
-        id: product_detail_id,
-      },
-    });
+    // add product(s) to cart
+    static create = async (product_detail_id, {user_id, quantity }) => {
+        let cart = await db.Cart.findOne({
+            where: {
+                user_id: user_id
+            }
+        });
+        if (!cart) {
+            cart = await CartService.create(user_id);
+        }
+        const productDetail = await db.ProductDetail.findOne({
+            where: {
+                id: product_detail_id
+            }
+        });
 
     if (!productDetail) {
       throw new NotFoundError("Product not found");
@@ -124,32 +124,26 @@ class CartItemService {
       require: true,
     });
 
-    return cartitem;
-  };
+        return cartitem;
+    }
 
-  static deleteCartItem = async (user_id, cart_id, product_detail_id) => {
-    if (user_id !== cart_id) {
-      throw new BadRequestError("Unauthorized access");
+    static delete = async (product_detail_id, {cart_id}) => {
+        const cartItem = await db.CartItem.findOne({
+            where: {
+                cart_id: cart_id,
+                product_detail_id: product_detail_id
+            }
+        });
+
+        if (!cartItem) {
+            throw new NotFoundError("Cart item not found");
+        }
+
+        await cartItem.destroy();
+
+        return "Cart item deleted successfully";
     }
-    const cart = await db.Cart.findOne({
-      where: {
-        id: cart_id,
-      },
-    });
-    if (!cart) {
-      throw new NotFoundError("User cart not found!");
-    }
-    const cartItem = await db.CartItem.findOne({
-      where: {
-        cart_id: cart_id,
-        product_detail_id: product_detail_id,
-      },
-    });
-    if (!cartItem) {
-      throw new NotFoundError("Cart item not found");
-    }
-    return await cartItem.destroy();
-  };
+
 }
 
 module.exports = CartItemService;

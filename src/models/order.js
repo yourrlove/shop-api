@@ -12,7 +12,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Order.belongsTo(models.User);
-      Order.hasMany(models.OrderDetail);
+      Order.hasMany(models.OrderDetail, {
+        foreignKey: 'order_id', // Tên của cột khóa ngoại trong bảng OrderDetail
+        sourceKey: 'id' // Tên của cột khóa chính trong bảng Order
+      });
       Order.hasMany(models.Invoice);
       Order.belongsTo(models.Promotion);
     }
@@ -50,8 +53,9 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'Order',
+    modelName: 'Orders',
     timestamps: true,
+    //freezeTableName: true,
   });
   return Order; 
 };
