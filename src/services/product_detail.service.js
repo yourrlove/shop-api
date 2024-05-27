@@ -197,7 +197,10 @@ class ProductDetailService {
       required: true,
     });
     //.map((product) => formatDataReturn(product.toJSON()));
-    return products;
+    return {
+      Total: await this.countAll(),
+      products
+    };
   };
 
   static __formatFiltersOptions = (filters) => {
@@ -214,6 +217,11 @@ class ProductDetailService {
         : null,
     });
   };
+
+  static countAll = async () => {
+    const count = await db.ProductDetail.count();
+    return count;
+  }
 
   static createProductDetailslug = async () => {
     const products = await db.ProductDetail.findAll({

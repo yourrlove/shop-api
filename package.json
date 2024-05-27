@@ -11,6 +11,7 @@
     "migrate:undo:all": "npx sequelize-cli db:migrate:undo:all"
   },
   "dependencies": {
+    "@payos/node": "^1.0.6",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.2.0",
