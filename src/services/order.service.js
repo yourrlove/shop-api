@@ -168,7 +168,7 @@ class OrderService {
     if (!order) {
       throw new NotFoundError("Order not found");
     }
-    if (status === "cancelled") {
+    if (status === "Cancelled") {
       const orderDetails = await db.OrderDetail.findAll({
         where: {
           order_id: order_id,
