@@ -29,7 +29,7 @@ class CheckOutService {
             cart_id: cart_id,
             sku_id: item.sku_id,
             quantity: item.quantity,
-            "$ProductDetail.Product.product_price$": item.price
+            "$ProductDetail.Product.product_price$": item.price,
           },
           include: {
             model: db.ProductDetail,
@@ -37,10 +37,14 @@ class CheckOutService {
               model: db.Product,
             },
           },
-          raw: true,
         });
         if (!isValidItem) {
           throw new NotFoundError("Cart item not valid");
+        }
+        if (isValidItem.ProductDetail.sku_quantity <= 0) {
+          throw new BadRequestError(
+            `Product ${isValidItem.ProductDetail.sku_no} is out of stock`
+          );
         }
         return item;
       })

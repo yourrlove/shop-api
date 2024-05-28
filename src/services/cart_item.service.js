@@ -30,6 +30,9 @@ class CartItemService {
     if (!productDetail) {
       throw new NotFoundError("Product not found");
     }
+    if(quantity > productDetail.sku_quantity) {
+      throw new BadRequestError("Exceeded quantity for product");
+    }
     const [cartItem, created] = await db.CartItem.findOrCreate({
       where: {
         cart_id: cart.cart_id,
