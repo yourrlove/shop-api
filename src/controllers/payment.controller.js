@@ -10,10 +10,10 @@ class PaymentController {
         }).send(res);
     }
 
-    handleCancelledPayment = async (req, res, next) => {
+    handlePaymentResult = async (req, res, next) => {
         new OK({
-            message: 'Payment cancelled',
-            metadata: await PaymentService.handleCancelled(req.body)
+            message: 'Payment result received successfully!',
+            metadata: await PaymentService.handlePaymentResult(req.body)
         }).send(res);
     }
 }
