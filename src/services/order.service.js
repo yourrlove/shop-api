@@ -86,7 +86,7 @@ class OrderService {
               order_detail_price: item.price,
               order_detail_quantity: item.quantity,
             });
-
+            
             product.sku_quantity = product.sku_quantity - order.order_detail_quantity;
             await product.save();
             return order_item;
@@ -206,7 +206,6 @@ class OrderService {
       where: {
         order_id: order_id,
       },
-      attributes: { exclude: ["order_id"] },
       include: [
         {
           model: db.ProductDetail,
