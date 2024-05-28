@@ -43,19 +43,9 @@ class PaymentService {
     if (!isValid) {
       throw new BadRequestError("Invalid signature");
     }
-    if ((webhookData.code === "00" || webhookData.desc === "success") && webhookData.data.status === "PAID") {
-      const order = await db.Order.findOne({
-        where: { order_code: webhookData.data.orderCode },
-      });
-      if (!order) {
-        throw new NotFoundError("Order not found");
-      }
-      order.order_status = "confirmed";
-      await order.save();
-      return {
-        success: true,
-      };
-    }
+    return {
+      success: true,
+    };
   };
 
   static sortObjDataByKey = (object) => {
@@ -98,7 +88,7 @@ class PaymentService {
 
   static handlePaymentResult = async ({ id, orderCode }) => {
     try {
-      const { data } = await axios.request(
+      const response = await axios.request(
         `https://api-merchant.payos.vn/v2/payment-requests/${id}`,
         {
           headers: {
@@ -107,9 +97,19 @@ class PaymentService {
           },
         }
       );
-      if (data.data.status === "CANCELLED") {
+
+      const webhookData = response.data;
+      const isValid = this.isValidData(
+        webhookData.data,
+        webhookData.signature,
+        process.env.CHECKSUM_KEY
+      );
+      if (!isValid) {
+        throw new BadRequestError("Invalid signature");
+      }
+      if (webhookData.data.status === "CANCELLED") {
         const order = await db.Order.findOne({
-          where: { order_code: data.data.orderCode },
+          where: { order_code: webhookData.data.orderCode },
         });
         if (!order) {
           throw new NotFoundError("Order not found");
@@ -133,9 +133,9 @@ class PaymentService {
         return await order.save();
       }
 
-      if (data.data.status === "PAID") {
+      if (webhookData.data.status === "PAID") {
         const order = await db.Order.findOne({
-          where: { order_code: data.data.orderCode },
+          where: { order_code: webhookData.data.orderCode },
         });
         if (!order) {
           throw new NotFoundError("Order not found");
