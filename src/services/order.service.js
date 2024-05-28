@@ -149,6 +149,7 @@ class OrderService {
         "order_id",
         "order_final_price",
         "order_status",
+        "order_payment_status",
         "order_payment_method",
         "order_code",
         "updatedAt",
