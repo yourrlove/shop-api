@@ -112,7 +112,7 @@ class CheckOutService {
     }
 
     if (payment_method === "Cash") {
-      checkoutResult.shipping_price = 500000;
+      checkoutResult.shipping_price = 50000;
       checkoutResult.final_price += checkoutResult.shipping_price;
     }
     return {
