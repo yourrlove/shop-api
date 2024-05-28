@@ -108,9 +108,7 @@ class OrderService {
             },
           });
           order_items.push({
-            name: product.Product.product_name,
-            size: product.sku_size,
-            color: product.sku_color,
+            name: `${product.Product.product_name} - ${product.sku_color} - ${product.sku_size}`,
             price: item.price,
             quantity: item.quantity,
           });

@@ -31,9 +31,13 @@ module.exports = {
       },
       order_status: {
         allowNull: false,
-        type: Sequelize.ENUM,
-        values: ["pending", "confirmed", "cancelled", "shipped", "delivered"],
-        defaultValue: "pending",
+        type: Sequelize.STRING,
+        defaultValue: "Pending",
+      },
+      order_payment_status:{
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: "Unpaid",
       },
       order_province_city: {
         allowNull: false,

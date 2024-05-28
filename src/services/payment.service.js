@@ -27,8 +27,8 @@ class PaymentService {
       amount: final_price,
       description: "Thanh toan don hang",
       items: order_items,
-      cancelUrl: `http://localhost:5173/checkout/#success`,
-      returnUrl: `http://localhost:5173/checkout/#failure`,
+      cancelUrl: `http://localhost:5173/checkout/#failure`,
+      returnUrl: `http://localhost:5173/checkout/#success`,
     };
     const response = await payOS.createPaymentLink(body);
     return response.checkoutUrl;
@@ -96,7 +96,7 @@ class PaymentService {
     return dataToSignature == currentSignature;
   };
 
-  static handleCancelled = async ({ id, orderCode }) => {
+  static handlePaymentResult = async ({ id, orderCode }) => {
     try {
       const { data } = await axios.request(
         `https://api-merchant.payos.vn/v2/payment-requests/${id}`,
@@ -128,7 +128,19 @@ class PaymentService {
             return await product.save();
           })
         );
-        order.order_status = "cancelled";
+        order.order_status = "Cancelled";
+        order.order_payment_status = "Cancelled";
+        return await order.save();
+      }
+
+      if (data.data.status === "PAID") {
+        const order = await db.Order.findOne({
+          where: { order_code: data.data.orderCode },
+        });
+        if (!order) {
+          throw new NotFoundError("Order not found");
+        }
+        order.order_payment_status = "Paid";
         return await order.save();
       }
     } catch (err) {

@@ -65,17 +65,15 @@ class OrderDetailService {
     
     static async getOrderDetails(orderId) {
         const orderDetails = await db.Orders.findAll({
-            attributes: [],
             where: { id: orderId },
             include: [{
                 model: db.OrderDetail,
-                attributes: ['order_id', 'product_detail_id', 'quantity'],
                 include: [{
                     model: db.ProductDetail,
-                    attributes: ['color', 'product_id'],
+                    attributes: ['sku_image', 'sku_size', 'sku_color', 'product_id'],
                     include: [{
                         model: db.Product,
-                        attributes: ['name', 'description', 'current_unit_price', 'rating', 'thumbnail'],
+                        attributes: ['product_name', 'product_desc', 'product_price'],
                     }]
                 }]
             }],

@@ -6,6 +6,6 @@ const { asyncHandler } = require('../../helpers/index');
 const PaymentController = require('../../controllers/payment.controller');
 
 router.post('/payos-hook', asyncHandler( PaymentController.handlePaymentResponse ));
-router.post('/cancelled', asyncHandler( PaymentController.handleCancelledPayment ));
+router.post('/handle-result', asyncHandler( PaymentController.handlePaymentResponse ));
 
 module.exports = router;
