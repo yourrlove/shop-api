@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class ProductEntry extends Model {
     /**
@@ -12,42 +10,47 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       // ProductEntry.belongsTo(models.User);
-      // ProductEntry.belongsToMany(models.Product, { through: 'ProductEntryDetail' });
+      ProductEntry.belongsToMany(models.ProductDetail, {
+        through: "ProductEntryDetail",
+      });
       // ProductEntry.hasMany(models.ProductEntryDetail);
     }
   }
-  ProductEntry.init({
-    product_entry_id: {
-      type: DataTypes.UUID,
-      primaryKey: true
+  ProductEntry.init(
+    {
+      product_entry_id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
+      },
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      total_cost: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      total_quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      user_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "User",
+          key: "id",
+        },
+      },
     },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    total_cost: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-      defaultValue: 0
-    },
-    total_quantity: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
-    },
-    user_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: 'User',
-        key: 'id'
-      }
+    {
+      sequelize,
+      modelName: "ProductEntry",
+      tableName: "product_entries",
+      timestamps: true,
     }
-  }, {
-    sequelize,
-    modelName: 'ProductEntry',
-    tableName: 'product_entries',
-    timestamps: true
-  });
+  );
   return ProductEntry;
 };
