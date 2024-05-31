@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       Product.belongsTo(models.Tag, {
         foreignKey: 'tag_id',
       });
-      // Product.belongsToMany(models.ProductEntry, { through: 'ProductEntryDetail' });
+ 
       // Product.hasMany(models.ProductEntryDetail);
     }
   }

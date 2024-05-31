@@ -4,9 +4,10 @@ const { asyncHandler } = require('../../helpers/index');
 const productController = require('../../controllers/product.controller');
 const UploadController = require('../../controllers/upload.controller');
 const { uploadDisk } = require('../../configs/config.multer');
+const uplodafile = require('../../middlewares');
+const uploadfile = require('../../middlewares/uploadfile');
 
-
-router.post('/', asyncHandler( productController.create_product ));
+router.post('/', uploadDisk.any(), uploadfile, asyncHandler( productController.create_product ));
 router.get('/', asyncHandler( productController.get_list_products ));
 router.put('/:id', asyncHandler( productController.update_product ));
 router.delete('/:id', asyncHandler( productController.delete_product ));
