@@ -1,7 +1,6 @@
 "use strict";
 const axios = require('axios');
 const db = require("../models/index");
-const ProductService = require("./product.service");
 const { BadRequestError, NotFoundError } = require("../core/error.response");
 const {
   generateUUID,
@@ -25,7 +24,7 @@ const { Op } = require("sequelize");
 class ProductDetailService {
   static create = async (
     product_id,
-    { sku_desc, sku_color, sku_size, sku_quantity, sku_price, files }
+    { sku_color, sku_size, sku_quantity, files }
   ) => {
     const product = await db.Product.findOne({
       where: { product_id: product_id },
@@ -61,11 +60,9 @@ class ProductDetailService {
     const productSku = await db.ProductDetail.create({
       sku_id: generateUUID(),
       sku_no,
-      sku_desc,
       sku_color,
       sku_size,
       sku_quantity,
-      sku_price,
       sku_image: getValues(urls, "image_url"),
       sku_slug,
       product_id,
