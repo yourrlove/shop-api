@@ -5,7 +5,7 @@ const { BadRequestError, NotFoundError } = require("../core/error.response");
 const BrandService = require("./brand.service");
 const CatalogueService = require("./catalogue.service");
 const TagService = require("./tag.service");
-const ProductDetailsService = require("./product_detail.service");
+const ProductDetailService = require("./product_detail.service");
 const {
   formatKeys,
   getInfoData,
@@ -28,16 +28,16 @@ class ProductService {
     brand_id,
     catalogue_id,
     tag_id,
+    items,
   }) => {
     const [brand, catalogue] = await Promise.all([
       BrandService.is_exists(brand_id),
       CatalogueService.is_exists(catalogue_id),
-      // TagService.is_exists(tag_id),
+      TagService.is_exists(tag_id),
     ]);
 
     if (!brand) throw new NotFoundError(`Brand id not found!`);
     if (!catalogue) throw new NotFoundError(`Catalogue id not found!`);
-    // if (!tag) throw new NotFoundError(`Tag id not found!`);
 
     const product_id = generateUUID();
     const product_slug = generateSlug(
@@ -53,6 +53,13 @@ class ProductService {
       catalogue_id,
       tag_id,
     });
+
+    items = await Promise.all(
+      items.map(async (item) => {
+        return await ProductDetailService.create(product.product_id, item);
+      })
+    )
+
     return product;
   };
 
