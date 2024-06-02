@@ -206,17 +206,33 @@ class OrderService {
   };
 
   static getOrderDetail = async (user_id, order_id) => {
-    const order = await db.Order.findOne({
-      where: {
-        order_id: order_id,
-        user_id: user_id,
-      },
-      attributes: { exclude: ["updatedAt"] },
+    const orders = await db.Order.findAll({
+      attributes: [
+        "order_id",
+        "order_final_price",
+        "order_shipping_price",
+        "order_discount_amount",
+        "order_status",
+        "order_payment_status",
+        "order_payment_method",
+        "order_code",
+        "createdAt",
+        "updatedAt",
+      ],
       include: {
-        model: db.Discount,
-        attributes: ["discount_value", "discount_desc"],
-      },
+        model: db.User,
+        attributes: ["user_id", "email", "first_name", "last_name", "phone_number"],
+      }
     });
+    return orders;
+    const order = await db.Order.find({
+      // attributes: { exclude: ["updatedAt"] },
+      // include: {
+      //   model: db.Discount,
+      //   attributes: ["discount_value", "discount_desc"],
+      // },
+    });
+    return order;
     if (!order) {
       throw new NotFoundError("Order not found");
     }
