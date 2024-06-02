@@ -26,48 +26,54 @@ class ProductDetailService {
     product_id,
     { sku_color, sku_size, sku_quantity, files }
   ) => {
-    const product = await db.Product.findOne({
-      where: { product_id: product_id },
-      include: [
-        {
-          model: db.Brand,
-          attributes: ["name", "code"],
-        },
-        {
-          model: db.Catalogue,
-          attributes: ["name", "code"],
-        },
-      ],
-      raw: true,
-    });
-    if (!product) {
-      throw new NotFoundError(`Product not found`);
-    }
-    const sku_slug = generateSlug(`${product.product_slug} ${sku_color}`);
-    const sku_no = generateSKUno({
-      brand_code: product["Brand.code"],
-      catalogue_code: product["Catalogue.code"],
-      product_id,
-      sku_color,
-      sku_size,
-    });
+    try{
 
-    const urls = await uploadMultipleImages({
-      files: files,
-      name: `${sku_slug}`,
-      folderName: `${CLOUD_IMAGE_FOLDER}${product["Brand.name"]}`,
-    });
-    const productSku = await db.ProductDetail.create({
-      sku_id: generateUUID(),
-      sku_no,
-      sku_color,
-      sku_size,
-      sku_quantity,
-      sku_image: getValues(urls, "image_url"),
-      sku_slug,
-      product_id,
-    });
-    return productSku;
+      const product = await db.Product.findOne({
+        where: { product_id: product_id },
+        include: [
+          {
+            model: db.Brand,
+            attributes: ["name", "code"],
+          },
+          {
+            model: db.Catalogue,
+            attributes: ["name", "code"],
+          },
+        ],
+        raw: true,
+      });
+      if (!product) {
+        throw new NotFoundError(`Product not found`);
+      }
+      const sku_slug = generateSlug(`${product.product_slug} ${sku_color}`);
+      const sku_no = generateSKUno({
+        brand_code: product["Brand.code"],
+        catalogue_code: product["Catalogue.code"],
+        product_id,
+        sku_color,
+        sku_size,
+      });
+  
+      const urls = await uploadMultipleImages({
+        files: files,
+        name: `${sku_slug}`,
+        folderName: `${CLOUD_IMAGE_FOLDER}${product["Brand.name"]}`,
+      });
+      const productSku = await db.ProductDetail.create({
+        sku_id: generateUUID(),
+        sku_no,
+        sku_color,
+        sku_size,
+        sku_quantity,
+        sku_image: getValues(urls, "image_url"),
+        sku_slug,
+        product_id,
+        
+      });
+      return productSku;
+    } catch (error) {
+      throw new BadRequestError(error.errors[0]);
+    }
   };
 
   static isExistSkuNo(sku_no) {
