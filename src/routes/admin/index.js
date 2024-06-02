@@ -9,7 +9,7 @@ const brandRouter = require('./brand');
 const catalogueRouter = require('./catalogue');
 const tagRouter = require('./tag');
 const discountRouter = require('./discount');
-
+const orderRouter = require('./order');
 
 const admin_api = express();
 
@@ -21,5 +21,6 @@ admin_api.use('/brands', brandRouter);
 admin_api.use('/catalogues', catalogueRouter);
 admin_api.use('/tags', tagRouter);
 admin_api.use('/discounts', discountRouter);
+admin_api.use('/orders', orderRouter);
 
 module.exports = admin_api;

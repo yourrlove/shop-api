@@ -9,13 +9,19 @@ class UserService {
     static create = async ({ first_name, last_name, email, hash_password, phone_number, role_name="user" }) => { // t sửa password thành hash_password để test
         const { role_id }  = await db.Role.findOne({ 
             where : { name: role_name },
-            attributes: [ ['id', 'role_id'] ],
+            attributes: ['role_id'],
             raw: true
         });
         if (!role_id) throw new BadRequestError('role id not found');
         const id = generateUUID();
         const user = await db.User.create({ 
-            ...userBody,
+            user_id: id,
+            first_name,
+            last_name,
+            email,
+            hash_password,
+            phone_number,
+            role_id,
         });
         if(!user) {
             throw new BadRequestError('Failed to create user! Something went wrong! Please try again!');
