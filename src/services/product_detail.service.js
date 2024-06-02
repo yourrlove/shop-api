@@ -44,6 +44,14 @@ class ProductDetailService {
       throw new NotFoundError(`Product not found`);
     }
       const sku_slug = generateSlug(`${product.product_slug} ${sku_color}`);
+      return {
+        brand_code: product.brand_code,
+        catalogue_code: product.catalogue_code,
+        product_id,
+        sku_color,
+        sku_size,
+        sku_quantity,
+      };
       const sku_no = generateSKUno({
         brand_code: product["Brand.code"],
         catalogue_code: product["Catalogue.code"],
@@ -51,8 +59,6 @@ class ProductDetailService {
         sku_color,
         sku_size,
       });
-      return sku_no;
-
     const urls = await uploadMultipleImages({
       files: files,
       name: `${sku_slug}`,
