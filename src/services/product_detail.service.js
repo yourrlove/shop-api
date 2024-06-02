@@ -45,14 +45,6 @@ class ProductDetailService {
     }
 
       const sku_slug = generateSlug(`${product.product_slug} ${sku_color}`);
-      return {
-        brand_code: product.brand_code,
-        catalogue_code: product.catalogue_code,
-        product_id,
-        sku_color,
-        sku_size,
-        sku_quantity,
-      };
       const sku_no = generateSKUno({
         brand_code: product["Brand.code"],
         catalogue_code: product["Catalogue.code"],

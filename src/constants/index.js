@@ -27,7 +27,27 @@ const configs = {
     },
     "production": {
         WEB_DOMAIN_URL: "https://api.yourrlove.com",
-        CLOUD_IMAGE_FOLDER: "products/"
+        CLOUD_IMAGE_FOLDER: "products/",
+        SIZE: Object.freeze({
+            SM: "Small", 
+            MD: "Medium", 
+            L: "Large", 
+            XL: "Extra Large", 
+        }),
+        COLOR: Object.freeze({
+            RD: "Red",
+            BL: "Blue",
+            GRE: "Green",
+            YE: "Yellow",
+            OR: "Orange",
+            PU: "Purple",
+            WH: "White",
+            GRA: "Gray",
+            BK: "Black",
+            BR: "Brown",
+            PK: "Pink",
+            BE: "Beige"
+        })
     }
 }
 
