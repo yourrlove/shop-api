@@ -72,7 +72,7 @@ class ProductDetailService {
       });
       return productSku;
     } catch (error) {
-      throw new BadRequestError(error.errors[0].message);
+      throw new BadRequestError(error.errors[0]);
     }
   };
 
