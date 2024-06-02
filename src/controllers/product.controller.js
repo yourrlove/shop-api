@@ -7,7 +7,7 @@ const _ = require("lodash");
 
 class ProductController {
   create_product = async (req, res, next) => {
-    return res.json(req.body);
+    // dummy text
     new OK({
       message: "Product created successfully",
       metadata: await ProductService.create(req.body),
