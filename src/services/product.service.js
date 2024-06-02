@@ -30,6 +30,8 @@ class ProductService {
     tag_id,
     items,
   }) => {
+
+    return items; 
     const [brand, catalogue] = await Promise.all([
       BrandService.is_exists(brand_id),
       CatalogueService.is_exists(catalogue_id),
