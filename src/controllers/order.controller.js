@@ -40,11 +40,10 @@ class OrderController {
     }).send(res);
   };
 
-  updateOrderStatus = async (req, res, next) => {
+  cancelOrder = async (req, res, next) => {
     new OK({
       message: "Update order status",
       metadata: await OrderService.updateStatus(
-        req.user.user_id,
         req.params.order_id,
         req.body,
       ),
@@ -57,6 +56,23 @@ class OrderController {
       metadata: await OrderService.getOrderDetail(req.user.user_id, req.params.order_id),
     }).send(res);
   };
+
+  getAllOrders = async (req, res, next) => {
+    new OK({
+      message: "Get all order",
+      metadata: await OrderService.getAllOrders(),
+    }).send(res);
+  }
+
+  updateOrderStatus = async (req, res, next) => {
+    new OK({
+      message: "Update order status",
+      metadata: await OrderService.updateStatus(
+        req.params.order_id,
+        req.body,
+      ),
+    }).send(res);
+  }
 }
 
 module.exports = new OrderController();

@@ -6,6 +6,7 @@ const {
   ConflictRequestError,
   AuthFailureError,
   ForbiddenRequestError,
+  BadRequestError
 } = require("../core/error.response");
 const { createKeyTokenPair } = require("../utils/authUtils");
 const JWT = require("jsonwebtoken");
@@ -30,12 +31,11 @@ class AuthService {
 
     // step 2: has password
     const passwordHash = await bcrypt.hash(password, 10);
-    const { role_id } = await db.Role.findOne({
+    const role_id  = await db.Role.findOne({
       where: { name: 'user' },
       attributes: ["role_id"],
       raw: true,
     });
-
     if (!role_id) throw new BadRequestError("Role not found");
     const user_id = generateUUID();
     // step3: create token pair
@@ -45,7 +45,6 @@ class AuthService {
       process.env.REFRESH_TOKEN_KEY_SECRET
     );
     if (!tokens) throw new ConflictRequestError("Failed to create tokens!");
-
     const newUser = await UserService.create({
       user_id,
       first_name,

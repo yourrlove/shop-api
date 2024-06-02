@@ -159,11 +159,29 @@ class OrderService {
     return orders;
   };
 
-  static updateStatus = async (user_id, order_id, { status }) => {
-    const user = await db.User.findByPk(user_id);
-    if (!user) {
-      throw new NotFoundError("User not found");
-    }
+  static getAllOrders = async () => {
+    const orders = await db.Order.findAll({
+      attributes: [
+        "order_id",
+        "order_final_price",
+        "order_shipping_price",
+        "order_discount_amount",
+        "order_status",
+        "order_payment_status",
+        "order_payment_method",
+        "order_code",
+        "createdAt",
+        "updatedAt",
+      ],
+      include: {
+        model: db.User,
+        attributes: ["user_id", "email", "first_name", "last_name", "phone_number"],
+      }
+    });
+    return orders;
+  }
+
+  static updateStatus = async (order_id, { status }) => {
     const order = await db.Order.findByPk(order_id);
     if (!order) {
       throw new NotFoundError("Order not found");
