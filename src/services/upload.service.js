@@ -17,14 +17,18 @@ const uploadImageFromLocal = async ({ path, folderName, name}) => {
 }
 
 const uploadMultipleImages = async ({ files, folderName, name}) => {
-    const imagesToUpload = files.map( async (file, index) => {
-        return await uploadImageFromLocal({
-            path: file.path,
-            name: `${name}-0${index}`,
-            folderName: folderName
+    try{
+        const imagesToUpload = files.map( async (file, index) => {
+            return await uploadImageFromLocal({
+                path: file.path,
+                name: `${name}-0${index}`,
+                folderName: folderName
+            });
         });
-    });
-    return await Promise.all(imagesToUpload);
+        return await Promise.all(imagesToUpload);
+    } catch (err) {
+        throw new Error(err);
+    }
 }
 
 module.exports = {
