@@ -1,5 +1,5 @@
 "use strict";
-const axios = require('axios');
+const axios = require("axios");
 const db = require("../models/index");
 const { BadRequestError, NotFoundError } = require("../core/error.response");
 const {
@@ -13,7 +13,7 @@ const {
   formatKeys,
   getInfoData,
   removeNull,
-  extractFields
+  extractFields,
 } = require("../utils/index");
 const { uploadMultipleImages } = require("../services/upload.service");
 const {
@@ -26,25 +26,23 @@ class ProductDetailService {
     product_id,
     { sku_color, sku_size, sku_quantity, files }
   ) => {
-    try{
-
-      const product = await db.Product.findOne({
-        where: { product_id: product_id },
-        include: [
-          {
-            model: db.Brand,
-            attributes: ["name", "code"],
-          },
-          {
-            model: db.Catalogue,
-            attributes: ["name", "code"],
-          },
-        ],
-        raw: true,
-      });
-      if (!product) {
-        throw new NotFoundError(`Product not found`);
-      }
+    const product = await db.Product.findOne({
+      where: { product_id: product_id },
+      include: [
+        {
+          model: db.Brand,
+          attributes: ["name", "code"],
+        },
+        {
+          model: db.Catalogue,
+          attributes: ["name", "code"],
+        },
+      ],
+      raw: true,
+    });
+    if (!product) {
+      throw new NotFoundError(`Product not found`);
+    }
       const sku_slug = generateSlug(`${product.product_slug} ${sku_color}`);
       const sku_no = generateSKUno({
         brand_code: product["Brand.code"],
@@ -53,12 +51,14 @@ class ProductDetailService {
         sku_color,
         sku_size,
       });
-  
-      const urls = await uploadMultipleImages({
-        files: files,
-        name: `${sku_slug}`,
-        folderName: `${CLOUD_IMAGE_FOLDER}${product["Brand.name"]}`,
-      });
+      return sku_no;
+
+    const urls = await uploadMultipleImages({
+      files: files,
+      name: `${sku_slug}`,
+      folderName: `${CLOUD_IMAGE_FOLDER}${product["Brand.name"]}`,
+    });
+    try {
       const productSku = await db.ProductDetail.create({
         sku_id: generateUUID(),
         sku_no,
@@ -68,11 +68,11 @@ class ProductDetailService {
         sku_image: getValues(urls, "image_url"),
         sku_slug,
         product_id,
-        
       });
+
       return productSku;
     } catch (error) {
-      throw new BadRequestError(error.errors[0]);
+      throw new BadRequestError(error);
     }
   };
 
@@ -204,7 +204,7 @@ class ProductDetailService {
     //.map((product) => formatDataReturn(product.toJSON()));
     return {
       Total: await this.countAll(),
-      products
+      products,
     };
   };
 
@@ -226,7 +226,7 @@ class ProductDetailService {
   static countAll = async () => {
     const count = await db.ProductDetail.count();
     return count;
-  }
+  };
 
   static createProductDetailslug = async () => {
     const products = await db.ProductDetail.findAll({
@@ -293,10 +293,10 @@ class ProductDetailService {
   };
 
   static getProductDetailsById = async (query) => {
-    if(query === undefined || query === null || query === "") {
+    if (query === undefined || query === null || query === "") {
       return;
     }
-    const list_sku_ids =  await this.fetchData(query);
+    const list_sku_ids = await this.fetchData(query);
     const product_skus = await db.ProductDetail.findAll({
       where: { sku_id: { [Op.in]: list_sku_ids } },
       attributes: { exclude: ["product_id"] },
@@ -323,27 +323,26 @@ class ProductDetailService {
 
   static fetchData = async (query) => {
     try {
-
       let data = JSON.stringify({
-        "query": query
+        query: query,
       });
-      
+
       let config = {
-        method: 'post',
+        method: "post",
         maxBodyLength: Infinity,
-        url: 'http://3.27.214.37/api/query',
-        headers: { 
-          'Content-Type': 'application/json'
+        url: "http://3.27.214.37/api/query",
+        headers: {
+          "Content-Type": "application/json",
         },
-        data : data
+        data: data,
       };
-      const response = await axios.request(config)
-      
-      return extractFields(response.data, 'metadata.sku_id');
+      const response = await axios.request(config);
+
+      return extractFields(response.data, "metadata.sku_id");
     } catch (error) {
-      console.error('Error making API call:', error);
+      console.error("Error making API call:", error);
     }
-  }
+  };
 }
 
 module.exports = ProductDetailService;
