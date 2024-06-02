@@ -3,10 +3,12 @@
 const express = require('express')
 const router = express.Router();
 const { asyncHandler } = require('../../helpers/index');
-const OrderController = require('../../controllers/order.controller')
+const OrderController = require('../../controllers/order.controller');
+const { verifyToken } = require('../../middlewares/auth');
 
+router.get('/', asyncHandler( OrderController.getAllOrders ));
 router.post('/', asyncHandler(OrderController.createOrder));
-router.post('/:id/orderdetails', asyncHandler(OrderController.createOrderDetail))
-router.get('/:id', asyncHandler(OrderController.getAllCartItem))
+router.put('/:order_id', asyncHandler( OrderController.updateOrderStatus ));
+router.get('/:order_id', verifyToken, asyncHandler(OrderController.getOrderDetail ));
 
 module.exports = router;
