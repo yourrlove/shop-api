@@ -40,7 +40,7 @@ class AuthService {
     const user_id = generateUUID();
     // step3: create token pair
     const tokens = createKeyTokenPair(
-      { user_id: user_id, role_id: role_id },
+      { user_id: user_id, role_id },
       process.env.ACCESS_TOKEN_KEY_SECRET,
       process.env.REFRESH_TOKEN_KEY_SECRET
     );

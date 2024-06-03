@@ -7,9 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.belongsTo(models.Role, {
-        foreignKey: 'role_id',
-        onDelete: 'SET NULL',
-        onUpdate: 'CASCADE'
+        foreignKey: 'role_id'
       });
       User.hasMany(models.DeliveryInfor, {
         foreignKey: 'user_id'

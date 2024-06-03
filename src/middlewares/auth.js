@@ -9,6 +9,7 @@ const verifyToken = (req, res, next) => {
     JWT.verify(token, process.env.ACCESS_TOKEN_KEY_SECRET, (err, decoded) => {
         if (err) throw new ForbiddenRequestError('Unauthorized request');
         req.user = decoded;
+        console.log(decoded);
         next();
     });
 }

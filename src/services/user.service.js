@@ -6,16 +6,15 @@ const CartService = require('../services/cart.service');
 const { includes } = require('lodash');
 
 class UserService {
-    static create = async ({ first_name, last_name, email, hash_password, phone_number, role_name="user" }) => { // t sửa password thành hash_password để test
+    static create = async ({ user_id, first_name, last_name, email, hash_password, phone_number, role_name="user" }) => { // t sửa password thành hash_password để test
         const { role_id }  = await db.Role.findOne({ 
             where : { name: role_name },
             attributes: ['role_id'],
             raw: true
         });
         if (!role_id) throw new BadRequestError('role id not found');
-        const id = generateUUID();
         const user = await db.User.create({ 
-            user_id: id,
+            user_id: user_id,
             first_name,
             last_name,
             email,
