@@ -260,6 +260,54 @@ class OrderService {
 
     return { order, orderDetails };
   };
+
+  static getOrderDetailAdmin = async (order_id) => {
+    const order = await db.Order.findOne({
+      where: {
+        order_id: order_id,
+        user_id: user_id,
+      },
+      attributes: { exclude: ["updatedAt"] },
+      include: {
+        model: db.Discount,
+        attributes: ["discount_value", "discount_desc"],
+      },
+    });
+    if (!order) {
+      throw new NotFoundError("Order not found");
+    }
+    const orderDetails = await db.OrderDetail.findAll({
+      where: {
+        order_id: order_id,
+      },
+      include: [
+        {
+          model: db.ProductDetail,
+          attributes: [
+            "sku_no",
+            "sku_color",
+            "sku_color",
+            "sku_size",
+            "sku_image",
+          ],
+          include: [
+            {
+              model: db.Product,
+              attributes: ["product_id", "product_name", "product_price"],
+              include: [
+                {
+                  model: db.Brand,
+                  attributes: ["name"],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    return { order, orderDetails };
+  };
 }
 
 module.exports = OrderService;

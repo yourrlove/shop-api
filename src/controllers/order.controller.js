@@ -73,6 +73,13 @@ class OrderController {
       ),
     }).send(res);
   }
+
+  getOrderDetailAdmin = async (req, res, next) => {
+    new OK({
+      message: "Get order detail",
+      metadata: await OrderService.getOrderDetailAdmin(req.params.order_id),
+    }).send(res);
+  }
 }
 
 module.exports = new OrderController();
