@@ -265,7 +265,6 @@ class OrderService {
     const order = await db.Order.findOne({
       where: {
         order_id: order_id,
-        user_id: user_id,
       },
       attributes: { exclude: ["updatedAt"] },
       include: {
