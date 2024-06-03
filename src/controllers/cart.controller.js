@@ -6,6 +6,7 @@ const { OK, CREATED } = require("../core/success.response");
 
 class CartController {
   add_to_cart = async (req, res, next) => {
+    console.log(req.user.user_id);
     new CREATED({
       message: "CartItem is added successfully",
       metadata: await CartItemService.create(req.user.user_id, req.body),

@@ -11,6 +11,7 @@ class CartItemService {
     if (!user) {
       throw new NotFoundError("User not found");
     }
+    console.log(user_id);
     let cart = await db.Cart.findOne({
       where: {
         user_id: user_id,

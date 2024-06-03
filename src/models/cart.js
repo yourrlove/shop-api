@@ -25,8 +25,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.UUID,
       references: {
-        model: 'User',
-        key: 'id',
+        model: 'carts',
+        key: 'cart_id',
+      }
+    },
+    user_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'user_id'
       }
     },
     total_quantity: {
@@ -34,14 +42,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 0,
     },
-    user_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: 'User',
-        key: 'user_id'
-      }
-    }
   }, {
     sequelize,
     modelName: 'Cart',
