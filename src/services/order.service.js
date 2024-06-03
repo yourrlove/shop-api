@@ -86,8 +86,9 @@ class OrderService {
               order_detail_price: item.price,
               order_detail_quantity: item.quantity,
             });
-            
-            product.sku_quantity = product.sku_quantity - order.order_detail_quantity;
+
+            product.sku_quantity =
+              product.sku_quantity - order.order_detail_quantity;
             await product.save();
             return order_item;
           }
@@ -175,11 +176,17 @@ class OrderService {
       ],
       include: {
         model: db.User,
-        attributes: ["user_id", "email", "first_name", "last_name", "phone_number"],
-      }
+        attributes: [
+          "user_id",
+          "email",
+          "first_name",
+          "last_name",
+          "phone_number",
+        ],
+      },
     });
     return orders;
-  }
+  };
 
   static updateStatus = async (order_id, { status }) => {
     const order = await db.Order.findByPk(order_id);
@@ -196,7 +203,8 @@ class OrderService {
       await Promise.all(
         orderDetails.map(async (item) => {
           const product = await db.ProductDetail.findByPk(item.sku_id);
-          product.sku_quantity = product.sku_quantity + item.order_detail_quantity;
+          product.sku_quantity =
+            product.sku_quantity + item.order_detail_quantity;
           return await product.save();
         })
       );
@@ -206,33 +214,17 @@ class OrderService {
   };
 
   static getOrderDetail = async (user_id, order_id) => {
-    const orders = await db.Order.findAll({
-      attributes: [
-        "order_id",
-        "order_final_price",
-        "order_shipping_price",
-        "order_discount_amount",
-        "order_status",
-        "order_payment_status",
-        "order_payment_method",
-        "order_code",
-        "createdAt",
-        "updatedAt",
-      ],
+    const order = await db.Order.findOne({
+      where: {
+        order_id: order_id,
+        user_id: user_id,
+      },
+      attributes: { exclude: ["updatedAt"] },
       include: {
-        model: db.User,
-        attributes: ["user_id", "email", "first_name", "last_name", "phone_number"],
-      }
+        model: db.Discount,
+        attributes: ["discount_value", "discount_desc"],
+      },
     });
-    return orders;
-    const order = await db.Order.find({
-      // attributes: { exclude: ["updatedAt"] },
-      // include: {
-      //   model: db.Discount,
-      //   attributes: ["discount_value", "discount_desc"],
-      // },
-    });
-    return order;
     if (!order) {
       throw new NotFoundError("Order not found");
     }
