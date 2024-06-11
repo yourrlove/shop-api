@@ -24,7 +24,7 @@ const { Op } = require("sequelize");
 class ProductDetailService {
   static create = async (
     product_id,
-    { sku_color, sku_size, sku_quantity, files }
+    { sku_color, sku_size, sku_quantity, sku_price, files }
   ) => {
     const product = await db.Product.findOne({
       where: { product_id: product_id },
@@ -50,6 +50,7 @@ class ProductDetailService {
         product_id,
         sku_color,
         sku_size,
+        sku_price
       });
     const urls = await uploadMultipleImages({
       files: files,
