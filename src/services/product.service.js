@@ -58,7 +58,7 @@ class ProductService {
 
     items = await Promise.all(
       items.map(async (item) => {
-        return await ProductDetailService.create(product.product_id, item);
+        return await ProductDetailService.create(product.product_id, { ...item, sku_price: product_price });
       })
     )
 
