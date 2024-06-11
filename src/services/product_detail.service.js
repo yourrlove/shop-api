@@ -49,8 +49,7 @@ class ProductDetailService {
         catalogue_code: product["Catalogue.code"],
         product_id,
         sku_color,
-        sku_size,
-        sku_price
+        sku_size
       });
     const urls = await uploadMultipleImages({
       files: files,
@@ -64,6 +63,7 @@ class ProductDetailService {
         sku_color,
         sku_size,
         sku_quantity,
+        sku_price,
         sku_image: getValues(urls, "image_url"),
         sku_slug,
         product_id,
