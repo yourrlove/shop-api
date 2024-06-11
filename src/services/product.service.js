@@ -39,6 +39,7 @@ class ProductService {
 
     if (!brand) throw new NotFoundError(`Brand id not found!`);
     if (!catalogue) throw new NotFoundError(`Catalogue id not found!`);
+    if (!tag) throw new NotFoundError(`Tag id not found!`);
 
     const product_id = generateUUID();
     const product_slug = generateSlug(
