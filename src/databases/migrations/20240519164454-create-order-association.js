@@ -32,11 +32,11 @@ module.exports = {
           key: "sku_id",
         },
       },
-      quantity: {
+      order_detail_quantity: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      price: {
+      order_detail_price: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
